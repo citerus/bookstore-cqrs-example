@@ -32,8 +32,8 @@ public class OrderTest {
 
   @Test
   public void activatingAnOrderDoesNotUpdateTheItemPriceIfItHasBeenRaised() {
-    long originalPrice = 200L;
-    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, originalPrice, null);
+    long unitPrice = 200L;
+    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, unitPrice, null);
 
     Order order = new Order();
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
@@ -48,7 +48,7 @@ public class OrderTest {
     List<OrderLine> orderLines = order.orderLines();
     assertThat(size(orderLines), is(1));
     assertThat(order.status(), is(ACTIVATED));
-    assertThat(orderLines.iterator().next().originalPrice, is(originalPrice));
+    assertThat(orderLines.iterator().next().unitPrice, is(unitPrice));
   }
 
   @Test(expected = IllegalStateException.class)
@@ -62,8 +62,8 @@ public class OrderTest {
   public void activatingTwiceDoesNotGenerateASecondActivationEvent() {
     Order order = new Order();
     BookId bookId = BookId.randomId();
-    long originalPrice = 200L;
-    OrderLine orderLine = new OrderLine(bookId, "title", 10, originalPrice, null);
+    long unitPrice = 200L;
+    OrderLine orderLine = new OrderLine(bookId, "title", 10, unitPrice, null);
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
 
     order.markChangesAsCommitted();

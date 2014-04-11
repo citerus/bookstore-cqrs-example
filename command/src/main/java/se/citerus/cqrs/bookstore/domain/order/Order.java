@@ -3,21 +3,24 @@ package se.citerus.cqrs.bookstore.domain.order;
 import se.citerus.cqrs.bookstore.domain.AggregateRoot;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
+import se.citerus.cqrs.bookstore.order.OrderLine;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
 import se.citerus.cqrs.bookstore.order.event.OrderActivatedEvent;
 import se.citerus.cqrs.bookstore.order.event.OrderPlacedEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkState;
 
 public class Order extends AggregateRoot<OrderId> {
 
   private OrderStatus status;
-  private OrderLines orderLines;
+  private final List<OrderLine> orderLines = new ArrayList<>();
 
-  public void place(OrderId orderId, CustomerInformation customerInformation, OrderLines orderLines) {
+  public void place(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines) {
     assertHasNotBeenPlaced();
-    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines.lines(),
-        orderLines.totalAmount()));
+    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines, sum(orderLines)));
   }
 
   public void activate() {
@@ -38,13 +41,21 @@ public class Order extends AggregateRoot<OrderId> {
     checkState(id == null, "Order has already been placed");
   }
 
+  private long sum(List<OrderLine> orderLines) {
+    long totalAmount = 0;
+    for (OrderLine orderLine : orderLines) {
+      totalAmount += orderLine.lineCost();
+    }
+    return totalAmount;
+  }
+
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(OrderPlacedEvent event) {
     this.id = event.aggregateId;
     this.version = event.version;
     this.timestamp = event.timestamp;
     this.status = OrderStatus.PLACED;
-    this.orderLines = new OrderLines(event.orderLines);
+    this.orderLines.addAll(event.orderLines);
   }
 
   @SuppressWarnings("UnusedDeclaration")
@@ -52,7 +63,7 @@ public class Order extends AggregateRoot<OrderId> {
     this.status = OrderStatus.ACTIVATED;
   }
 
-  public OrderLines orderLines() {
+  public List<OrderLine> orderLines() {
     return orderLines;
   }
 

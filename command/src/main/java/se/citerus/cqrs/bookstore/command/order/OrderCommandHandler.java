@@ -4,7 +4,6 @@ import com.google.common.eventbus.Subscribe;
 import se.citerus.cqrs.bookstore.command.CommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.domain.order.Order;
-import se.citerus.cqrs.bookstore.domain.order.OrderLines;
 import se.citerus.cqrs.bookstore.order.OrderLine;
 import se.citerus.cqrs.bookstore.publisher.PublisherId;
 import se.citerus.cqrs.bookstore.query.QueryService;
@@ -31,7 +30,7 @@ public class OrderCommandHandler implements CommandHandler {
       PublisherId publisherId = queryService.findPublisher(orderLine.bookId);
       orderLinesWithPublishers.add(orderLine.withPublisher(publisherId));
     }
-    order.place(command.orderId, command.customerInformation, new OrderLines(orderLinesWithPublishers));
+    order.place(command.orderId, command.customerInformation, orderLinesWithPublishers);
     repository.save(order);
   }
 

@@ -8,7 +8,6 @@ import se.citerus.cqrs.bookstore.order.OrderStatus;
 import se.citerus.cqrs.bookstore.order.event.OrderActivatedEvent;
 import se.citerus.cqrs.bookstore.order.event.OrderPlacedEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -16,7 +15,6 @@ import static com.google.common.base.Preconditions.checkState;
 public class Order extends AggregateRoot<OrderId> {
 
   private OrderStatus status;
-  private final List<OrderLine> orderLines = new ArrayList<>();
 
   public void place(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines) {
     assertHasNotBeenPlaced();
@@ -31,10 +29,6 @@ public class Order extends AggregateRoot<OrderId> {
 
   private boolean orderIsPlaced() {
     return status == OrderStatus.PLACED;
-  }
-
-  public OrderStatus status() {
-    return status;
   }
 
   private void assertHasNotBeenPlaced() {
@@ -55,16 +49,11 @@ public class Order extends AggregateRoot<OrderId> {
     this.version = event.version;
     this.timestamp = event.timestamp;
     this.status = OrderStatus.PLACED;
-    this.orderLines.addAll(event.orderLines);
   }
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(OrderActivatedEvent event) {
     this.status = OrderStatus.ACTIVATED;
-  }
-
-  public List<OrderLine> orderLines() {
-    return orderLines;
   }
 
 }

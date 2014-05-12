@@ -6,16 +6,18 @@ import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderLine;
+import se.citerus.cqrs.bookstore.order.event.OrderActivatedEvent;
+import se.citerus.cqrs.bookstore.order.event.OrderPlacedEvent;
 
 import java.util.Collections;
 import java.util.List;
 
-import static com.google.common.collect.Iterables.size;
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.Assert.assertThat;
-import static se.citerus.cqrs.bookstore.order.OrderStatus.ACTIVATED;
-import static se.citerus.cqrs.bookstore.order.OrderStatus.PLACED;
 
 public class OrderTest {
 
@@ -26,29 +28,22 @@ public class OrderTest {
     Order order = new Order();
     OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L, null);
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
-
-    assertThat(order.status(), is(PLACED));
+    List<DomainEvent> uncommittedEvents = order.getUncommittedEvents();
+    assertThat(uncommittedEvents.size(), is(1));
+    assertThat(getOnlyElement(uncommittedEvents), instanceOf(OrderPlacedEvent.class));
   }
 
   @Test
-  public void activatingAnOrderDoesNotUpdateTheItemPriceIfItHasBeenRaised() {
-    long unitPrice = 200L;
-    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, unitPrice, null);
-
+  public void activatingAnOrder() {
+    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L, null);
     Order order = new Order();
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
-
     order.markChangesAsCommitted();
-
     order.activate();
 
     List<DomainEvent> uncommittedEvents = order.getUncommittedEvents();
     assertThat(uncommittedEvents.size(), is(1));
-
-    List<OrderLine> orderLines = order.orderLines();
-    assertThat(size(orderLines), is(1));
-    assertThat(order.status(), is(ACTIVATED));
-    assertThat(orderLines.iterator().next().unitPrice, is(unitPrice));
+    assertThat(getOnlyElement(uncommittedEvents), instanceOf(OrderActivatedEvent.class));
   }
 
   @Test(expected = IllegalStateException.class)
@@ -67,13 +62,10 @@ public class OrderTest {
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
 
     order.markChangesAsCommitted();
-
     order.activate();
-    assertThat(order.getUncommittedEvents().size(), is(1));
-
     order.markChangesAsCommitted();
     order.activate();
-    assertThat(order.getUncommittedEvents().size(), is(0));
+    assertThat(order.getUncommittedEvents(), emptyIterable());
   }
 
 }

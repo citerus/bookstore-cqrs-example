@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.event.DomainEventListener;
 import se.citerus.cqrs.bookstore.publisher.PublisherId;
 import se.citerus.cqrs.bookstore.publisher.event.PublisherRegisteredEvent;
+import se.citerus.cqrs.bookstore.publisher.event.PurchaseRegisteredEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,11 @@ public class PublisherDenormalizer implements DomainEventListener {
     logger.info("Received: " + event.toString());
     PublisherProjection projection = new PublisherProjection(event.aggregateId, event.publisherName, event.fee);
     publishers.put(event.aggregateId, projection);
+  }
+
+  @Subscribe
+  public void handleEvent(PurchaseRegisteredEvent event) {
+    logger.info("Received: " + event.toString());
   }
 
   @Override

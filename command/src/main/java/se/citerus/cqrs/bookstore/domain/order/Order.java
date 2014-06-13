@@ -18,7 +18,8 @@ public class Order extends AggregateRoot<OrderId> {
 
   public void place(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines) {
     assertHasNotBeenPlaced();
-    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines, sum(orderLines)));
+    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines,
+        calculateTotalAmount(orderLines)));
   }
 
   public void activate() {
@@ -35,10 +36,10 @@ public class Order extends AggregateRoot<OrderId> {
     checkState(id == null, "Order has already been placed");
   }
 
-  private long sum(List<OrderLine> orderLines) {
+  private long calculateTotalAmount(List<OrderLine> orderLines) {
     long totalAmount = 0;
     for (OrderLine orderLine : orderLines) {
-      totalAmount += orderLine.lineCost();
+      totalAmount += orderLine.amount();
     }
     return totalAmount;
   }

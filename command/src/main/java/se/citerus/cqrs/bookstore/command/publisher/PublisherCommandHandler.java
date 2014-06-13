@@ -30,7 +30,7 @@ public class PublisherCommandHandler implements CommandHandler {
   @Subscribe
   public void handle(RegisterPurchaseCommand command) {
     Publisher publisher = repository.load(command.publisherId, Publisher.class);
-    publisher.registerPurchase(command.bookId, command.totalPrice);
+    publisher.registerPurchase(command.bookId, command.amount);
     repository.save(publisher);
   }
 

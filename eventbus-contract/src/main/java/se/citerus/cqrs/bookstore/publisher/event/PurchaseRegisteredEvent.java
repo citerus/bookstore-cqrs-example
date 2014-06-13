@@ -7,12 +7,12 @@ import se.citerus.cqrs.bookstore.publisher.PublisherId;
 public class PurchaseRegisteredEvent extends DomainEvent<PublisherId> {
 
   public final BookId bookId;
-  public final long price;
+  public final long amount;
 
-  public PurchaseRegisteredEvent(PublisherId publisherId, int version, long timestamp, BookId bookId, long price) {
+  public PurchaseRegisteredEvent(PublisherId publisherId, int version, long timestamp, BookId bookId, long amount) {
     super(publisherId, version, timestamp);
     this.bookId = bookId;
-    this.price = price;
+    this.amount = amount;
   }
 
 }

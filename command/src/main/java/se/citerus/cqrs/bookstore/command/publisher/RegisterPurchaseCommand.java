@@ -10,16 +10,16 @@ public class RegisterPurchaseCommand extends Command {
 
   public final PublisherId publisherId;
   public final BookId bookId;
-  public final long totalPrice;
+  public final long amount;
 
-  public RegisterPurchaseCommand(PublisherId publisherId, BookId bookId, long totalPrice) {
+  public RegisterPurchaseCommand(PublisherId publisherId, BookId bookId, long amount) {
     checkArgument(publisherId != null, "PublisherId cannot be null");
     checkArgument(bookId != null, "BookId cannot be null");
-    checkArgument(totalPrice > 0, "TotalPrice must be a positive number");
+    checkArgument(amount > 0, "Amount must be a positive number");
 
     this.publisherId = publisherId;
     this.bookId = bookId;
-    this.totalPrice = totalPrice;
+    this.amount = amount;
   }
 
 }

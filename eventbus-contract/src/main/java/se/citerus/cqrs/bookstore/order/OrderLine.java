@@ -35,7 +35,7 @@ public class OrderLine extends ValueObject {
     return new OrderLine(this.bookId, this.title, this.quantity, this.unitPrice, publisherId);
   }
 
-  public long lineCost() {
+  public long amount() {
     return unitPrice * quantity;
   }
 

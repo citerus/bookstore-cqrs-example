@@ -20,8 +20,8 @@ public class Publisher extends AggregateRoot<PublisherId> {
     applyChange(new PublisherFeeUpdatedEvent(id(), nextVersion(), now(), fee, newFee));
   }
 
-  public void registerPurchase(BookId bookId, long totalPrice) {
-    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, totalPrice));
+  public void registerPurchase(BookId bookId, long amount) {
+    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, amount));
   }
 
   @SuppressWarnings("UnusedDeclaration")

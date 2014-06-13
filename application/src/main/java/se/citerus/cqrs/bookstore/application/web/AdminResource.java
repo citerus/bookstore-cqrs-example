@@ -81,6 +81,7 @@ public class AdminResource {
     commandBus.dispatch(command);
   }
 
+  // TODO: Remove unused use case?
   @POST
   @Path("update-book-price-requests")
   public void updateBookPrice(@Valid UpdateBookPriceRequest updateBookPriceRequest) {
@@ -107,6 +108,7 @@ public class AdminResource {
     commandBus.dispatch(command);
   }
 
+  // TODO: Remove unused use case?
   @POST
   @Path("update-publisher-fee-requests")
   public void updatePublisherFee(@Valid UpdatePublisherFeeRequest updatePublisherFeeRequest) {

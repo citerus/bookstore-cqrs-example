@@ -12,14 +12,7 @@ import se.citerus.cqrs.bookstore.query.BookProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
 
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -55,10 +48,7 @@ public class CartResource {
     Cart cart = cartRepository.get(cartId);
     logger.debug("Got addItem request " + bookId);
     BookProjection book = queryService.findBookById(bookId);
-    if (book == null) {
-      throw new WebApplicationException(Response.status(BAD_REQUEST)
-          .entity("Book with id '" + bookId + "' could not be found").build());
-    }
+    assertBookExists(bookId, book);
     Item item = new Item(bookId, book.getTitle(), book.getPrice());
     logger.info("Adding item to cart: " + item);
     cart.add(item);
@@ -82,6 +72,13 @@ public class CartResource {
   public void deleteCart(@PathParam("cartId") String cartId) {
     cartRepository.delete(cartId);
     logger.info("Shopping cart for session '{}' cleared", cartId);
+  }
+
+  private void assertBookExists(BookId bookId, BookProjection book) {
+    if (book == null) {
+      throw new WebApplicationException(Response.status(BAD_REQUEST)
+          .entity("Book with id '" + bookId + "' could not be found").build());
+    }
   }
 
 }

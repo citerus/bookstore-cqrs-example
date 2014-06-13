@@ -8,13 +8,7 @@ import se.citerus.cqrs.bookstore.book.event.BookCreatedEvent;
 import se.citerus.cqrs.bookstore.book.event.BookPriceUpdatedEvent;
 import se.citerus.cqrs.bookstore.event.DomainEventListener;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BookCatalogDenormalizer implements DomainEventListener {
 
@@ -50,7 +44,7 @@ public class BookCatalogDenormalizer implements DomainEventListener {
     return projections;
   }
 
-  public BookProjection findById(BookId bookId) {
+  public BookProjection get(BookId bookId) {
     return books.get(bookId);
   }
 

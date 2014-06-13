@@ -31,10 +31,11 @@ public class BookResource {
     return books;
   }
 
+  // TODO: Remove unused end point?
   @GET
   @Path("{bookId}")
   public BookProjection getBook(@PathParam("bookId") BookId bookId) {
-    BookProjection book = queryService.findBookById(bookId);
+    BookProjection book = queryService.getBook(bookId);
     logger.info("Returning book: " + book);
     return book;
   }

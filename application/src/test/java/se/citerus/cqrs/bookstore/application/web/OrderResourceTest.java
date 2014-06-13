@@ -40,7 +40,7 @@ public class OrderResourceTest extends ResourceTest {
     PlaceOrderRequest newOrderRequest = new PlaceOrderRequest(cartId, orderId, "TestCustomer", "test@example.com", "Street 1");
 
     BookProjection book = mock(BookProjection.class);
-    when(queryService.findBookById(new BookId(bookId))).thenReturn(book);
+    when(queryService.getBook(new BookId(bookId))).thenReturn(book);
 
     createCartWithId(cartId, client());
     addItemToCart(cartId, new BookId(bookId), client());

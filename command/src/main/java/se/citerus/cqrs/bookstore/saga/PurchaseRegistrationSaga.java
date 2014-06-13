@@ -28,7 +28,7 @@ public class PurchaseRegistrationSaga extends Saga {
   @Subscribe
   public void handleEvent(OrderActivatedEvent event) {
     logger.info("Received: " + event.toString());
-    OrderProjection order = queryService.getById(event.aggregateId);
+    OrderProjection order = queryService.getOrder(event.aggregateId);
     for (final OrderLine orderLine : order.getOrderLines()) {
       if (orderLine.bookHasRegisteredPublisher()) {
         publish(new RegisterPurchaseCommand(orderLine.publisherId, orderLine.bookId, orderLine.amount()));

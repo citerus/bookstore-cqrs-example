@@ -68,7 +68,7 @@ public class AdminResourceTest extends ResourceTest {
     OrderId orderId = OrderId.randomId();
     List<OrderLine> orderLines = Collections.emptyList();
     OrderProjection order = new OrderProjection(orderId, 0L, "TestCustomer", 200L, orderLines, OrderStatus.PLACED);
-    when(queryService.getById(orderId)).thenReturn(order);
+    when(queryService.getOrder(orderId)).thenReturn(order);
 
     OrderProjection retrievedOrder = client()
         .resource(ADMIN_RESOURCE + "/orders/" + orderId)

@@ -53,10 +53,11 @@ public class AdminResource {
     return projections;
   }
 
+  // TODO: Remove unused end point?
   @GET
   @Path("orders/{orderId}")
   public OrderProjection getOrder(@PathParam("orderId") OrderId orderId) {
-    OrderProjection order = queryService.getById(orderId);
+    OrderProjection order = queryService.getOrder(orderId);
     logger.info("Returning order: " + order);
     return order;
   }
@@ -118,13 +119,14 @@ public class AdminResource {
     commandBus.dispatch(command);
   }
 
+  // TODO: Remove unused end point?
   @GET
   @Path("publishers/{publisherId}")
   public PublisherProjection getPublisher(@PathParam("publisherId") String publisherId) {
-    PublisherId publisherId1 = new PublisherId(publisherId);
-    return queryService.findPublisherById(publisherId1);
+    return queryService.getPublisher(new PublisherId(publisherId));
   }
 
+  // TODO: Add Simple bar chart to admin gui!
   @GET
   @Path("orders-per-day")
   public Map<LocalDate, Integer> getOrdersPerDay() {

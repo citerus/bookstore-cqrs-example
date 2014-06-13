@@ -28,7 +28,7 @@ public class PublisherDenormalizer implements DomainEventListener {
     return true;
   }
 
-  public PublisherProjection findById(PublisherId publisherId) {
+  public PublisherProjection get(PublisherId publisherId) {
     return publishers.get(publisherId);
   }
 

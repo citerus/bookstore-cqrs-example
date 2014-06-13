@@ -47,7 +47,7 @@ public class CartResource {
   public CartDto addItem(@PathParam("cartId") String cartId, BookId bookId) {
     Cart cart = cartRepository.get(cartId);
     logger.debug("Got addItem request " + bookId);
-    BookProjection book = queryService.findBookById(bookId);
+    BookProjection book = queryService.getBook(bookId);
     assertBookExists(bookId, book);
     Item item = new Item(bookId, book.getTitle(), book.getPrice());
     logger.info("Adding item to cart: " + item);

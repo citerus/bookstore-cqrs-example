@@ -49,7 +49,7 @@ public class OrderListDenormalizer implements DomainEventListener {
     return true;
   }
 
-  public OrderProjection findById(OrderId orderId) {
+  public OrderProjection get(OrderId orderId) {
     return repository.getById(orderId);
   }
 

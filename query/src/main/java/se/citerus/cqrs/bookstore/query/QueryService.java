@@ -26,29 +26,29 @@ public class QueryService {
     this.ordersPerDayAggregator = ordersPerDayAggregator;
   }
 
+  public BookProjection getBook(BookId bookId) {
+    return bookCatalogDenormalizer.get(bookId);
+  }
+
   public Collection<BookProjection> listBooks() {
     return bookCatalogDenormalizer.listBooks();
   }
 
-  public BookProjection findBookById(BookId bookId) {
-    return bookCatalogDenormalizer.findById(bookId);
-  }
-
-  public PublisherId findPublisher(BookId bookId) {
-    BookProjection bookProjection = bookCatalogDenormalizer.findById(bookId);
-    return bookProjection.hasPublisher() ? new PublisherId(bookProjection.getPublisherId()) : null;
+  public OrderProjection getOrder(OrderId orderId) {
+    return orderListDenormalizer.get(orderId);
   }
 
   public List<OrderProjection> listOrders() {
     return orderListDenormalizer.listOrders();
   }
 
-  public OrderProjection getById(OrderId orderId) {
-    return orderListDenormalizer.findById(orderId);
+  public PublisherProjection getPublisher(PublisherId publisherId) {
+    return publisherDenormalizer.get(publisherId);
   }
 
-  public PublisherProjection findPublisherById(PublisherId publisherId) {
-    return publisherDenormalizer.findById(publisherId);
+  public PublisherId findPublisher(BookId bookId) {
+    BookProjection bookProjection = bookCatalogDenormalizer.get(bookId);
+    return bookProjection.hasPublisher() ? new PublisherId(bookProjection.getPublisherId()) : null;
   }
 
   public Map<LocalDate, Integer> getOrdersPerDay() {

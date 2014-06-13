@@ -31,15 +31,18 @@ public class PurchaseRegistrationSaga extends Saga {
     OrderProjection order = queryService.getById(event.aggregateId);
     for (final OrderLine orderLine : order.getOrderLines()) {
       if (orderLine.bookHasRegisteredPublisher()) {
-        executorService.submit(new Runnable() {
-          @Override
-          public void run() {
-            commandBus.dispatch(new RegisterPurchaseCommand(
-                orderLine.publisherId, orderLine.bookId, orderLine.lineCost()));
-          }
-        });
+        publish(new RegisterPurchaseCommand(orderLine.publisherId, orderLine.bookId, orderLine.lineCost()));
       }
     }
+  }
+
+  private void publish(final RegisterPurchaseCommand command) {
+    executorService.submit(new Runnable() {
+      @Override
+      public void run() {
+        commandBus.dispatch(command);
+      }
+    });
   }
 
 }

@@ -9,6 +9,8 @@ import se.citerus.cqrs.bookstore.event.DomainEventStore;
 
 import java.util.List;
 
+import static java.lang.String.format;
+
 public class DefaultRepository implements Repository {
 
   private final DomainEventBus domainEventBus;
@@ -36,7 +38,8 @@ public class DefaultRepository implements Repository {
       aggregateRoot.loadFromHistory(domainEventStore.loadEvents(id));
       return aggregateRoot;
     } catch (IllegalArgumentException iae) {
-      throw new IllegalArgumentException(String.format("Aggregate of type [%s] does not exist, ID: %s", aggregateType.getSimpleName(), id));
+      String message = format("Aggregate of type [%s] does not exist, ID: %s", aggregateType.getSimpleName(), id);
+      throw new IllegalArgumentException(message);
     } catch (Exception ex) {
       throw new RuntimeException(ex);
     }

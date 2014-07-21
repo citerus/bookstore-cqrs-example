@@ -7,13 +7,12 @@ import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class InMemoryDomainEventStore implements DomainEventStore {
 
-  private final Deque<DomainEvent> events = new ConcurrentLinkedDeque<>();
+  private final List<DomainEvent> events = new ArrayList<>();
 
   @Override
   public synchronized List<DomainEvent> loadEvents(GenericId id) {
@@ -35,7 +34,9 @@ public class InMemoryDomainEventStore implements DomainEventStore {
 
   @Override
   public synchronized List<DomainEvent> getAllEvents() {
-    return Lists.newArrayList(events.descendingIterator());
+    List<DomainEvent> domainEvents = Lists.newArrayList(events.iterator());
+    Collections.reverse(domainEvents);
+    return domainEvents;
   }
 
 }

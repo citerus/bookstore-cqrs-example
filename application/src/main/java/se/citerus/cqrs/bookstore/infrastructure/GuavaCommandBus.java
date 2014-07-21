@@ -13,8 +13,8 @@ public class GuavaCommandBus implements CommandBus {
 
   private final EventBus commandBus;
 
-  private GuavaCommandBus(EventBus commandbus) {
-    this.commandBus = commandbus;
+  private GuavaCommandBus(EventBus commandBus) {
+    this.commandBus = commandBus;
   }
 
   public static CommandBus asyncGuavaCommandBus() {

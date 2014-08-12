@@ -1,6 +1,5 @@
 package se.citerus.cqrs.bookstore.application;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.config.Bootstrap;
@@ -19,10 +18,21 @@ import se.citerus.cqrs.bookstore.command.publisher.PublisherCommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
-import se.citerus.cqrs.bookstore.infrastructure.*;
-import se.citerus.cqrs.bookstore.query.*;
+import se.citerus.cqrs.bookstore.infrastructure.CartRepository;
+import se.citerus.cqrs.bookstore.infrastructure.DefaultRepository;
+import se.citerus.cqrs.bookstore.infrastructure.GuavaCommandBus;
+import se.citerus.cqrs.bookstore.infrastructure.GuavaDomainEventBus;
+import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
+import se.citerus.cqrs.bookstore.query.BookCatalogDenormalizer;
+import se.citerus.cqrs.bookstore.query.OrderListDenormalizer;
+import se.citerus.cqrs.bookstore.query.OrdersPerDayAggregator;
+import se.citerus.cqrs.bookstore.query.PublisherDenormalizer;
+import se.citerus.cqrs.bookstore.query.QueryService;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
 import se.citerus.cqrs.bookstore.saga.PurchaseRegistrationSaga;
+
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 
 public class BookstoreApplication extends Service<BookstoreConfiguration> {
 
@@ -41,8 +51,8 @@ public class BookstoreApplication extends Service<BookstoreConfiguration> {
     logger.info("Creating/registering denormalizers");
 
     ObjectMapperFactory objectMapper = environment.getObjectMapperFactory();
-    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-    objectMapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    objectMapper.enable(INDENT_OUTPUT);
+    objectMapper.enable(WRITE_DATES_AS_TIMESTAMPS);
 
     CartRepository cartRepository = new CartRepository();
     DomainEventBus domainEventBus = new GuavaDomainEventBus();

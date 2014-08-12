@@ -35,7 +35,6 @@ public class Publisher extends AggregateRoot<PublisherId> {
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(PublisherFeeUpdatedEvent event) {
-    this.id = event.aggregateId;
     this.version = event.version;
     this.timestamp = event.timestamp;
     this.fee = event.newFee;
@@ -43,7 +42,6 @@ public class Publisher extends AggregateRoot<PublisherId> {
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(PurchaseRegisteredEvent event) {
-    this.id = event.aggregateId;
     this.version = event.version;
     this.timestamp = event.timestamp;
   }

@@ -2,7 +2,12 @@ package se.citerus.cqrs.bookstore.application;
 
 import se.citerus.cqrs.bookstore.application.web.model.Cart;
 import se.citerus.cqrs.bookstore.application.web.model.LineItem;
-import se.citerus.cqrs.bookstore.application.web.transport.*;
+import se.citerus.cqrs.bookstore.application.web.transport.CreateBookRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.PlaceOrderRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.UpdateBookPriceRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.UpdatePublisherFeeRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.book.CreateBookCommand;
 import se.citerus.cqrs.bookstore.command.book.UpdateBookPriceCommand;
@@ -56,7 +61,6 @@ public class CommandFactory {
     return itemsToOrder;
   }
 
-
   private CustomerInformation getCustomerInformation(PlaceOrderRequest request) {
     return new CustomerInformation(request.customerName,
         request.customerEmail, request.customerAddress);
@@ -65,4 +69,5 @@ public class CommandFactory {
   public UpdatePublisherFeeCommand toCommand(UpdatePublisherFeeRequest request) {
     return new UpdatePublisherFeeCommand(new PublisherId(request.publisherId), request.fee);
   }
+
 }

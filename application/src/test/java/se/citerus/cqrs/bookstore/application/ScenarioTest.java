@@ -8,7 +8,14 @@ import se.citerus.cqrs.bookstore.application.web.AdminResource;
 import se.citerus.cqrs.bookstore.application.web.BookResource;
 import se.citerus.cqrs.bookstore.application.web.CartResource;
 import se.citerus.cqrs.bookstore.application.web.OrderResource;
-import se.citerus.cqrs.bookstore.application.web.transport.*;
+import se.citerus.cqrs.bookstore.application.web.model.CartRepository;
+import se.citerus.cqrs.bookstore.application.web.transport.CreateBookRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.CreateCartRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.PlaceOrderRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.UpdateBookPriceRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.UpdatePublisherFeeRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.command.book.BookCommandHandler;
@@ -16,15 +23,22 @@ import se.citerus.cqrs.bookstore.command.order.OrderCommandHandler;
 import se.citerus.cqrs.bookstore.command.publisher.PublisherCommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
-import se.citerus.cqrs.bookstore.infrastructure.CartRepository;
 import se.citerus.cqrs.bookstore.infrastructure.DefaultRepository;
 import se.citerus.cqrs.bookstore.infrastructure.GuavaCommandBus;
+import se.citerus.cqrs.bookstore.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
 import se.citerus.cqrs.bookstore.publisher.PublisherId;
-import se.citerus.cqrs.bookstore.query.*;
+import se.citerus.cqrs.bookstore.query.BookCatalogDenormalizer;
+import se.citerus.cqrs.bookstore.query.BookProjection;
+import se.citerus.cqrs.bookstore.query.OrderListDenormalizer;
+import se.citerus.cqrs.bookstore.query.OrderProjection;
+import se.citerus.cqrs.bookstore.query.OrdersPerDayAggregator;
+import se.citerus.cqrs.bookstore.query.PublisherDenormalizer;
+import se.citerus.cqrs.bookstore.query.PublisherProjection;
+import se.citerus.cqrs.bookstore.query.QueryService;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
 
 import java.util.Collection;
@@ -45,7 +59,7 @@ public class ScenarioTest extends ResourceTest {
   protected void setUpResources() throws Exception {
     CommandBus commandBus = GuavaCommandBus.syncGuavaCommandBus();
 
-    CartRepository cartRepository = new CartRepository();
+    CartRepository cartRepository = new InMemoryCartRepository();
     OrdersPerDayAggregator ordersPerDayAggregator = new OrdersPerDayAggregator();
 
     DomainEventBus domainEventBus = new TestEventBus();

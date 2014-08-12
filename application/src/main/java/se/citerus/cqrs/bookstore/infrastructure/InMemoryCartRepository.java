@@ -1,13 +1,14 @@
 package se.citerus.cqrs.bookstore.infrastructure;
 
 import se.citerus.cqrs.bookstore.application.web.model.Cart;
+import se.citerus.cqrs.bookstore.application.web.model.CartRepository;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.String.format;
 
-public class CartRepository {
+public class InMemoryCartRepository implements CartRepository {
 
   private ConcurrentHashMap<String, Cart> sessions = new ConcurrentHashMap<>();
 

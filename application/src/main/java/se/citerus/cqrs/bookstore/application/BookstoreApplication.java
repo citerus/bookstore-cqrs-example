@@ -11,6 +11,7 @@ import se.citerus.cqrs.bookstore.application.web.AdminResource;
 import se.citerus.cqrs.bookstore.application.web.BookResource;
 import se.citerus.cqrs.bookstore.application.web.CartResource;
 import se.citerus.cqrs.bookstore.application.web.OrderResource;
+import se.citerus.cqrs.bookstore.application.web.model.CartRepository;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.command.book.BookCommandHandler;
 import se.citerus.cqrs.bookstore.command.order.OrderCommandHandler;
@@ -18,10 +19,10 @@ import se.citerus.cqrs.bookstore.command.publisher.PublisherCommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
-import se.citerus.cqrs.bookstore.infrastructure.CartRepository;
 import se.citerus.cqrs.bookstore.infrastructure.DefaultRepository;
 import se.citerus.cqrs.bookstore.infrastructure.GuavaCommandBus;
 import se.citerus.cqrs.bookstore.infrastructure.GuavaDomainEventBus;
+import se.citerus.cqrs.bookstore.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
 import se.citerus.cqrs.bookstore.query.BookCatalogDenormalizer;
 import se.citerus.cqrs.bookstore.query.OrderListDenormalizer;
@@ -54,7 +55,7 @@ public class BookstoreApplication extends Service<BookstoreConfiguration> {
     objectMapper.enable(INDENT_OUTPUT);
     objectMapper.enable(WRITE_DATES_AS_TIMESTAMPS);
 
-    CartRepository cartRepository = new CartRepository();
+    CartRepository cartRepository = new InMemoryCartRepository();
     DomainEventBus domainEventBus = new GuavaDomainEventBus();
     InMemOrderProjectionRepository orderRepository = new InMemOrderProjectionRepository();
     OrderListDenormalizer orderListDenormalizer = domainEventBus.register(new OrderListDenormalizer(orderRepository));

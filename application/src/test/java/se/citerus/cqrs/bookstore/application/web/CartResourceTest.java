@@ -8,7 +8,7 @@ import se.citerus.cqrs.bookstore.application.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.application.web.transport.CreateCartRequest;
 import se.citerus.cqrs.bookstore.application.web.transport.LineItemDto;
 import se.citerus.cqrs.bookstore.book.BookId;
-import se.citerus.cqrs.bookstore.infrastructure.CartRepository;
+import se.citerus.cqrs.bookstore.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.publisher.PublisherId;
 import se.citerus.cqrs.bookstore.query.BookProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
@@ -34,7 +34,7 @@ public class CartResourceTest extends ResourceTest {
 
   @Override
   protected void setUpResources() {
-    addResource(new CartResource(queryService, new CartRepository()));
+    addResource(new CartResource(queryService, new InMemoryCartRepository()));
   }
 
   @Test

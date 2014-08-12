@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.application.CommandFactory;
 import se.citerus.cqrs.bookstore.application.web.model.Cart;
+import se.citerus.cqrs.bookstore.application.web.model.CartRepository;
 import se.citerus.cqrs.bookstore.application.web.transport.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.command.order.PlaceOrderCommand;
-import se.citerus.cqrs.bookstore.infrastructure.CartRepository;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;

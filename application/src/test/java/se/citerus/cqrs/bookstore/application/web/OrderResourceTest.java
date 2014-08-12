@@ -2,10 +2,11 @@ package se.citerus.cqrs.bookstore.application.web;
 
 import com.yammer.dropwizard.testing.ResourceTest;
 import org.junit.Test;
+import se.citerus.cqrs.bookstore.application.web.model.CartRepository;
 import se.citerus.cqrs.bookstore.application.web.transport.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.CommandBus;
-import se.citerus.cqrs.bookstore.infrastructure.CartRepository;
+import se.citerus.cqrs.bookstore.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.query.BookProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
 
@@ -24,7 +25,7 @@ public class OrderResourceTest extends ResourceTest {
 
   private final CommandBus commandBus = mock(CommandBus.class);
   private final QueryService queryService = mock(QueryService.class);
-  private final CartRepository cartRepository = new CartRepository();
+  private final CartRepository cartRepository = new InMemoryCartRepository();
 
   @Override
   protected void setUpResources() {

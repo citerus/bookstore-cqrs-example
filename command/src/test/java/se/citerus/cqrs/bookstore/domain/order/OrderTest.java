@@ -30,6 +30,7 @@ public class OrderTest {
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
     List<DomainEvent> uncommittedEvents = order.getUncommittedEvents();
     assertThat(uncommittedEvents.size(), is(1));
+    assertThat(order.version(), is(1));
     assertThat(getOnlyElement(uncommittedEvents), instanceOf(OrderPlacedEvent.class));
   }
 
@@ -43,6 +44,7 @@ public class OrderTest {
 
     List<DomainEvent> uncommittedEvents = order.getUncommittedEvents();
     assertThat(uncommittedEvents.size(), is(1));
+    assertThat(order.version(), is(2));
     assertThat(getOnlyElement(uncommittedEvents), instanceOf(OrderActivatedEvent.class));
   }
 
@@ -61,10 +63,13 @@ public class OrderTest {
     OrderLine orderLine = new OrderLine(bookId, "title", 10, unitPrice, null);
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
 
+    assertThat(order.version(), is(1));
     order.markChangesAsCommitted();
     order.activate();
+    assertThat(order.version(), is(2));
     order.markChangesAsCommitted();
     order.activate();
+    assertThat(order.version(), is(2));
     assertThat(order.getUncommittedEvents(), emptyIterable());
   }
 

@@ -54,6 +54,8 @@ public class Order extends AggregateRoot<OrderId> {
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(OrderActivatedEvent event) {
+    this.version = event.version;
+    this.timestamp = event.timestamp;
     this.status = OrderStatus.ACTIVATED;
   }
 

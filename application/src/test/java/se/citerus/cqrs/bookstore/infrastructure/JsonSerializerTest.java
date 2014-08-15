@@ -20,7 +20,9 @@ public class JsonSerializerTest {
         "    }\n";
 
     RegisterPublisherRequest command = JsonSerializer.deserialize(publisherJson, RegisterPublisherRequest.class);
-    assertThat(command.toString(), is("RegisterPublisherRequest[publisherContractId=11113865-24e7-4c7c-8b93-eb6caac48111,publisherName=Addison-Wesley,fee=5.5,limit=1000]"));
+    assertThat(command.toString(), is("RegisterPublisherRequest[" +
+        "publisherContractId=11113865-24e7-4c7c-8b93-eb6caac48111,publisherName=Addison-Wesley,fee=5.5,limit=1000" +
+        "]"));
   }
 
 }

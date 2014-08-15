@@ -1,13 +1,15 @@
 package se.citerus.cqrs.bookstore.domain.publisher;
 
-import com.google.common.collect.Iterables;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
+import se.citerus.cqrs.bookstore.publisher.event.PublisherRegisteredEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PurchaseRegisteredEvent;
 
 import java.util.Iterator;
 
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -23,8 +25,11 @@ public class PublisherContractTest {
 
     contract.register(publisherContractId, "Addison Wesley", fee, LIMIT);
 
-    assertThat(contract.fee(), is(5.0));
-    assertThat(contract.publisherName(), is("Addison Wesley"));
+    PublisherRegisteredEvent event = getOnlyElement(filter(contract.getUncommittedEvents(),
+        PublisherRegisteredEvent.class));
+
+    assertThat(event.fee, is(5.0));
+    assertThat(event.publisherName, is("Addison Wesley"));
   }
 
   @Test(expected = IllegalStateException.class)
@@ -47,8 +52,7 @@ public class PublisherContractTest {
     contract.registerPurchase(BookId.randomId(), 60);
     contract.registerPurchase(BookId.randomId(), 60);
 
-    Iterable<PurchaseRegisteredEvent> events = Iterables.filter(contract.getUncommittedEvents(),
-        PurchaseRegisteredEvent.class);
+    Iterable<PurchaseRegisteredEvent> events = filter(contract.getUncommittedEvents(), PurchaseRegisteredEvent.class);
 
     Iterator<PurchaseRegisteredEvent> purchases = events.iterator();
     assertThat(purchases.next().amount, is(60L));

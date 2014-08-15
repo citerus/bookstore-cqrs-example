@@ -58,12 +58,4 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
     this.accumulatedAmount += event.amount;
   }
 
-  public String publisherName() {
-    return publisherName;
-  }
-
-  public double fee() {
-    return fee;
-  }
-
 }

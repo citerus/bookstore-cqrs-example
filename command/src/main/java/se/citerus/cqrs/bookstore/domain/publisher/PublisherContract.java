@@ -12,28 +12,33 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
 
   private double feePercentage;
   private long limit;
-  private long accumulatedAmount;
+  private long accumulatedFeeAmount;
 
   public void register(PublisherContractId publisherContractId, String name, double feePercentage, long limit) {
     assertHasNotBeenRegistered();
     applyChange(new PublisherRegisteredEvent(publisherContractId, nextVersion(), now(), name, feePercentage, limit));
   }
 
-  public void registerPurchase(BookId bookId, long amount) {
-    long newAmount = capAmount(amount);
-    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, newAmount));
+  public void registerPurchase(BookId bookId, long purchaseAmount) {
+    long feeAmount = capAmount(calculateFee(purchaseAmount));
+    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, purchaseAmount, feeAmount));
   }
 
   private long capAmount(long amount) {
     long newAmount = amount;
     if (exceedsLimit(amount)) {
-      newAmount = limit - accumulatedAmount;
+      newAmount = limit - accumulatedFeeAmount;
     }
     return newAmount;
   }
 
+  protected long calculateFee(long purchaseAmount) {
+    // TODO: Implement!
+    return purchaseAmount;
+  }
+
   private boolean exceedsLimit(long amount) {
-    return accumulatedAmount + amount >= limit;
+    return accumulatedFeeAmount + amount >= limit;
   }
 
   private void assertHasNotBeenRegistered() {
@@ -53,7 +58,7 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
   void handleEvent(PurchaseRegisteredEvent event) {
     this.version = event.version;
     this.timestamp = event.timestamp;
-    this.accumulatedAmount += event.amount;
+    this.accumulatedFeeAmount += event.feeAmount;
   }
 
 }

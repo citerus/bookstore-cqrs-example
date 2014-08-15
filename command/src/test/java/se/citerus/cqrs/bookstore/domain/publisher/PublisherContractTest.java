@@ -45,19 +45,19 @@ public class PublisherContractTest {
   public void testRegisterPurchase() {
     PublisherContract contract = new PublisherContract();
     PublisherContractId publisherContractId = PublisherContractId.randomId();
-    double feePercentage = 5.0;
-    contract.register(publisherContractId, "Addison Wesley", feePercentage, 100);
+    contract.register(publisherContractId, "Addison Wesley", 10.0, 100);
 
-    contract.registerPurchase(BookId.randomId(), 60);
-    contract.registerPurchase(BookId.randomId(), 60);
-    contract.registerPurchase(BookId.randomId(), 60);
+    contract.registerPurchase(BookId.randomId(), 600);
+    contract.registerPurchase(BookId.randomId(), 600);
+    contract.registerPurchase(BookId.randomId(), 600);
 
-    Iterable<PurchaseRegisteredEvent> events = filter(contract.getUncommittedEvents(), PurchaseRegisteredEvent.class);
+    Iterator<PurchaseRegisteredEvent> purchases = filter(contract.getUncommittedEvents(),
+        PurchaseRegisteredEvent.class).iterator();
+    assertThat(purchases.next().purchaseAmount, is(600L));
+    assertThat(purchases.next().purchaseAmount, is(600L));
+    assertThat(purchases.next().purchaseAmount, is(600L));
 
-    Iterator<PurchaseRegisteredEvent> purchases = events.iterator();
-    assertThat(purchases.next().amount, is(60L));
-    assertThat(purchases.next().amount, is(40L));
-    assertThat(purchases.next().amount, is(0L));
+    // TODO: Verify fee!
   }
 
 }

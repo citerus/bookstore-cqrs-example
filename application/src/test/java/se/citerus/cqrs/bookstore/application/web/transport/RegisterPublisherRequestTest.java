@@ -14,7 +14,7 @@ public class RegisterPublisherRequestTest {
   public void testSerialize() throws IOException {
     RegisterPublisherRequest request1 = new RegisterPublisherRequest("ID", "Name", 5.5, 1000);
     String json = JsonSerializer.serialize(request1);
-    String payload = "{\"publisherContractId\":\"ID\",\"publisherName\":\"Name\",\"fee\":5.5,\"limit\":1000}";
+    String payload = "{\"publisherContractId\":\"ID\",\"publisherName\":\"Name\",\"feePercentage\":5.5,\"limit\":1000}";
     assertThat(json, is(payload));
 
     RegisterPublisherRequest request2 = JsonSerializer.deserialize(payload, RegisterPublisherRequest.class);

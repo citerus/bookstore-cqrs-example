@@ -10,14 +10,13 @@ import static com.google.common.base.Preconditions.checkState;
 
 public class PublisherContract extends AggregateRoot<PublisherContractId> {
 
-  private String publisherName;
-  private double fee;
+  private double feePercentage;
   private long limit;
   private long accumulatedAmount;
 
-  public void register(PublisherContractId publisherContractId, String name, double fee, long limit) {
+  public void register(PublisherContractId publisherContractId, String name, double feePercentage, long limit) {
     assertHasNotBeenRegistered();
-    applyChange(new PublisherRegisteredEvent(publisherContractId, nextVersion(), now(), name, fee, limit));
+    applyChange(new PublisherRegisteredEvent(publisherContractId, nextVersion(), now(), name, feePercentage, limit));
   }
 
   public void registerPurchase(BookId bookId, long amount) {
@@ -46,8 +45,7 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
     this.id = event.aggregateId;
     this.version = event.version;
     this.timestamp = event.timestamp;
-    this.publisherName = event.publisherName;
-    this.fee = event.fee;
+    this.feePercentage = event.feePercentage;
     this.limit = event.limit;
   }
 

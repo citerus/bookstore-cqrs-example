@@ -12,17 +12,17 @@ public class RegisterPublisherRequest extends TransportObject {
   @NotNull
   public final String publisherName;
   @Min(1)
-  public final double fee;
+  public final double feePercentage;
   @Min(1)
   public final long limit;
 
   public RegisterPublisherRequest(@JsonProperty("publisherContractId") String publisherContractId,
                                   @JsonProperty("publisherName") String publisherName,
-                                  @JsonProperty("fee") double fee,
+                                  @JsonProperty("feePercentage") double feePercentage,
                                   @JsonProperty("limit") long limit) {
     this.publisherContractId = publisherContractId;
     this.publisherName = publisherName;
-    this.fee = fee;
+    this.feePercentage = feePercentage;
     this.limit = limit;
   }
 

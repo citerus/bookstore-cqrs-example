@@ -36,7 +36,7 @@ public class CommandFactory {
   }
 
   public RegisterPublisherContractCommand toCommand(PublisherContractId publisherContractId, RegisterPublisherRequest request) {
-    return new RegisterPublisherContractCommand(publisherContractId, request.publisherName, request.fee, request.limit);
+    return new RegisterPublisherContractCommand(publisherContractId, request.publisherName, request.feePercentage, request.limit);
   }
 
   public UpdateBookPriceCommand toCommand(UpdateBookPriceRequest updateBookPriceRequest) {

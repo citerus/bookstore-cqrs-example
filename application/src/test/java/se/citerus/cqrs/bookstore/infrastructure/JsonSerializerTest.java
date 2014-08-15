@@ -15,13 +15,13 @@ public class JsonSerializerTest {
     String publisherJson = "    {\n" +
         "        \"publisherContractId\":\"11113865-24e7-4c7c-8b93-eb6caac48111\",\n" +
         "        \"publisherName\":\"Addison-Wesley\",\n" +
-        "        \"fee\":5.5,\n" +
+        "        \"feePercentage\":5.5,\n" +
         "        \"limit\":1000\n" +
         "    }\n";
 
     RegisterPublisherRequest command = JsonSerializer.deserialize(publisherJson, RegisterPublisherRequest.class);
     assertThat(command.toString(), is("RegisterPublisherRequest[" +
-        "publisherContractId=11113865-24e7-4c7c-8b93-eb6caac48111,publisherName=Addison-Wesley,fee=5.5,limit=1000" +
+        "publisherContractId=11113865-24e7-4c7c-8b93-eb6caac48111,publisherName=Addison-Wesley,feePercentage=5.5,limit=1000" +
         "]"));
   }
 

@@ -149,8 +149,8 @@ public class ScenarioTest extends ResourceTest {
     return orderId;
   }
 
-  private ClientResponse registerPublisher(String publisherContractId, String name, double fee, long limit) {
-    RegisterPublisherRequest request = new RegisterPublisherRequest(publisherContractId, name, fee, limit);
+  private ClientResponse registerPublisher(String publisherContractId, String name, double feePercentage, long limit) {
+    RegisterPublisherRequest request = new RegisterPublisherRequest(publisherContractId, name, feePercentage, limit);
     ClientResponse response = client().resource(SERVER_ADDRESS + "/admin/register-publisher-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);

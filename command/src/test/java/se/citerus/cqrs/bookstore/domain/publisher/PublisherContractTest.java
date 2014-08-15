@@ -21,14 +21,14 @@ public class PublisherContractTest {
   public void testRegisterPublisher() {
     PublisherContract contract = new PublisherContract();
     PublisherContractId publisherContractId = PublisherContractId.randomId();
-    double fee = 5.0;
+    double feePercentage = 5.0;
 
-    contract.register(publisherContractId, "Addison Wesley", fee, LIMIT);
+    contract.register(publisherContractId, "Addison Wesley", feePercentage, LIMIT);
 
     PublisherRegisteredEvent event = getOnlyElement(filter(contract.getUncommittedEvents(),
         PublisherRegisteredEvent.class));
 
-    assertThat(event.fee, is(5.0));
+    assertThat(event.feePercentage, is(5.0));
     assertThat(event.publisherName, is("Addison Wesley"));
   }
 
@@ -45,8 +45,8 @@ public class PublisherContractTest {
   public void testRegisterPurchase() {
     PublisherContract contract = new PublisherContract();
     PublisherContractId publisherContractId = PublisherContractId.randomId();
-    double fee = 5.0;
-    contract.register(publisherContractId, "Addison Wesley", fee, 100);
+    double feePercentage = 5.0;
+    contract.register(publisherContractId, "Addison Wesley", feePercentage, 100);
 
     contract.registerPurchase(BookId.randomId(), 60);
     contract.registerPurchase(BookId.randomId(), 60);

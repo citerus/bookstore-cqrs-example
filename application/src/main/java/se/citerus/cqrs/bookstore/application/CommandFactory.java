@@ -2,12 +2,7 @@ package se.citerus.cqrs.bookstore.application;
 
 import se.citerus.cqrs.bookstore.application.web.model.Cart;
 import se.citerus.cqrs.bookstore.application.web.model.LineItem;
-import se.citerus.cqrs.bookstore.application.web.transport.CreateBookRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.PlaceOrderRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.RegisterPublisherRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.UpdateBookPriceRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.UpdatePublisherFeeRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.*;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.book.CreateBookCommand;
 import se.citerus.cqrs.bookstore.command.book.UpdateBookPriceCommand;
@@ -18,7 +13,7 @@ import se.citerus.cqrs.bookstore.command.publisher.UpdatePublisherFeeCommand;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderLine;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +32,12 @@ public class CommandFactory {
 
   public CreateBookCommand toCommand(BookId bookId, CreateBookRequest request) {
     String idString = request.publisherId;
-    PublisherId publisherId = idString == null ? null : new PublisherId(idString);
-    return new CreateBookCommand(bookId, request.isbn, request.title, request.description, request.price, publisherId);
+    PublisherContractId contractId = idString == null ? null : new PublisherContractId(idString);
+    return new CreateBookCommand(bookId, request.isbn, request.title, request.description, request.price, contractId);
   }
 
-  public RegisterPublisherCommand toCommand(PublisherId publisherId, RegisterPublisherRequest request) {
-    return new RegisterPublisherCommand(publisherId, request.publisherName, request.fee);
+  public RegisterPublisherCommand toCommand(PublisherContractId contractId, RegisterPublisherRequest request) {
+    return new RegisterPublisherCommand(contractId, request.publisherName, request.fee);
   }
 
   public UpdateBookPriceCommand toCommand(UpdateBookPriceRequest updateBookPriceRequest) {
@@ -67,7 +62,7 @@ public class CommandFactory {
   }
 
   public UpdatePublisherFeeCommand toCommand(UpdatePublisherFeeRequest request) {
-    return new UpdatePublisherFeeCommand(new PublisherId(request.publisherId), request.fee);
+    return new UpdatePublisherFeeCommand(new PublisherContractId(request.publisherId), request.fee);
   }
 
 }

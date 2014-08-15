@@ -9,7 +9,7 @@ import se.citerus.cqrs.bookstore.application.web.transport.CreateCartRequest;
 import se.citerus.cqrs.bookstore.application.web.transport.LineItemDto;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.infrastructure.InMemoryCartRepository;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.BookProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
 
@@ -43,7 +43,7 @@ public class CartResourceTest extends ResourceTest {
     long price = 200L;
     BookId bookId = BookId.randomId();
     String isbn = "1234567890";
-    PublisherId publisher = PublisherId.randomId();
+    PublisherContractId publisher = PublisherContractId.randomId();
     String description = "Book description";
 
     String cartId = UUID.randomUUID().toString();

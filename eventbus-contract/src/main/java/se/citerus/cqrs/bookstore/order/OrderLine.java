@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import se.citerus.cqrs.bookstore.ValueObject;
 import se.citerus.cqrs.bookstore.book.BookId;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 public class OrderLine extends ValueObject {
 
@@ -12,7 +12,7 @@ public class OrderLine extends ValueObject {
   public final String title;
   public final int quantity;
   public final long unitPrice;
-  public final PublisherId publisherId;
+  public final PublisherContractId contractId;
 
   public OrderLine(BookId bookId, String title, int quantity, long unitPrice) {
     this(bookId, title, quantity, unitPrice, null);
@@ -23,16 +23,16 @@ public class OrderLine extends ValueObject {
                    @JsonProperty("title") String title,
                    @JsonProperty("quantity") int quantity,
                    @JsonProperty("price") long unitPrice,
-                   @JsonProperty("publisherId") PublisherId publisherId) {
+                   @JsonProperty("publisherId") PublisherContractId contractId) {
     this.bookId = bookId;
     this.title = title;
     this.quantity = quantity;
     this.unitPrice = unitPrice;
-    this.publisherId = publisherId;
+    this.contractId = contractId;
   }
 
-  public OrderLine withPublisher(PublisherId publisherId) {
-    return new OrderLine(this.bookId, this.title, this.quantity, this.unitPrice, publisherId);
+  public OrderLine withPublisher(PublisherContractId contractId) {
+    return new OrderLine(this.bookId, this.title, this.quantity, this.unitPrice, contractId);
   }
 
   public long amount() {
@@ -40,7 +40,7 @@ public class OrderLine extends ValueObject {
   }
 
   public boolean bookHasRegisteredPublisher() {
-    return publisherId != null;
+    return contractId != null;
   }
 
 }

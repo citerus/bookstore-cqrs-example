@@ -1,24 +1,24 @@
 package se.citerus.cqrs.bookstore.query;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 public class PublisherProjection extends Projection {
 
-  private PublisherId publisherId;
+  private PublisherContractId contractId;
   private String name;
   private double fee;
 
-  public PublisherProjection(@JsonProperty("publisherId") PublisherId publisherId,
+  public PublisherProjection(@JsonProperty("publisherId") PublisherContractId contractId,
                              @JsonProperty("name") String name,
                              @JsonProperty("fee") double fee) {
-    this.publisherId = publisherId;
+    this.contractId = contractId;
     this.name = name;
     this.fee = fee;
   }
 
-  public PublisherId getPublisherId() {
-    return publisherId;
+  public PublisherContractId getContractId() {
+    return contractId;
   }
 
   public String getName() {

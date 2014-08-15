@@ -2,21 +2,21 @@ package se.citerus.cqrs.bookstore.domain.publisher;
 
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.domain.AggregateRoot;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.publisher.event.PublisherFeeUpdatedEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PublisherRegisteredEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PurchaseRegisteredEvent;
 
 import static com.google.common.base.Preconditions.checkState;
 
-public class PublisherContract extends AggregateRoot<PublisherId> {
+public class PublisherContract extends AggregateRoot<PublisherContractId> {
 
   private String publisherName;
   private double fee;
 
-  public void register(PublisherId publisherId, String name, double fee) {
+  public void register(PublisherContractId contractId, String name, double fee) {
     assertHasNotBeenRegistered();
-    applyChange(new PublisherRegisteredEvent(publisherId, nextVersion(), now(), name, fee));
+    applyChange(new PublisherRegisteredEvent(contractId, nextVersion(), now(), name, fee));
   }
 
   public void updateFee(double newFee) {

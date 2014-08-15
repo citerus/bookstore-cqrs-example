@@ -16,7 +16,7 @@ public class BookCommandHandler implements CommandHandler {
   @Subscribe
   public void handle(CreateBookCommand command) {
     Book book = new Book();
-    book.create(command.bookId, command.isbn, command.title, command.description, command.price, command.publisherId);
+    book.create(command.bookId, command.isbn, command.title, command.description, command.price, command.contractId);
     repository.save(book);
   }
 

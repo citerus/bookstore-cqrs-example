@@ -2,7 +2,7 @@ package se.citerus.cqrs.bookstore.command.book;
 
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.Command;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -13,10 +13,10 @@ public class CreateBookCommand extends Command {
   public final String title;
   public final String description;
   public final long price;
-  public final PublisherId publisherId;
+  public final PublisherContractId contractId;
 
   public CreateBookCommand(BookId bookId, String isbn, String title, String description, long price,
-                           PublisherId publisherId) {
+                           PublisherContractId contractId) {
     checkArgument(bookId != null, "BookId cannot be null");
     checkArgument(isbn != null, "ISBN cannot be null");
     checkArgument(title != null, "Title cannot be null");
@@ -28,7 +28,7 @@ public class CreateBookCommand extends Command {
     this.title = title;
     this.description = description;
     this.price = price;
-    this.publisherId = publisherId; // May be null!
+    this.contractId = contractId; // May be null!
   }
 
 }

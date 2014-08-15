@@ -5,7 +5,7 @@ import se.citerus.cqrs.bookstore.command.CommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.domain.order.Order;
 import se.citerus.cqrs.bookstore.order.OrderLine;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.QueryService;
 
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ public class OrderCommandHandler implements CommandHandler {
 
     List<OrderLine> orderLinesWithPublishers = new ArrayList<>();
     for (OrderLine orderLine : command.orderLines) {
-      PublisherId publisherId = queryService.findPublisher(orderLine.bookId);
-      orderLinesWithPublishers.add(orderLine.withPublisher(publisherId));
+      PublisherContractId contractId = queryService.findPublisher(orderLine.bookId);
+      orderLinesWithPublishers.add(orderLine.withPublisher(contractId));
     }
     order.place(command.orderId, command.customerInformation, orderLinesWithPublishers);
     repository.save(order);

@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.event.DomainEventListener;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.publisher.event.PublisherRegisteredEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PurchaseRegisteredEvent;
 
@@ -15,7 +15,7 @@ public class PublisherDenormalizer implements DomainEventListener {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
-  private Map<PublisherId, PublisherProjection> publishers = new HashMap<>();
+  private Map<PublisherContractId, PublisherProjection> publishers = new HashMap<>();
 
   @Subscribe
   public void handleEvent(PublisherRegisteredEvent event) {
@@ -34,8 +34,8 @@ public class PublisherDenormalizer implements DomainEventListener {
     return true;
   }
 
-  public PublisherProjection get(PublisherId publisherId) {
-    return publishers.get(publisherId);
+  public PublisherProjection get(PublisherContractId contractId) {
+    return publishers.get(contractId);
   }
 
 }

@@ -4,14 +4,14 @@ import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.book.event.BookCreatedEvent;
 import se.citerus.cqrs.bookstore.book.event.BookPriceUpdatedEvent;
 import se.citerus.cqrs.bookstore.domain.AggregateRoot;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 public class Book extends AggregateRoot<BookId> {
 
   private long price;
 
-  public void create(BookId bookId, String isbn, String title, String description, long price, PublisherId publisherId) {
-    applyChange(new BookCreatedEvent(bookId, nextVersion(), now(), isbn, title, description, price, publisherId));
+  public void create(BookId bookId, String isbn, String title, String description, long price, PublisherContractId contractId) {
+    applyChange(new BookCreatedEvent(bookId, nextVersion(), now(), isbn, title, description, price, contractId));
   }
 
   public void updatePrice(long updatedPrice) {

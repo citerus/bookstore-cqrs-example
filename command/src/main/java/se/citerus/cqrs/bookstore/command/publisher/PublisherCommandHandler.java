@@ -16,20 +16,20 @@ public class PublisherCommandHandler implements CommandHandler {
   @Subscribe
   public void handle(RegisterPublisherCommand command) {
     PublisherContract contract = new PublisherContract();
-    contract.register(command.publisherId, command.publisherName, command.fee);
+    contract.register(command.contractId, command.publisherName, command.fee);
     repository.save(contract);
   }
 
   @Subscribe
   public void handle(UpdatePublisherFeeCommand command) {
-    PublisherContract contract = repository.load(command.publisherId, PublisherContract.class);
+    PublisherContract contract = repository.load(command.contractId, PublisherContract.class);
     contract.updateFee(command.fee);
     repository.save(contract);
   }
 
   @Subscribe
   public void handle(RegisterPurchaseCommand command) {
-    PublisherContract contract = repository.load(command.publisherId, PublisherContract.class);
+    PublisherContract contract = repository.load(command.contractId, PublisherContract.class);
     contract.registerPurchase(command.bookId, command.amount);
     repository.save(contract);
   }

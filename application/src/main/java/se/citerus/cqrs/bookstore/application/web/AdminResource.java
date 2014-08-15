@@ -15,7 +15,7 @@ import se.citerus.cqrs.bookstore.command.publisher.UpdatePublisherFeeCommand;
 import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.order.OrderId;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 import se.citerus.cqrs.bookstore.query.PublisherProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
@@ -103,9 +103,9 @@ public class AdminResource {
   @POST
   @Path("register-publisher-requests")
   public void registerPublisher(@Valid RegisterPublisherRequest registerPublisherRequest) {
-    PublisherId publisherId = new PublisherId(registerPublisherRequest.publisherId);
-    logger.info("Registering publisher: " + publisherId);
-    RegisterPublisherCommand command = commandFactory.toCommand(publisherId, registerPublisherRequest);
+    PublisherContractId contractId = new PublisherContractId(registerPublisherRequest.publisherId);
+    logger.info("Registering publisher: " + contractId);
+    RegisterPublisherCommand command = commandFactory.toCommand(contractId, registerPublisherRequest);
     commandBus.dispatch(command);
   }
 
@@ -113,8 +113,8 @@ public class AdminResource {
   @POST
   @Path("update-publisher-fee-requests")
   public void updatePublisherFee(@Valid UpdatePublisherFeeRequest updatePublisherFeeRequest) {
-    PublisherId publisherId = new PublisherId(updatePublisherFeeRequest.publisherId);
-    logger.info("Updating fee for publisher: " + publisherId);
+    PublisherContractId contractId = new PublisherContractId(updatePublisherFeeRequest.publisherId);
+    logger.info("Updating fee for publisher: " + contractId);
     UpdatePublisherFeeCommand command = commandFactory.toCommand(updatePublisherFeeRequest);
     commandBus.dispatch(command);
   }
@@ -123,7 +123,7 @@ public class AdminResource {
   @GET
   @Path("publishers/{publisherId}")
   public PublisherProjection getPublisher(@PathParam("publisherId") String publisherId) {
-    return queryService.getPublisher(new PublisherId(publisherId));
+    return queryService.getPublisher(new PublisherContractId(publisherId));
   }
 
   // TODO: Add Simple bar chart to admin gui!

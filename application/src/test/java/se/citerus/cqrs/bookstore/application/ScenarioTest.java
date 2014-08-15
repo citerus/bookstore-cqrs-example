@@ -9,13 +9,7 @@ import se.citerus.cqrs.bookstore.application.web.BookResource;
 import se.citerus.cqrs.bookstore.application.web.CartResource;
 import se.citerus.cqrs.bookstore.application.web.OrderResource;
 import se.citerus.cqrs.bookstore.application.web.model.CartRepository;
-import se.citerus.cqrs.bookstore.application.web.transport.CreateBookRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.CreateCartRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.PlaceOrderRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.RegisterPublisherRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.UpdateBookPriceRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.UpdatePublisherFeeRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.*;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.command.book.BookCommandHandler;
@@ -30,15 +24,8 @@ import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
-import se.citerus.cqrs.bookstore.query.BookCatalogDenormalizer;
-import se.citerus.cqrs.bookstore.query.BookProjection;
-import se.citerus.cqrs.bookstore.query.OrderListDenormalizer;
-import se.citerus.cqrs.bookstore.query.OrderProjection;
-import se.citerus.cqrs.bookstore.query.OrdersPerDayAggregator;
-import se.citerus.cqrs.bookstore.query.PublisherDenormalizer;
-import se.citerus.cqrs.bookstore.query.PublisherProjection;
-import se.citerus.cqrs.bookstore.query.QueryService;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
+import se.citerus.cqrs.bookstore.query.*;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
 
 import java.util.Collection;
@@ -111,14 +98,14 @@ public class ScenarioTest extends ResourceTest {
   public void testUpdatePublisherFee() throws Exception {
     BookId bookId = BookId.randomId();
     String isbn = "0321144215";
-    PublisherId publisherId = PublisherId.randomId();
-    registerPublisher(publisherId.id, "Books Inc.", 2.32);
-    CreateBookRequest bookRequest = new CreateBookRequest(bookId.id, isbn, "DDD", "Domain Driven Design", 1000, publisherId.id);
+    PublisherContractId contractId = PublisherContractId.randomId();
+    registerPublisher(contractId.id, "Books Inc.", 2.32);
+    CreateBookRequest bookRequest = new CreateBookRequest(bookId.id, isbn, "DDD", "Domain Driven Design", 1000, contractId.id);
     createBook(bookRequest);
 
-    updatePublisherFee(publisherId.id, 20L);
+    updatePublisherFee(contractId.id, 20L);
 
-    PublisherProjection publisher = getPublisher(publisherId.id);
+    PublisherProjection publisher = getPublisher(contractId.id);
 
     assertThat(publisher.getFee(), is(2.32));
   }

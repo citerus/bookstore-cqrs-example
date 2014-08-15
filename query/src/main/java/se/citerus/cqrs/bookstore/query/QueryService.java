@@ -3,7 +3,7 @@ package se.citerus.cqrs.bookstore.query;
 import org.joda.time.LocalDate;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.order.OrderId;
-import se.citerus.cqrs.bookstore.publisher.PublisherId;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 import java.util.Collection;
 import java.util.List;
@@ -42,13 +42,13 @@ public class QueryService {
     return orderListDenormalizer.listOrders();
   }
 
-  public PublisherProjection getPublisher(PublisherId publisherId) {
-    return publisherDenormalizer.get(publisherId);
+  public PublisherProjection getPublisher(PublisherContractId contractId) {
+    return publisherDenormalizer.get(contractId);
   }
 
-  public PublisherId findPublisher(BookId bookId) {
+  public PublisherContractId findPublisher(BookId bookId) {
     BookProjection bookProjection = bookCatalogDenormalizer.get(bookId);
-    return bookProjection.hasPublisher() ? new PublisherId(bookProjection.getPublisherId()) : null;
+    return bookProjection.hasPublisher() ? new PublisherContractId(bookProjection.getPublisherId()) : null;
   }
 
   public Map<LocalDate, Integer> getOrdersPerDay() {

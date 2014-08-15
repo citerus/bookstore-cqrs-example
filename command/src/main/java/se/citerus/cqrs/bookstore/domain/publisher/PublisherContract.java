@@ -21,7 +21,7 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
   }
 
   public void registerPurchase(BookId bookId, long amount) {
-    long newAmount = ExcapAmount(amount);
+    long newAmount = capAmount(amount);
     applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, newAmount));
   }
 

@@ -5,31 +5,24 @@ import se.citerus.cqrs.bookstore.command.CommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.domain.publisher.PublisherContract;
 
-public class PublisherCommandHandler implements CommandHandler {
+public class PublisherContractCommandHandler implements CommandHandler {
 
   private final Repository repository;
 
-  public PublisherCommandHandler(Repository repository) {
+  public PublisherContractCommandHandler(Repository repository) {
     this.repository = repository;
   }
 
   @Subscribe
-  public void handle(RegisterPublisherCommand command) {
+  public void handle(RegisterPublisherContractCommand command) {
     PublisherContract contract = new PublisherContract();
-    contract.register(command.contractId, command.publisherName, command.fee);
-    repository.save(contract);
-  }
-
-  @Subscribe
-  public void handle(UpdatePublisherFeeCommand command) {
-    PublisherContract contract = repository.load(command.contractId, PublisherContract.class);
-    contract.updateFee(command.fee);
+    contract.register(command.publisherContractId, command.publisherName, command.fee, command.limit);
     repository.save(contract);
   }
 
   @Subscribe
   public void handle(RegisterPurchaseCommand command) {
-    PublisherContract contract = repository.load(command.contractId, PublisherContract.class);
+    PublisherContract contract = repository.load(command.publisherContractId, PublisherContract.class);
     contract.registerPurchase(command.bookId, command.amount);
     repository.save(contract);
   }

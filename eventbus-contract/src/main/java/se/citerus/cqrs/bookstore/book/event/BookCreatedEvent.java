@@ -10,16 +10,16 @@ public class BookCreatedEvent extends DomainEvent<BookId> {
   public final String title;
   public final String description;
   public final long price;
-  public final PublisherContractId contractId;
+  public final PublisherContractId publisherContractId;
 
   public BookCreatedEvent(BookId bookId, int version, long timestamp, String isbn, String title,
-                          String description, long price, PublisherContractId contractId) {
+                          String description, long price, PublisherContractId publisherContractId) {
     super(bookId, version, timestamp);
     this.isbn = isbn;
     this.title = title;
     this.description = description;
     this.price = price;
-    this.contractId = contractId;
+    this.publisherContractId = publisherContractId;
   }
 
 }

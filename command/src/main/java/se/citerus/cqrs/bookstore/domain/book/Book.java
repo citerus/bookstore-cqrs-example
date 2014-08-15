@@ -10,8 +10,8 @@ public class Book extends AggregateRoot<BookId> {
 
   private long price;
 
-  public void create(BookId bookId, String isbn, String title, String description, long price, PublisherContractId contractId) {
-    applyChange(new BookCreatedEvent(bookId, nextVersion(), now(), isbn, title, description, price, contractId));
+  public void create(BookId bookId, String isbn, String title, String description, long price, PublisherContractId publisherContractId) {
+    applyChange(new BookCreatedEvent(bookId, nextVersion(), now(), isbn, title, description, price, publisherContractId));
   }
 
   public void updatePrice(long updatedPrice) {

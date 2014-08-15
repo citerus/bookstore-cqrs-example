@@ -13,10 +13,10 @@ public class CreateBookCommand extends Command {
   public final String title;
   public final String description;
   public final long price;
-  public final PublisherContractId contractId;
+  public final PublisherContractId publisherContractId;
 
   public CreateBookCommand(BookId bookId, String isbn, String title, String description, long price,
-                           PublisherContractId contractId) {
+                           PublisherContractId publisherContractId) {
     checkArgument(bookId != null, "BookId cannot be null");
     checkArgument(isbn != null, "ISBN cannot be null");
     checkArgument(title != null, "Title cannot be null");
@@ -28,7 +28,7 @@ public class CreateBookCommand extends Command {
     this.title = title;
     this.description = description;
     this.price = price;
-    this.contractId = contractId; // May be null!
+    this.publisherContractId = publisherContractId; // May be null!
   }
 
 }

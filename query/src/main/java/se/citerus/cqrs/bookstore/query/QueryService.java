@@ -13,16 +13,13 @@ public class QueryService {
 
   private final OrderListDenormalizer orderListDenormalizer;
   private final BookCatalogDenormalizer bookCatalogDenormalizer;
-  private final PublisherDenormalizer publisherDenormalizer;
   private final OrdersPerDayAggregator ordersPerDayAggregator;
 
   public QueryService(OrderListDenormalizer orderListDenormalizer,
                       BookCatalogDenormalizer bookCatalogDenormalizer,
-                      PublisherDenormalizer publisherDenormalizer,
                       OrdersPerDayAggregator ordersPerDayAggregator) {
     this.orderListDenormalizer = orderListDenormalizer;
     this.bookCatalogDenormalizer = bookCatalogDenormalizer;
-    this.publisherDenormalizer = publisherDenormalizer;
     this.ordersPerDayAggregator = ordersPerDayAggregator;
   }
 
@@ -42,13 +39,9 @@ public class QueryService {
     return orderListDenormalizer.listOrders();
   }
 
-  public PublisherProjection getPublisher(PublisherContractId contractId) {
-    return publisherDenormalizer.get(contractId);
-  }
-
   public PublisherContractId findPublisher(BookId bookId) {
     BookProjection bookProjection = bookCatalogDenormalizer.get(bookId);
-    return bookProjection.hasPublisher() ? new PublisherContractId(bookProjection.getPublisherId()) : null;
+    return bookProjection.hasPublisher() ? new PublisherContractId(bookProjection.getPublisherContractId()) : null;
   }
 
   public Map<LocalDate, Integer> getOrdersPerDay() {

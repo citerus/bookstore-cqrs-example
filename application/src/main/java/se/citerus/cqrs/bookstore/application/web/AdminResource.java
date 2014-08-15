@@ -4,20 +4,20 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.application.CommandFactory;
-import se.citerus.cqrs.bookstore.application.web.transport.*;
+import se.citerus.cqrs.bookstore.application.web.transport.CreateBookRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.application.web.transport.UpdateBookPriceRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.command.book.CreateBookCommand;
 import se.citerus.cqrs.bookstore.command.book.UpdateBookPriceCommand;
 import se.citerus.cqrs.bookstore.command.order.ActivateOrderCommand;
-import se.citerus.cqrs.bookstore.command.publisher.RegisterPublisherCommand;
-import se.citerus.cqrs.bookstore.command.publisher.UpdatePublisherFeeCommand;
+import se.citerus.cqrs.bookstore.command.publisher.RegisterPublisherContractCommand;
 import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
-import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
-import se.citerus.cqrs.bookstore.query.PublisherProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
 
 import javax.validation.Valid;
@@ -51,15 +51,6 @@ public class AdminResource {
     List<OrderProjection> projections = queryService.listOrders();
     logger.info("Returning [{}] orders", projections.size());
     return projections;
-  }
-
-  // TODO: Remove unused end point?
-  @GET
-  @Path("orders/{orderId}")
-  public OrderProjection getOrder(@PathParam("orderId") OrderId orderId) {
-    OrderProjection order = queryService.getOrder(orderId);
-    logger.info("Returning order: " + order);
-    return order;
   }
 
   @GET
@@ -103,27 +94,10 @@ public class AdminResource {
   @POST
   @Path("register-publisher-requests")
   public void registerPublisher(@Valid RegisterPublisherRequest registerPublisherRequest) {
-    PublisherContractId contractId = new PublisherContractId(registerPublisherRequest.publisherId);
-    logger.info("Registering publisher: " + contractId);
-    RegisterPublisherCommand command = commandFactory.toCommand(contractId, registerPublisherRequest);
+    PublisherContractId publisherContractId = new PublisherContractId(registerPublisherRequest.publisherContractId);
+    logger.info("Registering publisher: " + publisherContractId);
+    RegisterPublisherContractCommand command = commandFactory.toCommand(publisherContractId, registerPublisherRequest);
     commandBus.dispatch(command);
-  }
-
-  // TODO: Remove unused use case?
-  @POST
-  @Path("update-publisher-fee-requests")
-  public void updatePublisherFee(@Valid UpdatePublisherFeeRequest updatePublisherFeeRequest) {
-    PublisherContractId contractId = new PublisherContractId(updatePublisherFeeRequest.publisherId);
-    logger.info("Updating fee for publisher: " + contractId);
-    UpdatePublisherFeeCommand command = commandFactory.toCommand(updatePublisherFeeRequest);
-    commandBus.dispatch(command);
-  }
-
-  // TODO: Remove unused end point?
-  @GET
-  @Path("publishers/{publisherId}")
-  public PublisherProjection getPublisher(@PathParam("publisherId") String publisherId) {
-    return queryService.getPublisher(new PublisherContractId(publisherId));
   }
 
   // TODO: Add Simple bar chart to admin gui!

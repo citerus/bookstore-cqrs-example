@@ -20,20 +20,20 @@ public class CreateBookRequest extends TransportObject {
   /**
    * Optional.
    */
-  public final String publisherId;
+  public final String publisherContractId;
 
   public CreateBookRequest(@JsonProperty("bookId") String bookId,
                            @JsonProperty("isbn") String isbn,
                            @JsonProperty("title") String title,
                            @JsonProperty("description") String description,
                            @JsonProperty("price") long price,
-                           @JsonProperty("publisherId") String publisherId) {
+                           @JsonProperty("publisherContractId") String publisherContractId) {
     this.bookId = bookId;
     this.isbn = isbn;
     this.title = title;
     this.description = description;
     this.price = price;
-    this.publisherId = publisherId;
+    this.publisherContractId = publisherContractId;
   }
 
 }

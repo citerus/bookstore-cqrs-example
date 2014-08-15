@@ -9,8 +9,8 @@ public class PurchaseRegisteredEvent extends DomainEvent<PublisherContractId> {
   public final BookId bookId;
   public final long amount;
 
-  public PurchaseRegisteredEvent(PublisherContractId contractId, int version, long timestamp, BookId bookId, long amount) {
-    super(contractId, version, timestamp);
+  public PurchaseRegisteredEvent(PublisherContractId publisherContractId, int version, long timestamp, BookId bookId, long amount) {
+    super(publisherContractId, version, timestamp);
     this.bookId = bookId;
     this.amount = amount;
   }

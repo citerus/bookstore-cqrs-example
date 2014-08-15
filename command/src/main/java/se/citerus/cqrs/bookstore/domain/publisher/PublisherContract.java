@@ -3,7 +3,6 @@ package se.citerus.cqrs.bookstore.domain.publisher;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.domain.AggregateRoot;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
-import se.citerus.cqrs.bookstore.publisher.event.PublisherFeeUpdatedEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PublisherRegisteredEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PurchaseRegisteredEvent;
 
@@ -13,18 +12,20 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
 
   private String publisherName;
   private double fee;
+  private long limit;
+  private long accumulatedAmount;
 
-  public void register(PublisherContractId contractId, String name, double fee) {
+  public void register(PublisherContractId publisherContractId, String name, double fee, long limit) {
     assertHasNotBeenRegistered();
-    applyChange(new PublisherRegisteredEvent(contractId, nextVersion(), now(), name, fee));
-  }
-
-  public void updateFee(double newFee) {
-    applyChange(new PublisherFeeUpdatedEvent(id(), nextVersion(), now(), fee, newFee));
+    applyChange(new PublisherRegisteredEvent(publisherContractId, nextVersion(), now(), name, fee, limit));
   }
 
   public void registerPurchase(BookId bookId, long amount) {
-    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, amount));
+    long newAmount = amount;
+    if (accumulatedAmount + amount >= limit) {
+      newAmount = limit - accumulatedAmount;
+    }
+    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, newAmount));
   }
 
   private void assertHasNotBeenRegistered() {
@@ -38,19 +39,14 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
     this.timestamp = event.timestamp;
     this.publisherName = event.publisherName;
     this.fee = event.fee;
-  }
-
-  @SuppressWarnings("UnusedDeclaration")
-  void handleEvent(PublisherFeeUpdatedEvent event) {
-    this.version = event.version;
-    this.timestamp = event.timestamp;
-    this.fee = event.newFee;
+    this.limit = event.limit;
   }
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(PurchaseRegisteredEvent event) {
     this.version = event.version;
     this.timestamp = event.timestamp;
+    this.accumulatedAmount += event.amount;
   }
 
   public String publisherName() {

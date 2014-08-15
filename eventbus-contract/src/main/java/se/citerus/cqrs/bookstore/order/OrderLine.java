@@ -12,7 +12,7 @@ public class OrderLine extends ValueObject {
   public final String title;
   public final int quantity;
   public final long unitPrice;
-  public final PublisherContractId contractId;
+  public final PublisherContractId publisherContractId;
 
   public OrderLine(BookId bookId, String title, int quantity, long unitPrice) {
     this(bookId, title, quantity, unitPrice, null);
@@ -23,16 +23,16 @@ public class OrderLine extends ValueObject {
                    @JsonProperty("title") String title,
                    @JsonProperty("quantity") int quantity,
                    @JsonProperty("price") long unitPrice,
-                   @JsonProperty("publisherId") PublisherContractId contractId) {
+                   @JsonProperty("publisherContractId") PublisherContractId publisherContractId) {
     this.bookId = bookId;
     this.title = title;
     this.quantity = quantity;
     this.unitPrice = unitPrice;
-    this.contractId = contractId;
+    this.publisherContractId = publisherContractId;
   }
 
-  public OrderLine withPublisher(PublisherContractId contractId) {
-    return new OrderLine(this.bookId, this.title, this.quantity, this.unitPrice, contractId);
+  public OrderLine withPublisher(PublisherContractId publisherContractId) {
+    return new OrderLine(this.bookId, this.title, this.quantity, this.unitPrice, publisherContractId);
   }
 
   public long amount() {
@@ -40,7 +40,7 @@ public class OrderLine extends ValueObject {
   }
 
   public boolean bookHasRegisteredPublisher() {
-    return contractId != null;
+    return publisherContractId != null;
   }
 
 }

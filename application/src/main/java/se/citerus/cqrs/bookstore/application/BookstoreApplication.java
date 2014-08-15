@@ -15,19 +15,14 @@ import se.citerus.cqrs.bookstore.application.web.model.CartRepository;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.command.book.BookCommandHandler;
 import se.citerus.cqrs.bookstore.command.order.OrderCommandHandler;
-import se.citerus.cqrs.bookstore.command.publisher.PublisherCommandHandler;
+import se.citerus.cqrs.bookstore.command.publisher.PublisherContractCommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
-import se.citerus.cqrs.bookstore.infrastructure.DefaultRepository;
-import se.citerus.cqrs.bookstore.infrastructure.GuavaCommandBus;
-import se.citerus.cqrs.bookstore.infrastructure.GuavaDomainEventBus;
-import se.citerus.cqrs.bookstore.infrastructure.InMemoryCartRepository;
-import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
+import se.citerus.cqrs.bookstore.infrastructure.*;
 import se.citerus.cqrs.bookstore.query.BookCatalogDenormalizer;
 import se.citerus.cqrs.bookstore.query.OrderListDenormalizer;
 import se.citerus.cqrs.bookstore.query.OrdersPerDayAggregator;
-import se.citerus.cqrs.bookstore.query.PublisherDenormalizer;
 import se.citerus.cqrs.bookstore.query.QueryService;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
 import se.citerus.cqrs.bookstore.saga.PurchaseRegistrationSaga;
@@ -59,11 +54,10 @@ public class BookstoreApplication extends Service<BookstoreConfiguration> {
     DomainEventBus domainEventBus = new GuavaDomainEventBus();
     InMemOrderProjectionRepository orderRepository = new InMemOrderProjectionRepository();
     OrderListDenormalizer orderListDenormalizer = domainEventBus.register(new OrderListDenormalizer(orderRepository));
-    PublisherDenormalizer publisherDenormalizer = domainEventBus.register(new PublisherDenormalizer());
     BookCatalogDenormalizer bookCatalogDenormalizer = domainEventBus.register(new BookCatalogDenormalizer());
     OrdersPerDayAggregator ordersPerDayAggregator = domainEventBus.register(new OrdersPerDayAggregator());
 
-    QueryService queryService = new QueryService(orderListDenormalizer, bookCatalogDenormalizer, publisherDenormalizer, ordersPerDayAggregator);
+    QueryService queryService = new QueryService(orderListDenormalizer, bookCatalogDenormalizer, ordersPerDayAggregator);
 
     DomainEventStore domainEventStore = new InMemoryDomainEventStore();
     Repository aggregateRepository = new DefaultRepository(domainEventBus, domainEventStore);
@@ -71,7 +65,7 @@ public class BookstoreApplication extends Service<BookstoreConfiguration> {
     CommandBus commandBus = GuavaCommandBus.asyncGuavaCommandBus();
     commandBus.register(new OrderCommandHandler(aggregateRepository, queryService));
     commandBus.register(new BookCommandHandler(aggregateRepository));
-    commandBus.register(new PublisherCommandHandler(aggregateRepository));
+    commandBus.register(new PublisherContractCommandHandler(aggregateRepository));
 
     // Create and register Sagas
     PurchaseRegistrationSaga purchaseRegistrationSaga = new PurchaseRegistrationSaga(queryService, commandBus);

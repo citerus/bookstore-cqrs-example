@@ -8,8 +8,7 @@ import se.citerus.cqrs.bookstore.command.book.CreateBookCommand;
 import se.citerus.cqrs.bookstore.command.book.UpdateBookPriceCommand;
 import se.citerus.cqrs.bookstore.command.order.ActivateOrderCommand;
 import se.citerus.cqrs.bookstore.command.order.PlaceOrderCommand;
-import se.citerus.cqrs.bookstore.command.publisher.RegisterPublisherCommand;
-import se.citerus.cqrs.bookstore.command.publisher.UpdatePublisherFeeCommand;
+import se.citerus.cqrs.bookstore.command.publisher.RegisterPublisherContractCommand;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderLine;
@@ -31,13 +30,13 @@ public class CommandFactory {
   }
 
   public CreateBookCommand toCommand(BookId bookId, CreateBookRequest request) {
-    String idString = request.publisherId;
-    PublisherContractId contractId = idString == null ? null : new PublisherContractId(idString);
-    return new CreateBookCommand(bookId, request.isbn, request.title, request.description, request.price, contractId);
+    String idString = request.publisherContractId;
+    PublisherContractId publisherContractId = idString == null ? null : new PublisherContractId(idString);
+    return new CreateBookCommand(bookId, request.isbn, request.title, request.description, request.price, publisherContractId);
   }
 
-  public RegisterPublisherCommand toCommand(PublisherContractId contractId, RegisterPublisherRequest request) {
-    return new RegisterPublisherCommand(contractId, request.publisherName, request.fee);
+  public RegisterPublisherContractCommand toCommand(PublisherContractId publisherContractId, RegisterPublisherRequest request) {
+    return new RegisterPublisherContractCommand(publisherContractId, request.publisherName, request.fee, request.limit);
   }
 
   public UpdateBookPriceCommand toCommand(UpdateBookPriceRequest updateBookPriceRequest) {
@@ -59,10 +58,6 @@ public class CommandFactory {
   private CustomerInformation getCustomerInformation(PlaceOrderRequest request) {
     return new CustomerInformation(request.customerName,
         request.customerEmail, request.customerAddress);
-  }
-
-  public UpdatePublisherFeeCommand toCommand(UpdatePublisherFeeRequest request) {
-    return new UpdatePublisherFeeCommand(new PublisherContractId(request.publisherId), request.fee);
   }
 
 }

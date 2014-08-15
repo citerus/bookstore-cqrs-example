@@ -9,20 +9,20 @@ public class BookProjection extends Projection {
   private String title;
   private String description;
   private long price;
-  private String publisherId;
+  private String publisherContractId;
 
   public BookProjection(@JsonProperty("bookId") String bookId,
                         @JsonProperty("isbn") String isbn,
                         @JsonProperty("title") String title,
                         @JsonProperty("description") String description,
                         @JsonProperty("price") long price,
-                        @JsonProperty("publisherId") String publisherId) {
+                        @JsonProperty("publisherContractId") String publisherContractId) {
     this.bookId = bookId;
     this.isbn = isbn;
     this.title = title;
     this.description = description;
     this.price = price;
-    this.publisherId = publisherId;
+    this.publisherContractId = publisherContractId;
   }
 
   public String getIsbn() {
@@ -33,8 +33,8 @@ public class BookProjection extends Projection {
     return title;
   }
 
-  public String getPublisherId() {
-    return publisherId;
+  public String getPublisherContractId() {
+    return publisherContractId;
   }
 
   public String getDescription() {
@@ -54,7 +54,7 @@ public class BookProjection extends Projection {
   }
 
   public boolean hasPublisher() {
-    return publisherId != null;
+    return publisherContractId != null;
   }
 
 }

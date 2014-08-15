@@ -5,20 +5,23 @@ import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public class RegisterPublisherCommand extends Command {
+public class RegisterPublisherContractCommand extends Command {
 
-  public final PublisherContractId contractId;
+  public final PublisherContractId publisherContractId;
   public final String publisherName;
   public final double fee;
+  public final long limit;
 
-  public RegisterPublisherCommand(PublisherContractId contractId, String publisherName, double fee) {
-    checkArgument(contractId != null, "PublisherId cannot be null");
+  public RegisterPublisherContractCommand(PublisherContractId publisherContractId, String publisherName, double fee, long limit) {
+    checkArgument(publisherContractId != null, "PublisherContractId cannot be null");
     checkArgument(publisherName != null, "PublisherName cannot be null");
     checkArgument(fee > 0, "Fee must be a positive number");
+    checkArgument(limit > 0, "Limit must be a positive number");
 
-    this.contractId = contractId;
+    this.publisherContractId = publisherContractId;
     this.publisherName = publisherName;
     this.fee = fee;
+    this.limit = limit;
   }
 
 }

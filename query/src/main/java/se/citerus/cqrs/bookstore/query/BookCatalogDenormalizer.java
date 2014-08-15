@@ -20,9 +20,9 @@ public class BookCatalogDenormalizer implements DomainEventListener {
   @Subscribe
   public void handleEvent(BookCreatedEvent event) {
     logger.info("Received: " + event.toString());
-    String publisherId = event.contractId != null ? event.contractId.id : null;
+    String publisherContractId = event.publisherContractId != null ? event.publisherContractId.id : null;
     BookProjection book = new BookProjection(event.aggregateId.id, event.isbn, event.title, event.description,
-        event.price, publisherId);
+        event.price, publisherContractId);
     books.put(event.aggregateId, book);
   }
 

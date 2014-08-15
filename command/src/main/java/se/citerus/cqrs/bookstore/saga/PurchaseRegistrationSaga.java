@@ -31,7 +31,7 @@ public class PurchaseRegistrationSaga extends Saga {
     OrderProjection order = queryService.getOrder(event.aggregateId);
     for (final OrderLine orderLine : order.getOrderLines()) {
       if (orderLine.bookHasRegisteredPublisher()) {
-        publish(new RegisterPurchaseCommand(orderLine.contractId, orderLine.bookId, orderLine.amount()));
+        publish(new RegisterPurchaseCommand(orderLine.publisherContractId, orderLine.bookId, orderLine.amount()));
       }
     }
   }

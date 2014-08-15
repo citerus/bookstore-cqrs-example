@@ -7,7 +7,6 @@ import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderLine;
-import se.citerus.cqrs.bookstore.order.OrderStatus;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
 
@@ -61,21 +60,6 @@ public class AdminResourceTest extends ResourceTest {
     Iterator<OrderProjection> ordersIterator = orders.iterator();
     assertThat(ordersIterator.next(), is(order1));
     assertThat(ordersIterator.next(), is(order2));
-  }
-
-  @Test
-  public void testGetOrder() {
-    OrderId orderId = OrderId.randomId();
-    List<OrderLine> orderLines = Collections.emptyList();
-    OrderProjection order = new OrderProjection(orderId, 0L, "TestCustomer", 200L, orderLines, OrderStatus.PLACED);
-    when(queryService.getOrder(orderId)).thenReturn(order);
-
-    OrderProjection retrievedOrder = client()
-        .resource(ADMIN_RESOURCE + "/orders/" + orderId)
-        .accept(APPLICATION_JSON_TYPE)
-        .get(OrderProjection.class);
-
-    assertThat(retrievedOrder, is(order));
   }
 
 }

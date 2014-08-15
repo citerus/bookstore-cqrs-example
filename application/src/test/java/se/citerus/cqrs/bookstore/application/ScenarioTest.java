@@ -14,7 +14,7 @@ import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.command.book.BookCommandHandler;
 import se.citerus.cqrs.bookstore.command.order.OrderCommandHandler;
-import se.citerus.cqrs.bookstore.command.publisher.PublisherCommandHandler;
+import se.citerus.cqrs.bookstore.command.publisher.PublisherContractCommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
 import se.citerus.cqrs.bookstore.infrastructure.DefaultRepository;
@@ -24,7 +24,6 @@ import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
-import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.*;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
 
@@ -56,11 +55,11 @@ public class ScenarioTest extends ResourceTest {
     Repository repository = new DefaultRepository(domainEventBus, domainEventStore);
     BookCommandHandler bookCommandHandler = new BookCommandHandler(repository);
     OrderCommandHandler orderCommandHandler = new OrderCommandHandler(repository, queryService);
-    PublisherCommandHandler publisherCommandHandler = new PublisherCommandHandler(repository);
+    PublisherContractCommandHandler publisherContractCommandHandler = new PublisherContractCommandHandler(repository);
 
     commandBus.register(bookCommandHandler);
     commandBus.register(orderCommandHandler);
-    commandBus.register(publisherCommandHandler);
+    commandBus.register(publisherContractCommandHandler);
 
     addResource(new CartResource(queryService, cartRepository));
     addResource(new OrderResource(commandBus, cartRepository));
@@ -92,22 +91,6 @@ public class ScenarioTest extends ResourceTest {
     assertThat(bookProjection.getDescription(), is("Domain Driven Design"));
     assertThat(bookProjection.getIsbn(), is(isbn));
     assertThat(bookProjection.getPrice(), is(500L));
-  }
-
-  @Test
-  public void testUpdatePublisherFee() throws Exception {
-    BookId bookId = BookId.randomId();
-    String isbn = "0321144215";
-    PublisherContractId contractId = PublisherContractId.randomId();
-    registerPublisher(contractId.id, "Books Inc.", 2.32);
-    CreateBookRequest bookRequest = new CreateBookRequest(bookId.id, isbn, "DDD", "Domain Driven Design", 1000, contractId.id);
-    createBook(bookRequest);
-
-    updatePublisherFee(contractId.id, 20L);
-
-    PublisherProjection publisher = getPublisher(contractId.id);
-
-    assertThat(publisher.getFee(), is(2.32));
   }
 
   @Test
@@ -166,24 +149,9 @@ public class ScenarioTest extends ResourceTest {
     return orderId;
   }
 
-  private PublisherProjection getPublisher(String publisherId) {
-    return client().resource(SERVER_ADDRESS + "/admin/publishers/" + publisherId)
-        .accept(APPLICATION_JSON)
-        .get(PublisherProjection.class);
-  }
-
-  private ClientResponse registerPublisher(String publisherId, String name, double fee) {
-    RegisterPublisherRequest request = new RegisterPublisherRequest(publisherId, name, fee);
+  private ClientResponse registerPublisher(String publisherContractId, String name, double fee, long limit) {
+    RegisterPublisherRequest request = new RegisterPublisherRequest(publisherContractId, name, fee, limit);
     ClientResponse response = client().resource(SERVER_ADDRESS + "/admin/register-publisher-requests")
-        .entity(request, APPLICATION_JSON)
-        .post(ClientResponse.class);
-    assertThat(response.getClientResponseStatus().getFamily(), is(SUCCESSFUL));
-    return response;
-  }
-
-  private ClientResponse updatePublisherFee(String publisherId, long fee) {
-    UpdatePublisherFeeRequest request = new UpdatePublisherFeeRequest(publisherId, fee);
-    ClientResponse response = client().resource(SERVER_ADDRESS + "/admin/update-publisher-fee-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);
     assertThat(response.getClientResponseStatus().getFamily(), is(SUCCESSFUL));
@@ -193,14 +161,12 @@ public class ScenarioTest extends ResourceTest {
   private QueryService createQueryService(OrdersPerDayAggregator ordersPerDayAggregator, DomainEventBus domainEventBus) {
     OrderListDenormalizer orderList = new OrderListDenormalizer(new InMemOrderProjectionRepository());
     BookCatalogDenormalizer bookCatalog = new BookCatalogDenormalizer();
-    PublisherDenormalizer publisherList = new PublisherDenormalizer();
     OrdersPerDayAggregator ordersPerDay = new OrdersPerDayAggregator();
-    QueryService queryService = new QueryService(orderList, bookCatalog, publisherList, ordersPerDay);
+    QueryService queryService = new QueryService(orderList, bookCatalog, ordersPerDay);
 
     domainEventBus.register(bookCatalog);
     domainEventBus.register(orderList);
     domainEventBus.register(ordersPerDayAggregator);
-    domainEventBus.register(publisherList);
     return queryService;
   }
 
@@ -248,9 +214,10 @@ public class ScenarioTest extends ResourceTest {
   }
 
   private OrderProjection getOrder(OrderId id) {
-    return client().resource(SERVER_ADDRESS + "/admin/orders/" + id)
-        .accept(APPLICATION_JSON)
-        .get(OrderProjection.class);
+    for (OrderProjection orderProjection : getOrders()) {
+      if (orderProjection.getOrderId().equals(id)) return orderProjection;
+    }
+    throw new IllegalArgumentException("No such order: " + id);
   }
 
   private ClientResponse createCart(String cartId) {

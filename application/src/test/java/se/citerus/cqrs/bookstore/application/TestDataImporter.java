@@ -27,11 +27,11 @@ public class TestDataImporter {
     try {
       TestHttpClient publisherClient = new TestHttpClient(SERVER_ADDRESS + "/admin/register-publisher-requests").init();
 
-      // Add publishers
-      String publishersJson = Resources.toString(getResource("se/citerus/cqrs/bookstore/testdata/publishers.json"), UTF_8);
+      // Add publisher contracts
+      String contractsJson = Resources.toString(getResource("se/citerus/cqrs/bookstore/testdata/publishercontracts.json"), UTF_8);
       TypeReference<List<RegisterPublisherRequest>> listOfRegisterPublisherRequests = new TypeReference<List<RegisterPublisherRequest>>() {
       };
-      List<RegisterPublisherRequest> publishersRequests = deserialize(publishersJson, listOfRegisterPublisherRequests);
+      List<RegisterPublisherRequest> publishersRequests = deserialize(contractsJson, listOfRegisterPublisherRequests);
 
       for (RegisterPublisherRequest request : publishersRequests) {
         publisherClient.post(JsonSerializer.serialize(request));

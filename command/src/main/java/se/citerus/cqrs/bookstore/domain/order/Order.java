@@ -10,6 +10,7 @@ import se.citerus.cqrs.bookstore.order.event.OrderPlacedEvent;
 
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 public class Order extends AggregateRoot<OrderId> {
@@ -18,6 +19,7 @@ public class Order extends AggregateRoot<OrderId> {
 
   public void place(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines) {
     assertHasNotBeenPlaced();
+    assertMoreThanZeroOrderLines(orderLines);
     applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines,
         calculateTotalAmount(orderLines)));
   }
@@ -30,6 +32,10 @@ public class Order extends AggregateRoot<OrderId> {
 
   private boolean orderIsPlaced() {
     return status == OrderStatus.PLACED;
+  }
+
+  private void assertMoreThanZeroOrderLines(List<OrderLine> orderLines) {
+    checkArgument(!orderLines.isEmpty(), "Cannot place an order without any order lines");
   }
 
   private void assertHasNotBeenPlaced() {

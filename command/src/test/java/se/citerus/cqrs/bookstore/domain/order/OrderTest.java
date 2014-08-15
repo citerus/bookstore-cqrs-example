@@ -18,6 +18,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.Assert.assertThat;
+import static se.citerus.cqrs.bookstore.order.OrderId.randomId;
 
 public class OrderTest {
 
@@ -48,11 +49,18 @@ public class OrderTest {
     assertThat(getOnlyElement(uncommittedEvents), instanceOf(OrderActivatedEvent.class));
   }
 
-  @Test(expected = IllegalStateException.class)
-  public void cannotPlaceAnOrderTwice() {
+  @Test(expected = IllegalArgumentException.class)
+  public void requireOrderLinesWhenPlacingAnOrder() {
     Order order = new Order();
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, Collections.<OrderLine>emptyList());
-    order.place(OrderId.<OrderId>randomId(), JOHN_DOE, Collections.<OrderLine>emptyList());
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void cannotPlaceAnOrderTwice() {
+    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L, null);
+    Order order = new Order();
+    order.place(randomId(), JOHN_DOE, asList(orderLine));
+    order.place(randomId(), JOHN_DOE, asList(orderLine));
   }
 
   @Test

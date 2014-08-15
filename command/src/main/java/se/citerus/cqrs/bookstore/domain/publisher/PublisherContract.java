@@ -7,12 +7,15 @@ import se.citerus.cqrs.bookstore.publisher.event.PublisherFeeUpdatedEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PublisherRegisteredEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PurchaseRegisteredEvent;
 
-public class Publisher extends AggregateRoot<PublisherId> {
+import static com.google.common.base.Preconditions.checkState;
 
-  private String name;
+public class PublisherContract extends AggregateRoot<PublisherId> {
+
+  private String publisherName;
   private double fee;
 
   public void register(PublisherId publisherId, String name, double fee) {
+    assertHasNotBeenRegistered();
     applyChange(new PublisherRegisteredEvent(publisherId, nextVersion(), now(), name, fee));
   }
 
@@ -24,12 +27,16 @@ public class Publisher extends AggregateRoot<PublisherId> {
     applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, amount));
   }
 
+  private void assertHasNotBeenRegistered() {
+    checkState(id == null, "Contract has already been registered");
+  }
+
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(PublisherRegisteredEvent event) {
     this.id = event.aggregateId;
     this.version = event.version;
     this.timestamp = event.timestamp;
-    this.name = event.publisherName;
+    this.publisherName = event.publisherName;
     this.fee = event.fee;
   }
 
@@ -46,8 +53,8 @@ public class Publisher extends AggregateRoot<PublisherId> {
     this.timestamp = event.timestamp;
   }
 
-  public String name() {
-    return name;
+  public String publisherName() {
+    return publisherName;
   }
 
   public double fee() {

@@ -3,7 +3,7 @@ package se.citerus.cqrs.bookstore.command.publisher;
 import com.google.common.eventbus.Subscribe;
 import se.citerus.cqrs.bookstore.command.CommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
-import se.citerus.cqrs.bookstore.domain.publisher.Publisher;
+import se.citerus.cqrs.bookstore.domain.publisher.PublisherContract;
 
 public class PublisherCommandHandler implements CommandHandler {
 
@@ -15,23 +15,23 @@ public class PublisherCommandHandler implements CommandHandler {
 
   @Subscribe
   public void handle(RegisterPublisherCommand command) {
-    Publisher publisher = new Publisher();
-    publisher.register(command.publisherId, command.publisherName, command.fee);
-    repository.save(publisher);
+    PublisherContract contract = new PublisherContract();
+    contract.register(command.publisherId, command.publisherName, command.fee);
+    repository.save(contract);
   }
 
   @Subscribe
   public void handle(UpdatePublisherFeeCommand command) {
-    Publisher publisher = repository.load(command.publisherId, Publisher.class);
-    publisher.updateFee(command.fee);
-    repository.save(publisher);
+    PublisherContract contract = repository.load(command.publisherId, PublisherContract.class);
+    contract.updateFee(command.fee);
+    repository.save(contract);
   }
 
   @Subscribe
   public void handle(RegisterPurchaseCommand command) {
-    Publisher publisher = repository.load(command.publisherId, Publisher.class);
-    publisher.registerPurchase(command.bookId, command.amount);
-    repository.save(publisher);
+    PublisherContract contract = repository.load(command.publisherId, PublisherContract.class);
+    contract.registerPurchase(command.bookId, command.amount);
+    repository.save(contract);
   }
 
 }

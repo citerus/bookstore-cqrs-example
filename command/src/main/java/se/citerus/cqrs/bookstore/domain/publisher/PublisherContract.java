@@ -21,11 +21,20 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
   }
 
   public void registerPurchase(BookId bookId, long amount) {
+    long newAmount = ExcapAmount(amount);
+    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, newAmount));
+  }
+
+  private long capAmount(long amount) {
     long newAmount = amount;
-    if (accumulatedAmount + amount >= limit) {
+    if (exceedsLimit(amount)) {
       newAmount = limit - accumulatedAmount;
     }
-    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, newAmount));
+    return newAmount;
+  }
+
+  private boolean exceedsLimit(long amount) {
+    return accumulatedAmount + amount >= limit;
   }
 
   private void assertHasNotBeenRegistered() {

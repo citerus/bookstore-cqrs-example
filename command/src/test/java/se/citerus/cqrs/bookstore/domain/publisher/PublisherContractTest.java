@@ -50,10 +50,10 @@ public class PublisherContractTest {
     Iterable<PurchaseRegisteredEvent> events = Iterables.filter(contract.getUncommittedEvents(),
         PurchaseRegisteredEvent.class);
 
-    Iterator<PurchaseRegisteredEvent> iterator = events.iterator();
-    assertThat(iterator.next().amount, is(60L));
-    assertThat(iterator.next().amount, is(40L));
-    assertThat(iterator.next().amount, is(0L));
+    Iterator<PurchaseRegisteredEvent> purchases = events.iterator();
+    assertThat(purchases.next().amount, is(60L));
+    assertThat(purchases.next().amount, is(40L));
+    assertThat(purchases.next().amount, is(0L));
   }
 
 }

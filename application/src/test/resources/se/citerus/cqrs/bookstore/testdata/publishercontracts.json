@@ -3,6 +3,36 @@
     "publisherContractId": "11113865-24e7-4c7c-8b93-eb6caac48111",
     "publisherName": "Addison-Wesley",
     "feePercentage": 5.5,
-    "limit": 1000
+    "limit": 10000
+  },
+  {
+    "publisherContractId": "7dbaab70-71e6-44c1-bb30-b7f7df37624f",
+    "publisherName": "Pragmatic Bookshelf",
+    "feePercentage": 6,
+    "limit": 11000
+  },
+  {
+    "publisherContractId": "61b0817c-55ff-4cf4-ac15-580df0499740",
+    "publisherName": "O'Reilly Media",
+    "feePercentage": 6.5,
+    "limit": 12000
+  },
+  {
+    "publisherContractId": "28717092-e7f3-4dfe-ae50-51cf9a7c13f2",
+    "publisherName": "Manning Publications",
+    "feePercentage": 7,
+    "limit": 13000
+  },
+  {
+    "publisherContractId": "e8648253-b715-4c30-837b-8b179d5d3f09",
+    "publisherName": "Prentice Hall",
+    "feePercentage": 7.5,
+    "limit": 14000
+  },
+  {
+    "publisherContractId": "08ceeef1-2110-43ee-b6e5-4044da778767",
+    "publisherName": "Pragmatic Bookshelf",
+    "feePercentage": 8,
+    "limit": 15000
   }
 ]

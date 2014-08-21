@@ -136,7 +136,7 @@
         $.each(list, function (index, event) {
             $('#list-events').find("tbody")
                     .append('<tr><td>' + event[0] + '</td>' +
-                    '<td>' + JSON.stringify(event[1]) + '</td></tr>');
+                    '<td>' + JSON.stringify(event[1], undefined, 2) + '</td></tr>');
         });
     }
 

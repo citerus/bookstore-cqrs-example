@@ -12,7 +12,7 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
 
   private double feePercentage;
   private long limit;
-  private long accumulatedFeeAmount;
+  private Fee totalFee;
 
   public void register(PublisherContractId publisherContractId, String name, double feePercentage, long limit) {
     assertHasNotBeenRegistered();
@@ -20,25 +20,8 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
   }
 
   public void registerPurchase(BookId bookId, long purchaseAmount) {
-    long feeAmount = capAmount(calculateFee(purchaseAmount));
-    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, purchaseAmount, feeAmount));
-  }
-
-  private long capAmount(long amount) {
-    long newAmount = amount;
-    if (exceedsLimit(amount)) {
-      newAmount = limit - accumulatedFeeAmount;
-    }
-    return newAmount;
-  }
-
-  protected long calculateFee(long purchaseAmount) {
-    // TODO: Implement!
-    return purchaseAmount;
-  }
-
-  private boolean exceedsLimit(long amount) {
-    return accumulatedFeeAmount + amount >= limit;
+    Fee purchaseFee = totalFee.calculateNextPurchaseFee(purchaseAmount, limit, feePercentage);
+    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, purchaseAmount, purchaseFee.feeAmount()));
   }
 
   private void assertHasNotBeenRegistered() {
@@ -52,13 +35,14 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
     this.timestamp = event.timestamp;
     this.feePercentage = event.feePercentage;
     this.limit = event.limit;
+    this.totalFee = Fee.ZERO;
   }
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(PurchaseRegisteredEvent event) {
     this.version = event.version;
     this.timestamp = event.timestamp;
-    this.accumulatedFeeAmount += event.feeAmount;
+    this.totalFee = totalFee.add(new Fee(event.feeAmount));
   }
 
 }

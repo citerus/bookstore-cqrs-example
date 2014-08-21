@@ -57,7 +57,10 @@ public class PublisherContractTest {
     assertThat(purchases.next().purchaseAmount, is(600L));
     assertThat(purchases.next().purchaseAmount, is(600L));
 
-    // TODO: Verify fee!
+    purchases = filter(contract.getUncommittedEvents(), PurchaseRegisteredEvent.class).iterator();
+    assertThat(purchases.next().feeAmount, is(60.0));
+    assertThat(purchases.next().feeAmount, is(40.0));
+    assertThat(purchases.next().feeAmount, is(0.0));
   }
 
 }

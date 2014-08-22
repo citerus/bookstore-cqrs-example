@@ -22,13 +22,14 @@ public class CreateBookCommand extends Command {
     checkArgument(title != null, "Title cannot be null");
     checkArgument(description != null, "Description cannot be null");
     checkArgument(price > 0, "Price must be a positive number");
+    checkArgument(publisherContractId != null, "PublisherContractId cannot be null");
 
     this.bookId = bookId;
     this.isbn = isbn;
     this.title = title;
     this.description = description;
     this.price = price;
-    this.publisherContractId = publisherContractId; // May be null!
+    this.publisherContractId = publisherContractId;
   }
 
 }

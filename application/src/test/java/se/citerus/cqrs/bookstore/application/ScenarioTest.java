@@ -24,6 +24,7 @@ import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
+import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.*;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
 
@@ -81,7 +82,8 @@ public class ScenarioTest extends ResourceTest {
   public void testUpdateBookPrice() throws Exception {
     BookId bookId = BookId.randomId();
     String isbn = "0321144215";
-    CreateBookRequest bookRequest = new CreateBookRequest(bookId.id, isbn, "DDD", "Domain Driven Design", 1000, null);
+    PublisherContractId contractId = PublisherContractId.randomId();
+    CreateBookRequest bookRequest = new CreateBookRequest(bookId.id, isbn, "DDD", "Domain Driven Design", 1000, contractId.id);
     createBook(bookRequest);
 
     updateBookPrice(bookId, 500L);
@@ -248,7 +250,8 @@ public class ScenarioTest extends ResourceTest {
   private CreateBookRequest createRandomBook() {
     BookId bookId = BookId.randomId();
     String isbn = "0321125215";
-    return new CreateBookRequest(bookId.id, isbn, "DDD", "Domain Driven Design", 1000, null);
+    PublisherContractId contractId = PublisherContractId.randomId();
+    return new CreateBookRequest(bookId.id, isbn, "DDD", "Domain Driven Design", 1000, contractId.id);
   }
 
 }

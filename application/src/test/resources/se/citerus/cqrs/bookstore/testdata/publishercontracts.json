@@ -28,11 +28,5 @@
     "publisherName": "Prentice Hall",
     "feePercentage": 7.5,
     "limit": 14000
-  },
-  {
-    "publisherContractId": "08ceeef1-2110-43ee-b6e5-4044da778767",
-    "publisherName": "Pragmatic Bookshelf",
-    "feePercentage": 8,
-    "limit": 15000
   }
 ]

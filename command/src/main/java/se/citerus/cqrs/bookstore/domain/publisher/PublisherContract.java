@@ -10,6 +10,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 public class PublisherContract extends AggregateRoot<PublisherContractId> {
 
+  // TODO: Extract feePercentage and limit to an AccumulatedFee class.
   private double feePercentage;
   private long limit;
   private Fee accumulatedFee;

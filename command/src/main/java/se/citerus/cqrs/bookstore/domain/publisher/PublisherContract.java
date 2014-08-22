@@ -22,6 +22,7 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
 
   public void registerPurchase(BookId bookId, long purchaseAmount) {
     Fee purchaseFee = accumulatedFee.calculateNextPurchaseFee(purchaseAmount, limit, feePercentage);
+    // TODO: calculate accumulated and pass in event
     applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, purchaseAmount, purchaseFee.feeAmount()));
   }
 
@@ -43,6 +44,7 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
   void handleEvent(PurchaseRegisteredEvent event) {
     this.version = event.version;
     this.timestamp = event.timestamp;
+    // TODO: Change to simple assignment
     this.accumulatedFee = accumulatedFee.add(new Fee(event.feeAmount));
   }
 

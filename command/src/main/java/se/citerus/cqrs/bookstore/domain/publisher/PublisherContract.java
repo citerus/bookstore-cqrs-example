@@ -12,7 +12,7 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
 
   private double feePercentage;
   private long limit;
-  private Fee totalFee;
+  private Fee accumulatedFee;
 
   public void register(PublisherContractId publisherContractId, String name, double feePercentage, long limit) {
     assertHasNotBeenRegistered();
@@ -20,7 +20,7 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
   }
 
   public void registerPurchase(BookId bookId, long purchaseAmount) {
-    Fee purchaseFee = totalFee.calculateNextPurchaseFee(purchaseAmount, limit, feePercentage);
+    Fee purchaseFee = accumulatedFee.calculateNextPurchaseFee(purchaseAmount, limit, feePercentage);
     applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, purchaseAmount, purchaseFee.feeAmount()));
   }
 
@@ -35,14 +35,14 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
     this.timestamp = event.timestamp;
     this.feePercentage = event.feePercentage;
     this.limit = event.limit;
-    this.totalFee = Fee.ZERO;
+    this.accumulatedFee = Fee.ZERO;
   }
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(PurchaseRegisteredEvent event) {
     this.version = event.version;
     this.timestamp = event.timestamp;
-    this.totalFee = totalFee.add(new Fee(event.feeAmount));
+    this.accumulatedFee = accumulatedFee.add(new Fee(event.feeAmount));
   }
 
 }

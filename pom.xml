@@ -12,7 +12,7 @@
     <module>eventbus-contract</module>
     <module>query</module>
     <module>application</module>
-    <module>order</module>
+    <module>order-context</module>
   </modules>
 
   <name>CQRS Bookstore</name>

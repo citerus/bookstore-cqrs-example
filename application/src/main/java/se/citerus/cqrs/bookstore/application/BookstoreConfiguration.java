@@ -1,6 +1,6 @@
 package se.citerus.cqrs.bookstore.application;
 
-import com.yammer.dropwizard.config.Configuration;
+import io.dropwizard.Configuration;
 
 public class BookstoreConfiguration extends Configuration {
 

@@ -1,6 +1,7 @@
 package se.citerus.cqrs.bookstore.application.web.transport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import se.citerus.cqrs.bookstore.TransportObject;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

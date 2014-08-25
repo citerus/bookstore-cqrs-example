@@ -1,25 +1,18 @@
-package se.citerus.cqrs.bookstore.application.web;
+package se.citerus.cqrs.bookstore.shopping.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.application.web.model.Cart;
-import se.citerus.cqrs.bookstore.application.web.model.CartRepository;
-import se.citerus.cqrs.bookstore.application.web.model.Item;
-import se.citerus.cqrs.bookstore.application.web.transport.CartDto;
-import se.citerus.cqrs.bookstore.application.web.transport.CreateCartRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.query.BookProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
+import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
+import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;
+import se.citerus.cqrs.bookstore.shopping.web.model.Item;
+import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
+import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
 
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -27,6 +20,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.String.format;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.status;
 import static se.citerus.cqrs.bookstore.GenericId.isValid;
 
 @Produces(MediaType.APPLICATION_JSON)
@@ -67,7 +61,7 @@ public class CartResource {
   public Response getCart(@PathParam("cartId") String cartId) {
     Cart cart = cartRepository.find(cartId);
     if (cart == null) {
-      return Response.status(NOT_FOUND).entity(format("Cart with id '%s' does not exist", cartId)).build();
+      return status(NOT_FOUND).entity(format("Cart with id '%s' does not exist", cartId)).build();
     } else {
       logger.info("Returning cart with [{}] lines", cart.getLineCount());
       return Response.ok().entity(CartDto.fromCart(cart)).build();
@@ -83,7 +77,7 @@ public class CartResource {
 
   private void assertBookExists(BookId bookId, BookProjection book) {
     if (book == null) {
-      throw new WebApplicationException(Response.status(BAD_REQUEST)
+      throw new WebApplicationException(status(BAD_REQUEST)
           .entity("Book with id '" + bookId + "' could not be found").build());
     }
   }

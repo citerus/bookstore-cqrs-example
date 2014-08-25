@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.application.web.transport;
+package se.citerus.cqrs.bookstore;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

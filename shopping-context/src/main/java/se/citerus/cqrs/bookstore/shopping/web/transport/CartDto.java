@@ -1,9 +1,10 @@
-package se.citerus.cqrs.bookstore.application.web.transport;
+package se.citerus.cqrs.bookstore.shopping.web.transport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import se.citerus.cqrs.bookstore.application.web.model.Cart;
-import se.citerus.cqrs.bookstore.application.web.model.Item;
-import se.citerus.cqrs.bookstore.application.web.model.LineItem;
+import se.citerus.cqrs.bookstore.TransportObject;
+import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
+import se.citerus.cqrs.bookstore.shopping.web.model.Item;
+import se.citerus.cqrs.bookstore.shopping.web.model.LineItem;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;

@@ -29,17 +29,29 @@
       <groupId>se.citerus.cqrs.bookstore</groupId>
       <artifactId>order</artifactId>
     </dependency>
-
     <dependency>
-      <groupId>com.yammer.dropwizard</groupId>
-      <artifactId>dropwizard-core</artifactId>
-      <version>0.6.2</version>
+      <groupId>se.citerus.cqrs.bookstore</groupId>
+      <artifactId>shopping-context</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
-      <groupId>com.yammer.dropwizard</groupId>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-assets</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-client</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-testing</artifactId>
-      <version>0.6.2</version>
       <scope>test</scope>
     </dependency>
 

@@ -1,7 +1,6 @@
-package se.citerus.cqrs.bookstore.application.web.model;
+package se.citerus.cqrs.bookstore.shopping.web.model;
 
 import se.citerus.cqrs.bookstore.book.BookId;
-import se.citerus.cqrs.bookstore.order.OrderId;
 
 import java.util.Collection;
 import java.util.Collections;

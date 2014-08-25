@@ -1,7 +1,9 @@
 package se.citerus.cqrs.bookstore.application.web;
 
 import com.sun.jersey.api.client.GenericType;
-import com.yammer.dropwizard.testing.ResourceTest;
+import io.dropwizard.testing.junit.ResourceTestRule;
+import org.junit.After;
+import org.junit.ClassRule;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
@@ -19,24 +21,31 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static se.citerus.cqrs.bookstore.order.OrderStatus.ACTIVATED;
 import static se.citerus.cqrs.bookstore.order.OrderStatus.PLACED;
 
-public class AdminResourceTest extends ResourceTest {
+public class AdminResourceTest {
 
   private static final String SERVICE_ADDRESS = "http://localhost:8080";
   private static final String ADMIN_RESOURCE = SERVICE_ADDRESS + "/admin";
 
-  private final CommandBus commandBus = mock(CommandBus.class);
-  private final DomainEventStore eventStore = mock(DomainEventStore.class);
-  private final QueryService queryService = mock(QueryService.class);
+  private static final CommandBus commandBus = mock(CommandBus.class);
+  private static final DomainEventStore eventStore = mock(DomainEventStore.class);
+  private static final QueryService queryService = mock(QueryService.class);
   public static final GenericType<List<OrderProjection>> ORDER_LIST_TYPE = new GenericType<List<OrderProjection>>() {
   };
 
-  @Override
-  protected void setUpResources() {
-    addResource(new AdminResource(queryService, commandBus, eventStore));
+
+  @ClassRule
+  public static final ResourceTestRule resources = ResourceTestRule.builder()
+      .addResource(new AdminResource(queryService, commandBus, eventStore))
+      .build();
+
+  @After
+  public void tearDown() throws Exception {
+    reset(queryService, commandBus, eventStore);
   }
 
   @Test
@@ -52,7 +61,7 @@ public class AdminResourceTest extends ResourceTest {
 
     when(queryService.listOrders()).thenReturn(orderProjections);
 
-    List<OrderProjection> orders = client()
+    List<OrderProjection> orders = resources.client()
         .resource(ADMIN_RESOURCE + "/orders")
         .accept(APPLICATION_JSON_TYPE)
         .get(ORDER_LIST_TYPE);

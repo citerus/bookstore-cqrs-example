@@ -1,7 +1,7 @@
 package se.citerus.cqrs.bookstore.infrastructure;
 
-import se.citerus.cqrs.bookstore.application.web.model.Cart;
-import se.citerus.cqrs.bookstore.application.web.model.CartRepository;
+import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
+import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;
 
 import java.util.concurrent.ConcurrentHashMap;
 

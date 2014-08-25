@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.application.web.model;
+package se.citerus.cqrs.bookstore.shopping.web.model;
 
 public interface CartRepository {
 

@@ -25,6 +25,10 @@
       <groupId>se.citerus.cqrs.bookstore</groupId>
       <artifactId>query</artifactId>
     </dependency>
+    <dependency>
+      <groupId>se.citerus.cqrs.bookstore</groupId>
+      <artifactId>order</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>com.yammer.dropwizard</groupId>

@@ -14,6 +14,7 @@
     <module>application</module>
     <module>order-context</module>
     <module>shopping-context</module>
+    <module>admin-context</module>
   </modules>
 
   <name>CQRS Bookstore</name>

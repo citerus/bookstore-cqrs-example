@@ -3,19 +3,19 @@ package se.citerus.cqrs.bookstore.application.web;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.citerus.cqrs.bookstore.admin.OrderClient;
+import se.citerus.cqrs.bookstore.admin.web.transport.CreateBookRequest;
+import se.citerus.cqrs.bookstore.admin.web.transport.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.admin.web.transport.UpdateBookPriceRequest;
 import se.citerus.cqrs.bookstore.application.CommandFactory;
-import se.citerus.cqrs.bookstore.application.web.transport.CreateBookRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.RegisterPublisherRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.UpdateBookPriceRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.CommandBus;
-import se.citerus.cqrs.bookstore.command.order.ActivateOrderCommand;
+import se.citerus.cqrs.bookstore.event.DomainEvent;
+import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.order.book.command.CreateBookCommand;
 import se.citerus.cqrs.bookstore.order.book.command.UpdateBookPriceCommand;
 import se.citerus.cqrs.bookstore.order.publisher.command.RegisterPublisherContractCommand;
-import se.citerus.cqrs.bookstore.event.DomainEvent;
-import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
@@ -36,12 +36,14 @@ public class AdminResource {
   private final Logger logger = LoggerFactory.getLogger(getClass());
   private final QueryService queryService;
   private final CommandBus commandBus;
+  private final OrderClient orderClient;
   private final CommandFactory commandFactory = new CommandFactory();
   private final DomainEventStore eventStore;
 
-  public AdminResource(QueryService queryService, CommandBus commandBus, DomainEventStore eventStore) {
+  public AdminResource(QueryService queryService, CommandBus commandBus, DomainEventStore eventStore, OrderClient orderClient) {
     this.queryService = queryService;
     this.commandBus = commandBus;
+    this.orderClient = orderClient;
     this.eventStore = eventStore;
   }
 
@@ -69,8 +71,7 @@ public class AdminResource {
   @Path("order-activation-requests")
   public void orderActivationRequest(@Valid OrderActivationRequest activationRequest) {
     logger.info("Activating orderId: " + activationRequest.orderId);
-    ActivateOrderCommand command = commandFactory.toCommand(activationRequest);
-    commandBus.dispatch(command);
+    orderClient.activate(activationRequest);
   }
 
   // TODO: Remove unused use case?

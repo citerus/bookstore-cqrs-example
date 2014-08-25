@@ -5,6 +5,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
+import se.citerus.cqrs.bookstore.admin.OrderClient;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.order.OrderId;
@@ -34,13 +35,14 @@ public class AdminResourceTest {
   private static final CommandBus commandBus = mock(CommandBus.class);
   private static final DomainEventStore eventStore = mock(DomainEventStore.class);
   private static final QueryService queryService = mock(QueryService.class);
+  private static final OrderClient orderClient = mock(OrderClient.class);
+
   public static final GenericType<List<OrderProjection>> ORDER_LIST_TYPE = new GenericType<List<OrderProjection>>() {
   };
 
-
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new AdminResource(queryService, commandBus, eventStore))
+      .addResource(new AdminResource(queryService, commandBus, eventStore, orderClient))
       .build();
 
   @After

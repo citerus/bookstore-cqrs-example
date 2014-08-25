@@ -7,10 +7,10 @@ import com.sun.jersey.api.client.GenericType;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.application.web.transport.CreateBookRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.RegisterPublisherRequest;
-import se.citerus.cqrs.bookstore.application.web.transport.UpdateBookPriceRequest;
+import se.citerus.cqrs.bookstore.admin.web.transport.CreateBookRequest;
+import se.citerus.cqrs.bookstore.admin.web.transport.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.admin.web.transport.UpdateBookPriceRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
@@ -23,8 +23,6 @@ import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
 import se.citerus.cqrs.bookstore.shopping.web.transport.PlaceOrderRequest;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.UUID;
@@ -124,6 +122,8 @@ public class ScenarioTest {
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
     OrderId orderId = addBookToCartAndPlaceOrder(randomBook.bookId, customer);
 
+    Thread.sleep(500);
+
     activateOrder(orderId);
 
     OrderProjection order = getOrder(orderId);
@@ -186,7 +186,7 @@ public class ScenarioTest {
     ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/order-activation-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);
-    assertThat(response.getClientResponseStatus().getFamily(), is(SUCCESSFUL));
+    assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
   }
 

@@ -1,8 +1,9 @@
 package se.citerus.cqrs.bookstore.application;
 
-import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
-import se.citerus.cqrs.bookstore.shopping.web.model.LineItem;
-import se.citerus.cqrs.bookstore.application.web.transport.*;
+import se.citerus.cqrs.bookstore.admin.web.transport.CreateBookRequest;
+import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.admin.web.transport.UpdateBookPriceRequest;
+import se.citerus.cqrs.bookstore.application.web.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.order.ActivateOrderCommand;
 import se.citerus.cqrs.bookstore.command.order.PlaceOrderCommand;

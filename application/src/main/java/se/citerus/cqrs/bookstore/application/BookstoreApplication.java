@@ -8,6 +8,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.citerus.cqrs.bookstore.admin.OrderClient;
 import se.citerus.cqrs.bookstore.application.web.AdminResource;
 import se.citerus.cqrs.bookstore.application.web.BookResource;
 import se.citerus.cqrs.bookstore.application.web.CartClient;
@@ -80,10 +81,11 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     domainEventBus.register(purchaseRegistrationSaga);
 
     CartClient cartClient = CartClient.create(Client.create());
+    OrderClient orderClient = OrderClient.create(Client.create());
     environment.jersey().register(new OrderResource(commandBus, cartClient));
     environment.jersey().register(new BookResource(queryService));
     environment.jersey().register(new CartResource(queryService, cartRepository));
-    environment.jersey().register(new AdminResource(queryService, commandBus, domainEventStore));
+    environment.jersey().register(new AdminResource(queryService, commandBus, domainEventStore, orderClient));
     logger.info("Server started!");
   }
 

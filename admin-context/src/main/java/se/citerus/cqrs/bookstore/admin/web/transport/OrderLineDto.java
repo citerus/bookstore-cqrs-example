@@ -1,6 +1,8 @@
 package se.citerus.cqrs.bookstore.admin.web.transport;
 
-public class OrderLine {
+import se.citerus.cqrs.bookstore.TransportObject;
+
+public class OrderLineDto extends TransportObject {
 
   public IdDto bookId;
   public String title;

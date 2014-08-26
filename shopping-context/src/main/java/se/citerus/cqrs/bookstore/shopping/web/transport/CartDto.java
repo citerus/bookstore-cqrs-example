@@ -39,14 +39,20 @@ public class CartDto extends TransportObject {
     List<LineItemDto> lineItems = new ArrayList<>();
 
     for (LineItem lineItem : cart.getItems()) {
-      long amount = lineItem.getTotalAmount();
+      long amount = lineItem.getTotalPrice();
       int quantity = lineItem.getQuantity();
 
       totalCartAmount += amount;
       totalCartQuantity += quantity;
 
       Item item = lineItem.getItem();
-      lineItems.add(new LineItemDto(item.bookId.id, item.title, item.price, quantity, amount));
+      LineItemDto itemDto = new LineItemDto();
+      itemDto.bookId = item.bookId.id;
+      itemDto.title = item.title;
+      itemDto.price = item.price;
+      itemDto.quantity = quantity;
+      itemDto.totalPrice = amount;
+      lineItems.add(itemDto);
     }
 
     return new CartDto(cart.cartId, lineItems, totalCartAmount, totalCartQuantity);

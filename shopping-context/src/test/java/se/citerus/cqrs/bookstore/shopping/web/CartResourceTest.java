@@ -3,13 +3,11 @@ package se.citerus.cqrs.bookstore.shopping.web;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import org.hamcrest.Matchers;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.book.BookId;
-import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
+import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
+import se.citerus.cqrs.bookstore.shopping.web.model.PublisherContractId;
 import se.citerus.cqrs.bookstore.shopping.web.transport.BookProjection;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
@@ -20,7 +18,10 @@ import java.util.UUID;
 import static com.sun.jersey.api.client.ClientResponse.Status.BAD_REQUEST;
 import static com.sun.jersey.api.client.ClientResponse.Status.NOT_FOUND;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 public class CartResourceTest {
@@ -60,9 +61,15 @@ public class CartResourceTest {
 
     CartDto cart = addItemToCart(cartId, new BookId(bookId.id), resources.client()).getEntity(CartDto.class);
 
-    LineItemDto expectedLineItem = new LineItemDto(bookId.id, title, price, 1, price);
-    Assert.assertThat(cart.lineItems, Matchers.hasSize(1));
-    Assert.assertThat(cart.lineItems, Matchers.hasItems(expectedLineItem));
+    LineItemDto expectedLineItem = new LineItemDto();
+    expectedLineItem.bookId = bookId.id;
+    expectedLineItem.title = title;
+    expectedLineItem.price = price;
+    expectedLineItem.quantity = 1;
+    expectedLineItem.totalPrice = price;
+
+    assertThat(cart.lineItems, hasSize(1));
+    assertThat(cart.lineItems, hasItems(expectedLineItem));
   }
 
   @Test
@@ -73,7 +80,7 @@ public class CartResourceTest {
 
     ClientResponse response = addItemToCart(cartId, new BookId(bookId.id), resources.client());
 
-    Assert.assertThat(response.getStatusInfo().getStatusCode(), is(BAD_REQUEST.getStatusCode()));
+    assertThat(response.getStatusInfo().getStatusCode(), is(BAD_REQUEST.getStatusCode()));
   }
 
   @Test
@@ -84,7 +91,7 @@ public class CartResourceTest {
         .accept(APPLICATION_JSON_TYPE)
         .get(ClientResponse.class);
 
-    Assert.assertThat(response.getClientResponseStatus(), is(NOT_FOUND));
+    assertThat(response.getStatusInfo().getStatusCode(), is(NOT_FOUND.getStatusCode()));
   }
 
   @Test
@@ -97,8 +104,8 @@ public class CartResourceTest {
         .accept(APPLICATION_JSON_TYPE)
         .get(CartDto.class);
 
-    Assert.assertThat(cart.cartId, is(cartId));
-    Assert.assertThat(cart.totalPrice, is(0L));
+    assertThat(cart.cartId, is(cartId));
+    assertThat(cart.totalPrice, is(0L));
   }
 
   @Test

@@ -18,13 +18,13 @@ import se.citerus.cqrs.bookstore.order.OrderStatus;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.BookDto;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
+import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
+import se.citerus.cqrs.bookstore.shopping.web.transport.LineItemDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.PlaceOrderRequest;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.Family.SUCCESSFUL;
@@ -120,7 +120,7 @@ public class ScenarioTest {
     String cartId = UUID.randomUUID().toString();
     createCart(cartId);
     addItemToCart(cartId, bookId);
-    placeOrder(cartId, orderId, customer);
+    placeOrder(cartId, customer);
     return orderId;
   }
 
@@ -151,8 +151,25 @@ public class ScenarioTest {
     return response;
   }
 
-  private void placeOrder(String cartId, OrderId orderId, CustomerInformation customer) {
-    placeOrder(new PlaceOrderRequest(cartId, orderId.id, customer.customerName, customer.email, customer.address));
+  private void placeOrder(String cartId, CustomerInformation customer) {
+    PlaceOrderRequest orderRequest = new PlaceOrderRequest();
+    orderRequest.orderId = cartId;
+    List<LineItemDto> items = new ArrayList<>();
+    LineItemDto item = new LineItemDto();
+    CreateBookRequest randomBook = createRandomBook();
+    item.bookId = randomBook.bookId;
+    item.price = randomBook.price;
+    item.quantity = 1;
+    item.title = randomBook.title;
+    items.add(item);
+    orderRequest.cart = new CartDto(cartId, items, randomBook.price, 1);
+    orderRequest.customerAddress = customer.address;
+    orderRequest.customerName = customer.customerName;
+    orderRequest.customerEmail = customer.email;
+
+
+    System.out.println("Placing order: " + orderRequest);
+    placeOrder(orderRequest);
   }
 
   private ClientResponse activateOrder(OrderId orderId) {

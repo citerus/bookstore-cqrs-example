@@ -17,4 +17,19 @@ public class Book {
     this.price = price;
     this.publisherContractId = publisherContractId;
   }
+
+  public String bookId() {
+    return bookId;
+  }
+
+  public BookDto toDto() {
+    BookDto bookDto = new BookDto();
+    bookDto.bookId = bookId;
+    bookDto.isbn = isbn;
+    bookDto.title = title;
+    bookDto.description = description;
+    bookDto.price = price;
+    bookDto.publisherContractId = publisherContractId;
+    return bookDto;
+  }
 }

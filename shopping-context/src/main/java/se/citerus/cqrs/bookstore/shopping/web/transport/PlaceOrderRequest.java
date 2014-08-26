@@ -1,35 +1,20 @@
 package se.citerus.cqrs.bookstore.shopping.web.transport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import se.citerus.cqrs.bookstore.TransportObject;
-import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
 
 import javax.validation.constraints.NotNull;
 
 public class PlaceOrderRequest extends TransportObject {
 
   @NotNull
-  public final String cartId;
+  public CartDto cart;
   @NotNull
-  public final String orderId;
+  public String orderId;
   @NotNull
-  public final String customerName;
+  public String customerName;
   @NotNull
-  public final String customerEmail;
+  public String customerEmail;
   @NotNull
-  public final String customerAddress;
-
-  public PlaceOrderRequest(@JsonProperty("cartId") String cartId,
-                           @JsonProperty("orderId") String orderId,
-                           @JsonProperty("customerName") String customerName,
-                           @JsonProperty("customerEmail") String customerEmail,
-                           @JsonProperty("customerAddress") String customerAddress) {
-
-    this.cartId = cartId;
-    this.orderId = orderId;
-    this.customerName = customerName;
-    this.customerEmail = customerEmail;
-    this.customerAddress = customerAddress;
-  }
+  public String customerAddress;
 
 }

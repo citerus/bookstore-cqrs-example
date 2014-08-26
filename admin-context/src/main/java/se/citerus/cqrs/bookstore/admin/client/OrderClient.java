@@ -1,8 +1,9 @@
 package se.citerus.cqrs.bookstore.admin.client;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
 import org.joda.time.LocalDate;
-import se.citerus.cqrs.bookstore.admin.web.transport.Order;
+import se.citerus.cqrs.bookstore.admin.web.transport.OrderDto;
 import se.citerus.cqrs.bookstore.admin.web.transport.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
 
@@ -13,6 +14,8 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 public class OrderClient {
 
+  public static final GenericType<List<OrderDto>> ORDER_LIST_TYPE = new GenericType<List<OrderDto>>() {
+  };
   private final Client client;
 
   private OrderClient(Client client) {
@@ -37,8 +40,8 @@ public class OrderClient {
     return null;
   }
 
-  public List<Order> listOrders() {
-    return null;
+  public List<OrderDto> listOrders() {
+    return client.resource("http://localhost:8080/orders").accept(APPLICATION_JSON_TYPE).get(ORDER_LIST_TYPE);
   }
 
   public List<Map<String, Object>> getAllEvents() {

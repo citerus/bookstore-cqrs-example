@@ -18,14 +18,14 @@ import javax.ws.rs.core.MediaType;
 @Path("order-requests")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class OrderResource {
+public class OrderCommandResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
   private final CartClient cartClient;
   private final CommandBus commandBus;
   private final CommandFactory commandFactory = new CommandFactory();
 
-  public OrderResource(CommandBus commandBus, CartClient cartClient) {
+  public OrderCommandResource(CommandBus commandBus, CartClient cartClient) {
     this.commandBus = commandBus;
     this.cartClient = cartClient;
   }
@@ -39,7 +39,7 @@ public class OrderResource {
   }
 
   @POST
-  public void placeOrder(@Valid PlaceOrderRequest placeOrderRequest) {
+  public void placeOrder(PlaceOrderRequest placeOrderRequest) {
     logger.info("Placing customer order: " + placeOrderRequest);
     CartDto cart = placeOrderRequest.cart;
     PlaceOrderCommand placeOrderCommand = commandFactory.toCommand(cart, placeOrderRequest);

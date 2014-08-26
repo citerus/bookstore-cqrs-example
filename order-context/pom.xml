@@ -17,6 +17,7 @@
     <module>publisher-command</module>
     <module>order-sagas</module>
     <module>order-web</module>
+    <module>query</module>
   </modules>
 
   <dependencies>

@@ -4,7 +4,6 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.mockito.Mockito;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.order.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.order.web.transport.LineItemDto;
@@ -16,9 +15,10 @@ import java.util.List;
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
 
-public class OrderResourceTest {
+public class OrderCommandResourceTest {
 
   private static final String SERVICE_ADDRESS = "http://localhost:8080";
   private static final String ORDER_RESOURCE = SERVICE_ADDRESS + "/order-requests";
@@ -27,21 +27,23 @@ public class OrderResourceTest {
   private static final QueryService queryService = mock(QueryService.class);
   private static CartClient cartClient = mock(CartClient.class);
 
-
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new OrderResource(commandBus, cartClient))
+      .addResource(new OrderCommandResource(commandBus, cartClient))
       .build();
 
   @After
   public void tearDown() throws Exception {
-    Mockito.reset(queryService, commandBus, cartClient);
+    reset(queryService, commandBus, cartClient);
   }
-
 
   @Test
   public void testCreateOrderRequest() {
     PlaceOrderRequest newOrderRequest = new PlaceOrderRequest();
+    newOrderRequest.orderId = UUID.randomUUID().toString();
+    newOrderRequest.customerAddress = "Address";
+    newOrderRequest.customerEmail = "test@example.com";
+    newOrderRequest.customerName = "John Doe";
     newOrderRequest.cart = createCart();
     createOrder(newOrderRequest);
   }

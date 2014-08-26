@@ -5,7 +5,6 @@ import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

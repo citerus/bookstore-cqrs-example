@@ -28,7 +28,7 @@ public class LineItem extends ValueObject {
     return item.price;
   }
 
-  public long getTotalAmount() {
+  public long getTotalPrice() {
     return item.price * quantity;
   }
 

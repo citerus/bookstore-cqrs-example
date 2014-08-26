@@ -36,7 +36,7 @@ public class Cart {
   public long getTotalAmount() {
     long totalAmount = 0;
     for (LineItem lineItem : lineItems.values()) {
-      totalAmount += lineItem.getTotalAmount();
+      totalAmount += lineItem.getTotalPrice();
     }
     return totalAmount;
   }

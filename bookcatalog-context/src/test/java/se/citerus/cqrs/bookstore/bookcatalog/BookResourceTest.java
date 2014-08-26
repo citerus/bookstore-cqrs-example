@@ -21,9 +21,8 @@ import static org.mockito.Mockito.when;
 
 public class BookResourceTest {
 
-
   private static final String BOOK_RESOURCE = "http://localhost:8080/books";
-  private static final GenericType<Collection<Book>> BOOK_COLLECTION_TYPE = new GenericType<Collection<Book>>() {
+  private static final GenericType<Collection<BookDto>> BOOK_COLLECTION_TYPE = new GenericType<Collection<BookDto>>() {
   };
 
   private static BookRepository bookRepository = mock(BookRepository.class);
@@ -43,12 +42,12 @@ public class BookResourceTest {
 
     when(bookRepository.listBooks()).thenReturn(asList(book));
 
-    Collection<Book> books = resources.client()
+    Collection<BookDto> books = resources.client()
         .resource(BOOK_RESOURCE)
         .accept(APPLICATION_JSON_TYPE)
         .get(BOOK_COLLECTION_TYPE);
 
-    assertThat(books, hasItem(book));
+    assertThat(books, hasItem(book.toDto()));
   }
 
   @Test
@@ -59,12 +58,12 @@ public class BookResourceTest {
 
     when(bookRepository.getBook(bookId)).thenReturn(book);
 
-    Book retrievedBook = resources.client()
+    BookDto retrievedBook = resources.client()
         .resource(BOOK_RESOURCE + "/" + bookId)
         .accept(APPLICATION_JSON_TYPE)
-        .get(Book.class);
+        .get(BookDto.class);
 
-    assertThat(retrievedBook, is(book));
+    assertThat(retrievedBook, is(book.toDto()));
   }
 
 }

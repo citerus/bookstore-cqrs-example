@@ -5,8 +5,6 @@ import javax.validation.constraints.NotNull;
 public class PlaceOrderRequest {
 
   @NotNull
-  public String cartId;
-  @NotNull
   public String orderId;
   @NotNull
   public String customerName;

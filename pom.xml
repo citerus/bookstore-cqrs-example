@@ -9,7 +9,6 @@
 
     <modules>
         <module>cqrs-lib</module>
-        <module>query</module>
         <module>application</module>
         <module>order-context</module>
         <module>shopping-context</module>

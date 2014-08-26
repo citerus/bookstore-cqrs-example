@@ -11,15 +11,18 @@
 
   <artifactId>shopping-context</artifactId>
 
-
   <dependencies>
     <dependency>
       <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>query</artifactId>
+      <artifactId>cqrs-lib</artifactId>
     </dependency>
     <dependency>
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-client</artifactId>
     </dependency>
     <dependency>
       <groupId>io.dropwizard</groupId>

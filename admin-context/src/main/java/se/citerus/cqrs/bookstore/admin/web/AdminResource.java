@@ -7,7 +7,7 @@ import se.citerus.cqrs.bookstore.admin.client.AdminBookClient;
 import se.citerus.cqrs.bookstore.admin.client.OrderClient;
 import se.citerus.cqrs.bookstore.admin.client.PublisherClient;
 import se.citerus.cqrs.bookstore.admin.web.transport.CreateBookRequest;
-import se.citerus.cqrs.bookstore.admin.web.transport.Order;
+import se.citerus.cqrs.bookstore.admin.web.transport.OrderDto;
 import se.citerus.cqrs.bookstore.admin.web.transport.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
 
@@ -37,8 +37,8 @@ public class AdminResource {
 
   @GET
   @Path("orders")
-  public List<Order> getOrders() {
-    List<Order> projections = orderClient.listOrders();
+  public List<OrderDto> getOrders() {
+    List<OrderDto> projections = orderClient.listOrders();
     logger.info("Returning [{}] orders", projections.size());
     return projections;
   }

@@ -25,6 +25,7 @@ public class AdminBookClient {
 
 
   public void createBook(CreateBookRequest createBookRequest) {
-
+    client.resource("http://localhost:8080/books")
+        .entity(createBookRequest, APPLICATION_JSON_TYPE).post();
   }
 }

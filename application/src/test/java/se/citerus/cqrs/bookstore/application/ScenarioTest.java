@@ -12,13 +12,12 @@ import se.citerus.cqrs.bookstore.admin.web.transport.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.UpdateBookPriceRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
-import se.citerus.cqrs.bookstore.event.DomainEventBus;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
-import se.citerus.cqrs.bookstore.query.*;
-import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
+import se.citerus.cqrs.bookstore.query.BookDto;
+import se.citerus.cqrs.bookstore.query.OrderProjection;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
 import se.citerus.cqrs.bookstore.shopping.web.transport.PlaceOrderRequest;
 
@@ -55,27 +54,10 @@ public class ScenarioTest {
   public void testCreateBook() {
     CreateBookRequest book = createRandomBook();
     createBook(book);
-    BookProjection bookProjection = getBook(book.bookId);
-    assertThat(bookProjection.getTitle(), is("DDD"));
-    assertThat(bookProjection.getDescription(), is("Domain Driven Design"));
-    assertThat(bookProjection.getIsbn(), is(book.isbn));
-  }
-
-  @Test
-  public void testUpdateBookPrice() throws Exception {
-    BookId bookId = BookId.randomId();
-    String isbn = "0321144215";
-    PublisherContractId contractId = PublisherContractId.randomId();
-    CreateBookRequest bookRequest = new CreateBookRequest(bookId.id, isbn, "DDD", "Domain Driven Design", 1000, contractId.id);
-    createBook(bookRequest);
-
-    updateBookPrice(bookId, 500L);
-
-    BookProjection bookProjection = getBook(bookId.id);
-    assertThat(bookProjection.getTitle(), is("DDD"));
-    assertThat(bookProjection.getDescription(), is("Domain Driven Design"));
-    assertThat(bookProjection.getIsbn(), is(isbn));
-    assertThat(bookProjection.getPrice(), is(500L));
+    BookDto bookProjection = getBook(book.bookId);
+    assertThat(bookProjection.title, is("DDD"));
+    assertThat(bookProjection.description, is("Domain Driven Design"));
+    assertThat(bookProjection.isbn, is(book.isbn));
   }
 
   @Test
@@ -151,17 +133,6 @@ public class ScenarioTest {
     return response;
   }
 
-  private static QueryService createQueryService(OrdersPerDayAggregator ordersPerDayAggregator, DomainEventBus domainEventBus) {
-    OrderListDenormalizer orderList = new OrderListDenormalizer(new InMemOrderProjectionRepository());
-    BookCatalogDenormalizer bookCatalog = new BookCatalogDenormalizer();
-    OrdersPerDayAggregator ordersPerDay = new OrdersPerDayAggregator();
-    QueryService queryService = new QueryService(orderList, bookCatalog, ordersPerDay);
-
-    domainEventBus.register(bookCatalog);
-    domainEventBus.register(orderList);
-    domainEventBus.register(ordersPerDayAggregator);
-    return queryService;
-  }
 
   private ClientResponse updateBookPrice(BookId bookId, long price) {
     UpdateBookPriceRequest request = new UpdateBookPriceRequest(bookId.id, price);
@@ -200,10 +171,10 @@ public class ScenarioTest {
         });
   }
 
-  private BookProjection getBook(String bookId) {
+  private BookDto getBook(String bookId) {
     return client.resource(SERVER_ADDRESS + "/books/" + bookId)
         .accept(APPLICATION_JSON)
-        .get(BookProjection.class);
+        .get(BookDto.class);
   }
 
   private OrderProjection getOrder(OrderId id) {

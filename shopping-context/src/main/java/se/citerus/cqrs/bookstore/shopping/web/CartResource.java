@@ -2,12 +2,11 @@ package se.citerus.cqrs.bookstore.shopping.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.query.BookProjection;
-import se.citerus.cqrs.bookstore.query.QueryService;
 import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
 import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
 import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.web.model.Item;
+import se.citerus.cqrs.bookstore.shopping.web.transport.BookProjection;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
 
@@ -29,11 +28,11 @@ import static se.citerus.cqrs.bookstore.GenericId.isValid;
 public class CartResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
-  private final QueryService queryService;
+  private final BookClient bookClient;
   private final CartRepository cartRepository;
 
-  public CartResource(QueryService queryService, CartRepository cartRepository) {
-    this.queryService = queryService;
+  public CartResource(BookClient bookClient, CartRepository cartRepository) {
+    this.bookClient = bookClient;
     this.cartRepository = cartRepository;
   }
 
@@ -48,9 +47,9 @@ public class CartResource {
   public CartDto addItem(@PathParam("cartId") String cartId, BookId bookId) {
     Cart cart = cartRepository.get(cartId);
     logger.debug("Got addItem request " + bookId);
-    BookProjection book = queryService.getBook(bookId.id);
+    BookProjection book = bookClient.getBook(bookId.id);
     assertBookExists(bookId, book);
-    Item item = new Item(bookId, book.getTitle(), book.getPrice());
+    Item item = new Item(bookId, book.title, book.price);
     logger.info("Adding item to cart: " + item);
     cart.add(item);
     return CartDto.fromCart(cart);

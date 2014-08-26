@@ -12,23 +12,15 @@ import java.util.Map;
 public class QueryService {
 
   private final OrderListDenormalizer orderListDenormalizer;
-  private final BookCatalogDenormalizer bookCatalogDenormalizer;
   private final OrdersPerDayAggregator ordersPerDayAggregator;
+  private final BookCatalogClient bookCatalogClient;
 
   public QueryService(OrderListDenormalizer orderListDenormalizer,
-                      BookCatalogDenormalizer bookCatalogDenormalizer,
-                      OrdersPerDayAggregator ordersPerDayAggregator) {
+                      OrdersPerDayAggregator ordersPerDayAggregator,
+                      BookCatalogClient bookCatalogClient) {
     this.orderListDenormalizer = orderListDenormalizer;
-    this.bookCatalogDenormalizer = bookCatalogDenormalizer;
     this.ordersPerDayAggregator = ordersPerDayAggregator;
-  }
-
-  public BookProjection getBook(String bookId) {
-    return bookCatalogDenormalizer.get(new BookId(bookId));
-  }
-
-  public Collection<BookProjection> listBooks() {
-    return bookCatalogDenormalizer.listBooks();
+    this.bookCatalogClient = bookCatalogClient;
   }
 
   public OrderProjection getOrder(OrderId orderId) {
@@ -40,8 +32,8 @@ public class QueryService {
   }
 
   public PublisherContractId findPublisher(BookId bookId) {
-    BookProjection bookProjection = bookCatalogDenormalizer.get(bookId);
-    return bookProjection.hasPublisher() ? new PublisherContractId(bookProjection.getPublisherContractId()) : null;
+    BookDto book = bookCatalogClient.getBook(bookId.id);
+    return book.hasPublisher() ? new PublisherContractId(book.publisherContractId) : null;
   }
 
   public Map<LocalDate, Integer> getOrdersPerDay() {

@@ -12,5 +12,11 @@
 
   <artifactId>book-command</artifactId>
 
+  <dependencies>
+    <dependency>
+      <groupId>se.citerus.cqrs.bookstore</groupId>
+      <artifactId>eventbus-contract</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

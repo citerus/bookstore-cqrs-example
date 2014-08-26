@@ -1,7 +1,6 @@
 package se.citerus.cqrs.bookstore.shopping.web.model;
 
 import se.citerus.cqrs.bookstore.ValueObject;
-import se.citerus.cqrs.bookstore.book.BookId;
 
 public class Item extends ValueObject {
 

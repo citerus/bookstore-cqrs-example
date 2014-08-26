@@ -23,8 +23,8 @@ public class QueryService {
     this.ordersPerDayAggregator = ordersPerDayAggregator;
   }
 
-  public BookProjection getBook(BookId bookId) {
-    return bookCatalogDenormalizer.get(bookId);
+  public BookProjection getBook(String bookId) {
+    return bookCatalogDenormalizer.get(new BookId(bookId));
   }
 
   public Collection<BookProjection> listBooks() {

@@ -147,7 +147,7 @@ public class ScenarioTest {
     ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/register-publisher-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);
-    assertThat(response.getClientResponseStatus().getFamily(), is(SUCCESSFUL));
+    assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
   }
 
@@ -168,7 +168,7 @@ public class ScenarioTest {
     ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/update-book-price-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);
-    assertThat(response.getClientResponseStatus().getFamily(), is(SUCCESSFUL));
+    assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
   }
 
@@ -176,7 +176,7 @@ public class ScenarioTest {
     ClientResponse response = client.resource(SERVER_ADDRESS + "/carts/" + cartId + "/items")
         .entity(new BookId(bookId), APPLICATION_JSON)
         .post(ClientResponse.class);
-    assertThat(response.getClientResponseStatus().getFamily(), is(SUCCESSFUL));
+    assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
   }
 
@@ -218,7 +218,7 @@ public class ScenarioTest {
     ClientResponse response = client.resource(SERVER_ADDRESS + "/carts")
         .entity(createCartRequest, APPLICATION_JSON)
         .post(ClientResponse.class);
-    assertThat(response.getClientResponseStatus().getFamily(), is(SUCCESSFUL));
+    assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
   }
 
@@ -226,7 +226,7 @@ public class ScenarioTest {
     ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/create-book-requests")
         .entity(createBookRequest, APPLICATION_JSON)
         .post(ClientResponse.class);
-    assertThat(response.getClientResponseStatus().getFamily(), is(SUCCESSFUL));
+    assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
   }
 

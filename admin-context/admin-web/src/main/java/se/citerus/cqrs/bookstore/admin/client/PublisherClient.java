@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.admin;
+package se.citerus.cqrs.bookstore.admin.client;
 
 import com.sun.jersey.api.client.Client;
 import se.citerus.cqrs.bookstore.admin.web.transport.OrderActivationRequest;

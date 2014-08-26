@@ -58,7 +58,7 @@ public class BookResourceTest {
     BookId bookId = BookId.randomId();
     BookProjection book = new BookProjection(bookId.id, "1234567890", "Book Title", "", 1000L, null);
 
-    when(queryService.getBook(bookId)).thenReturn(book);
+    when(queryService.getBook(bookId.id)).thenReturn(book);
 
     BookProjection retrievedBook = resources.client()
         .resource(BOOK_RESOURCE + "/" + bookId.id)

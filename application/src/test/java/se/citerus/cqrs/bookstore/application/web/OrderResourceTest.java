@@ -54,7 +54,7 @@ public class OrderResourceTest {
     PlaceOrderRequest newOrderRequest = new PlaceOrderRequest(cartId, orderId, "TestCustomer", "test@example.com", "Street 1");
 
     BookProjection book = mock(BookProjection.class);
-    when(queryService.getBook(new BookId(bookId))).thenReturn(book);
+    when(queryService.getBook(bookId)).thenReturn(book);
     ArrayList<LineItemDto> lineItems = new ArrayList<>();
     lineItems.add(new LineItemDto(bookId, "Test", 100, 10, 100));
     CartDto cart = new CartDto(cartId, lineItems, 1000, 100);

@@ -6,8 +6,9 @@
 
   <parent>
     <groupId>se.citerus.cqrs.bookstore</groupId>
-    <artifactId>cqrs-bookstore</artifactId>
+    <artifactId>order-context</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>eventbus-contract</artifactId>

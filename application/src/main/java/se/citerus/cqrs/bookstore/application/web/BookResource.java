@@ -35,7 +35,7 @@ public class BookResource {
   @GET
   @Path("{bookId}")
   public BookProjection getBook(@PathParam("bookId") BookId bookId) {
-    BookProjection book = queryService.getBook(bookId);
+    BookProjection book = queryService.getBook(bookId.id);
     logger.info("Returning book: " + book);
     return book;
   }

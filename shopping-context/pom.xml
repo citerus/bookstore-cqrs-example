@@ -15,10 +15,6 @@
   <dependencies>
     <dependency>
       <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>eventbus-contract</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>se.citerus.cqrs.bookstore</groupId>
       <artifactId>query</artifactId>
     </dependency>
     <dependency>

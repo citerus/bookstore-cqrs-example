@@ -12,6 +12,7 @@
   <artifactId>order-context</artifactId>
   <packaging>pom</packaging>
   <modules>
+    <module>eventbus-contract</module>
     <module>order-command</module>
     <module>publisher-command</module>
     <module>order-sagas</module>
@@ -20,25 +21,23 @@
 
   <dependencies>
     <dependency>
-      <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>eventbus-contract</artifactId>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
-    <dependency>
-      <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>query</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

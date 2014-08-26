@@ -1,10 +1,11 @@
-package se.citerus.cqrs.bookstore.admin.command;
+package se.citerus.cqrs.bookstore.admin.web;
 
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.admin.OrderClient;
-import se.citerus.cqrs.bookstore.admin.PublisherClient;
+import se.citerus.cqrs.bookstore.admin.client.OrderClient;
+import se.citerus.cqrs.bookstore.admin.client.PublisherClient;
+import se.citerus.cqrs.bookstore.admin.command.CommandFactory;
 import se.citerus.cqrs.bookstore.admin.web.transport.CreateBookRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;

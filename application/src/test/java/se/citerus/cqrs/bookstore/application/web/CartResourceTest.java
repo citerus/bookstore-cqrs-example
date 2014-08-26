@@ -58,7 +58,7 @@ public class CartResourceTest {
     createCartWithId(cartId, resources.client());
 
     BookProjection book = new BookProjection(bookId.id, isbn, title, description, price, publisher.id);
-    when(queryService.getBook(bookId)).thenReturn(book);
+    when(queryService.getBook(bookId.id)).thenReturn(book);
 
     CartDto cart = addItemToCart(cartId, new BookId(bookId.id), resources.client()).getEntity(CartDto.class);
 

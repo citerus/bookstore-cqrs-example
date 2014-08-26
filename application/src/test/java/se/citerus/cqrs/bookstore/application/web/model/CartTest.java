@@ -1,8 +1,8 @@
 package se.citerus.cqrs.bookstore.application.web.model;
 
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
+import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
 import se.citerus.cqrs.bookstore.shopping.web.model.Item;
 
 import java.util.UUID;

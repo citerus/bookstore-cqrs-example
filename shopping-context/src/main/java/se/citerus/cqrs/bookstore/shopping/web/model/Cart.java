@@ -1,7 +1,5 @@
 package se.citerus.cqrs.bookstore.shopping.web.model;
 
-import se.citerus.cqrs.bookstore.book.BookId;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;

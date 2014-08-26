@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.application.web;
+package se.citerus.cqrs.bookstore.admin.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

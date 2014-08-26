@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.admin.client.OrderClient;
 import se.citerus.cqrs.bookstore.admin.client.PublisherClient;
 import se.citerus.cqrs.bookstore.admin.web.AdminResource;
-import se.citerus.cqrs.bookstore.application.web.BookResource;
+import se.citerus.cqrs.bookstore.admin.web.BookResource;
 import se.citerus.cqrs.bookstore.application.web.CartClient;
 import se.citerus.cqrs.bookstore.application.web.OrderResource;
 import se.citerus.cqrs.bookstore.application.web.PublisherResource;

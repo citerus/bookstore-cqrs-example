@@ -1,21 +1,20 @@
-package se.citerus.cqrs.bookstore.application.web;
+package se.citerus.cqrs.bookstore.admin.command;
 
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.admin.OrderClient;
+import se.citerus.cqrs.bookstore.admin.PublisherClient;
 import se.citerus.cqrs.bookstore.admin.web.transport.CreateBookRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.UpdateBookPriceRequest;
-import se.citerus.cqrs.bookstore.application.CommandFactory;
 import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.order.book.command.CreateBookCommand;
 import se.citerus.cqrs.bookstore.order.book.command.UpdateBookPriceCommand;
-import se.citerus.cqrs.bookstore.order.publisher.command.RegisterPublisherContractCommand;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
@@ -39,12 +38,14 @@ public class AdminResource {
   private final OrderClient orderClient;
   private final CommandFactory commandFactory = new CommandFactory();
   private final DomainEventStore eventStore;
+  private final PublisherClient publisherClient;
 
-  public AdminResource(QueryService queryService, CommandBus commandBus, DomainEventStore eventStore, OrderClient orderClient) {
+  public AdminResource(QueryService queryService, CommandBus commandBus, DomainEventStore eventStore, OrderClient orderClient, PublisherClient publisherClient) {
     this.queryService = queryService;
     this.commandBus = commandBus;
     this.orderClient = orderClient;
     this.eventStore = eventStore;
+    this.publisherClient = publisherClient;
   }
 
   @GET
@@ -97,8 +98,7 @@ public class AdminResource {
   public void registerPublisher(@Valid RegisterPublisherRequest registerPublisherRequest) {
     PublisherContractId publisherContractId = new PublisherContractId(registerPublisherRequest.publisherContractId);
     logger.info("Registering publisher: " + publisherContractId);
-    RegisterPublisherContractCommand command = commandFactory.toCommand(publisherContractId, registerPublisherRequest);
-    commandBus.dispatch(command);
+    publisherClient.registerPublisher(registerPublisherRequest);
   }
 
   // TODO: Add Simple bar chart to admin gui!

@@ -1,18 +1,12 @@
-package se.citerus.cqrs.bookstore.application;
+package se.citerus.cqrs.bookstore.application.web;
 
-import se.citerus.cqrs.bookstore.admin.web.transport.CreateBookRequest;
-import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
-import se.citerus.cqrs.bookstore.admin.web.transport.UpdateBookPriceRequest;
-import se.citerus.cqrs.bookstore.application.web.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.book.BookId;
-import se.citerus.cqrs.bookstore.command.order.ActivateOrderCommand;
-import se.citerus.cqrs.bookstore.command.order.PlaceOrderCommand;
-import se.citerus.cqrs.bookstore.order.book.command.CreateBookCommand;
-import se.citerus.cqrs.bookstore.order.book.command.UpdateBookPriceCommand;
-import se.citerus.cqrs.bookstore.order.publisher.command.RegisterPublisherContractCommand;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderLine;
+import se.citerus.cqrs.bookstore.order.command.ActivateOrderCommand;
+import se.citerus.cqrs.bookstore.order.command.PlaceOrderCommand;
+import se.citerus.cqrs.bookstore.order.publisher.command.RegisterPublisherContractCommand;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.LineItemDto;
@@ -23,6 +17,9 @@ import java.util.List;
 
 public class CommandFactory {
 
+  public RegisterPublisherContractCommand toCommand(PublisherContractId publisherContractId, RegisterPublisherRequest request) {
+    return new RegisterPublisherContractCommand(publisherContractId, request.publisherName, request.feePercentage, request.limit);
+  }
   public PlaceOrderCommand toCommand(CartDto cart, PlaceOrderRequest request) {
     List<OrderLine> itemsToOrder = getOrderLines(cart);
     CustomerInformation customerInformation = getCustomerInformation(request);
@@ -31,20 +28,6 @@ public class CommandFactory {
 
   public ActivateOrderCommand toCommand(OrderActivationRequest request) {
     return new ActivateOrderCommand(new OrderId(request.orderId));
-  }
-
-  public CreateBookCommand toCommand(BookId bookId, CreateBookRequest request) {
-    String idString = request.publisherContractId;
-    PublisherContractId publisherContractId = idString == null ? null : new PublisherContractId(idString);
-    return new CreateBookCommand(bookId, request.isbn, request.title, request.description, request.price, publisherContractId);
-  }
-
-  public RegisterPublisherContractCommand toCommand(PublisherContractId publisherContractId, RegisterPublisherRequest request) {
-    return new RegisterPublisherContractCommand(publisherContractId, request.publisherName, request.feePercentage, request.limit);
-  }
-
-  public UpdateBookPriceCommand toCommand(UpdateBookPriceRequest updateBookPriceRequest) {
-    return new UpdateBookPriceCommand(new BookId(updateBookPriceRequest.bookId), updateBookPriceRequest.price);
   }
 
   private List<OrderLine> getOrderLines(CartDto cart) {

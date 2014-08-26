@@ -122,9 +122,12 @@ public class ScenarioTest {
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
     OrderId orderId = addBookToCartAndPlaceOrder(randomBook.bookId, customer);
 
+    // TODO: Add await instea of sleep?
     Thread.sleep(500);
 
     activateOrder(orderId);
+
+    Thread.sleep(500);
 
     OrderProjection order = getOrder(orderId);
     assertThat(order.getStatus(), is(ACTIVATED));

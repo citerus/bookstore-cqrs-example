@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.admin.OrderClient;
+import se.citerus.cqrs.bookstore.admin.PublisherClient;
+import se.citerus.cqrs.bookstore.admin.command.AdminResource;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.order.OrderId;
@@ -36,13 +38,14 @@ public class AdminResourceTest {
   private static final DomainEventStore eventStore = mock(DomainEventStore.class);
   private static final QueryService queryService = mock(QueryService.class);
   private static final OrderClient orderClient = mock(OrderClient.class);
+  private static final PublisherClient publisherClient = mock(PublisherClient.class);
 
   public static final GenericType<List<OrderProjection>> ORDER_LIST_TYPE = new GenericType<List<OrderProjection>>() {
   };
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new AdminResource(queryService, commandBus, eventStore, orderClient))
+      .addResource(new AdminResource(queryService, commandBus, eventStore, orderClient, publisherClient))
       .build();
 
   @After

@@ -9,17 +9,19 @@ import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.admin.OrderClient;
-import se.citerus.cqrs.bookstore.application.web.AdminResource;
+import se.citerus.cqrs.bookstore.admin.PublisherClient;
+import se.citerus.cqrs.bookstore.admin.command.AdminResource;
 import se.citerus.cqrs.bookstore.application.web.BookResource;
 import se.citerus.cqrs.bookstore.application.web.CartClient;
 import se.citerus.cqrs.bookstore.application.web.OrderResource;
+import se.citerus.cqrs.bookstore.application.web.PublisherResource;
 import se.citerus.cqrs.bookstore.command.CommandBus;
-import se.citerus.cqrs.bookstore.command.order.OrderCommandHandler;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.infrastructure.*;
 import se.citerus.cqrs.bookstore.order.book.command.BookCommandHandler;
+import se.citerus.cqrs.bookstore.order.command.OrderCommandHandler;
 import se.citerus.cqrs.bookstore.order.publisher.command.PublisherContractCommandHandler;
 import se.citerus.cqrs.bookstore.order.saga.PurchaseRegistrationSaga;
 import se.citerus.cqrs.bookstore.query.BookCatalogDenormalizer;
@@ -82,10 +84,12 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
 
     CartClient cartClient = CartClient.create(Client.create());
     OrderClient orderClient = OrderClient.create(Client.create());
+    PublisherClient publisherClient = PublisherClient.create(Client.create());
     environment.jersey().register(new OrderResource(commandBus, cartClient));
     environment.jersey().register(new BookResource(queryService));
     environment.jersey().register(new CartResource(queryService, cartRepository));
-    environment.jersey().register(new AdminResource(queryService, commandBus, domainEventStore, orderClient));
+    environment.jersey().register(new AdminResource(queryService, commandBus, domainEventStore, orderClient, publisherClient));
+    environment.jersey().register(new PublisherResource(commandBus));
     logger.info("Server started!");
   }
 

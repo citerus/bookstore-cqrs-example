@@ -2,10 +2,9 @@ package se.citerus.cqrs.bookstore.application.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.application.CommandFactory;
 import se.citerus.cqrs.bookstore.command.CommandBus;
-import se.citerus.cqrs.bookstore.command.order.ActivateOrderCommand;
-import se.citerus.cqrs.bookstore.command.order.PlaceOrderCommand;
+import se.citerus.cqrs.bookstore.order.command.ActivateOrderCommand;
+import se.citerus.cqrs.bookstore.order.command.PlaceOrderCommand;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.PlaceOrderRequest;
 
@@ -14,12 +13,11 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import javax.ws.rs.core.MediaType;
 
 @Path("order-requests")
-@Produces(APPLICATION_JSON)
-@Consumes(APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class OrderResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());

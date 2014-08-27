@@ -27,13 +27,8 @@ public class OrderClient {
   }
 
   public void activate(OrderActivationRequest activationRequest) {
-    client.resource("http://localhost:8080/order-requests/activations")
+    client.resource("http://localhost:8080/service/order-requests/activations")
         .entity(activationRequest, APPLICATION_JSON_TYPE).post();
-  }
-
-  public void registerPublisher(RegisterPublisherRequest registerPublisherRequest) {
-    client.resource("http://localhost:8080/order-requests/activations")
-        .entity(registerPublisherRequest, APPLICATION_JSON_TYPE).post();
   }
 
   public Map<LocalDate, Integer> getOrdersPerDay() {
@@ -41,7 +36,7 @@ public class OrderClient {
   }
 
   public List<OrderDto> listOrders() {
-    return client.resource("http://localhost:8080/orders").accept(APPLICATION_JSON_TYPE).get(ORDER_LIST_TYPE);
+    return client.resource("http://localhost:8080/service/orders").accept(APPLICATION_JSON_TYPE).get(ORDER_LIST_TYPE);
   }
 
   public List<Map<String, Object>> getAllEvents() {

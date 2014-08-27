@@ -17,6 +17,6 @@ public class BookClient {
   }
 
   public BookProjection getBook(String bookId) {
-    return client.resource("http://localhost:8080/books/" + bookId).get(BookProjection.class);
+    return client.resource("http://localhost:8080/service/books/" + bookId).get(BookProjection.class);
   }
 }

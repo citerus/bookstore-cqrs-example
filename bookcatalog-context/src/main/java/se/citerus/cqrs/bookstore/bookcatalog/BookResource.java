@@ -11,6 +11,7 @@ import java.util.Collection;
 
 @Path("books")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class BookResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());

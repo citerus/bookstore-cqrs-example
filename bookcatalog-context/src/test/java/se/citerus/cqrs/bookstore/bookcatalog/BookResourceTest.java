@@ -26,6 +26,7 @@ public class BookResourceTest {
   };
 
   private static BookRepository bookRepository = mock(BookRepository.class);
+
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
       .addResource(new BookResource(bookRepository))

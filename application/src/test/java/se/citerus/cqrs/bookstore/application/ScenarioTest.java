@@ -34,7 +34,7 @@ import static se.citerus.cqrs.bookstore.order.OrderStatus.ACTIVATED;
 
 public class ScenarioTest {
 
-  public static final String SERVER_ADDRESS = "http://localhost:8080";
+  public static final String SERVER_ADDRESS = "http://localhost:8080/service";
 
   @ClassRule
   public static final DropwizardAppRule<BookstoreConfiguration> RULE =
@@ -111,11 +111,11 @@ public class ScenarioTest {
     OrderId orderId = addBookToCartAndPlaceOrder(randomBook.bookId, customer);
 
     // TODO: Add await instea of sleep?
-    Thread.sleep(500);
+    Thread.sleep(200);
 
     activateOrder(orderId);
 
-    Thread.sleep(500);
+    Thread.sleep(200);
 
     OrderProjection order = getOrder(orderId);
     assertThat(order.getStatus(), is(ACTIVATED));
@@ -123,11 +123,11 @@ public class ScenarioTest {
 
   private OrderId addBookToCartAndPlaceOrder(String bookId, CustomerInformation customer) throws InterruptedException {
     String cartId = UUID.randomUUID().toString();
-    Thread.sleep(500);
+    Thread.sleep(200);
     createCart(cartId);
-    Thread.sleep(500);
+    Thread.sleep(200);
     addItemToCart(cartId, bookId);
-    Thread.sleep(500);
+    Thread.sleep(200);
     CartDto cart = getCart(cartId);
     placeOrder(cartId, customer, cart);
     return new OrderId(cartId);

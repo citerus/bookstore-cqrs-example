@@ -17,7 +17,7 @@ public class PublisherClient {
   }
 
   public void registerPublisher(RegisterPublisherRequest registerPublisherRequest) {
-    client.resource("http://localhost:8080/publisher-requests/register")
+    client.resource("http://localhost:8080/service/publisher-requests/register")
         .entity(registerPublisherRequest, APPLICATION_JSON_TYPE).post();
   }
 

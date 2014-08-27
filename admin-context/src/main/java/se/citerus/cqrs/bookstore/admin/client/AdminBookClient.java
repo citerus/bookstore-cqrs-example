@@ -19,13 +19,13 @@ public class AdminBookClient {
   }
 
   public void registerPublisher(RegisterPublisherRequest registerPublisherRequest) {
-    client.resource("http://localhost:8080/order-requests/activations")
+    client.resource("http://localhost:8080/service/order-requests/activations")
         .entity(registerPublisherRequest, APPLICATION_JSON_TYPE).post();
   }
 
 
   public void createBook(CreateBookRequest createBookRequest) {
-    client.resource("http://localhost:8080/books")
+    client.resource("http://localhost:8080/service/books")
         .entity(createBookRequest, APPLICATION_JSON_TYPE).post();
   }
 }

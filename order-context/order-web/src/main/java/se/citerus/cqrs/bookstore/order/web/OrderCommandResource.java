@@ -21,13 +21,11 @@ import javax.ws.rs.core.MediaType;
 public class OrderCommandResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
-  private final CartClient cartClient;
   private final CommandBus commandBus;
   private final CommandFactory commandFactory = new CommandFactory();
 
-  public OrderCommandResource(CommandBus commandBus, CartClient cartClient) {
+  public OrderCommandResource(CommandBus commandBus) {
     this.commandBus = commandBus;
-    this.cartClient = cartClient;
   }
 
   @POST
@@ -44,7 +42,6 @@ public class OrderCommandResource {
     CartDto cart = placeOrderRequest.cart;
     PlaceOrderCommand placeOrderCommand = commandFactory.toCommand(cart, placeOrderRequest);
     commandBus.dispatch(placeOrderCommand);
-    cartClient.delete(cart.cartId);
   }
 
 }

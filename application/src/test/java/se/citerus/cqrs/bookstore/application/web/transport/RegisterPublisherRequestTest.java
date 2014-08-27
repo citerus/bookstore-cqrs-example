@@ -13,7 +13,11 @@ public class RegisterPublisherRequestTest {
 
   @Test
   public void testSerialize() throws IOException {
-    RegisterPublisherRequest request1 = new RegisterPublisherRequest("ID", "Name", 5.5, 1000);
+    RegisterPublisherRequest request1 = new RegisterPublisherRequest();
+    request1.publisherContractId = "ID";
+    request1.publisherName = "Name";
+    request1.feePercentage = 5.5;
+    request1.limit = 1000;
     String json = JsonSerializer.serialize(request1);
     String payload = "{\"publisherContractId\":\"ID\",\"publisherName\":\"Name\",\"feePercentage\":5.5,\"limit\":1000}";
     assertThat(json, is(payload));

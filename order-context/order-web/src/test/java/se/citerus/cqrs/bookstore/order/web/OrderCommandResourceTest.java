@@ -25,16 +25,15 @@ public class OrderCommandResourceTest {
 
   private static final CommandBus commandBus = mock(CommandBus.class);
   private static final QueryService queryService = mock(QueryService.class);
-  private static CartClient cartClient = mock(CartClient.class);
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new OrderCommandResource(commandBus, cartClient))
+      .addResource(new OrderCommandResource(commandBus))
       .build();
 
   @After
   public void tearDown() throws Exception {
-    reset(queryService, commandBus, cartClient);
+    reset(queryService, commandBus);
   }
 
   @Test

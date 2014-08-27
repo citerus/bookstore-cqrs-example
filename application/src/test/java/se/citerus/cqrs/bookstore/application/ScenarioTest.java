@@ -15,16 +15,16 @@ import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
-import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.query.BookDto;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
-import se.citerus.cqrs.bookstore.shopping.web.transport.LineItemDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.PlaceOrderRequest;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.Family.SUCCESSFUL;
@@ -78,7 +78,7 @@ public class ScenarioTest {
   }
 
   @Test
-  public void testGetOrders() {
+  public void testGetOrders() throws InterruptedException {
     CreateBookRequest randomBook = createRandomBook();
     createBook(randomBook);
     int initialSize = getOrders().size();
@@ -87,6 +87,8 @@ public class ScenarioTest {
 
     OrderId orderId1 = addBookToCartAndPlaceOrder(randomBook.bookId, customer);
     OrderId orderId2 = addBookToCartAndPlaceOrder(randomBook.bookId, customer);
+
+    Thread.sleep(500);
 
     Collection<OrderProjection> orders = getOrders();
     assertThat(orders.size(), is(initialSize + 2));
@@ -98,7 +100,11 @@ public class ScenarioTest {
 
   @Test
   public void testActivateOrder() throws Exception {
+    String publisherContractId = UUID.randomUUID().toString();
+    registerPublisher(publisherContractId, "Addison-Wesley", 10.0, 1000);
+
     CreateBookRequest randomBook = createRandomBook();
+    randomBook.publisherContractId = publisherContractId;
     createBook(randomBook);
 
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
@@ -115,17 +121,29 @@ public class ScenarioTest {
     assertThat(order.getStatus(), is(ACTIVATED));
   }
 
-  private OrderId addBookToCartAndPlaceOrder(String bookId, CustomerInformation customer) {
-    OrderId orderId = OrderId.randomId();
+  private OrderId addBookToCartAndPlaceOrder(String bookId, CustomerInformation customer) throws InterruptedException {
     String cartId = UUID.randomUUID().toString();
+    Thread.sleep(500);
     createCart(cartId);
+    Thread.sleep(500);
     addItemToCart(cartId, bookId);
-    placeOrder(cartId, customer);
-    return orderId;
+    Thread.sleep(500);
+    CartDto cart = getCart(cartId);
+    placeOrder(cartId, customer, cart);
+    return new OrderId(cartId);
+  }
+
+  private CartDto getCart(String cartId) {
+    return client.resource(SERVER_ADDRESS + "/carts/" + cartId)
+        .get(CartDto.class);
   }
 
   private ClientResponse registerPublisher(String publisherContractId, String name, double feePercentage, long limit) {
-    RegisterPublisherRequest request = new RegisterPublisherRequest(publisherContractId, name, feePercentage, limit);
+    RegisterPublisherRequest request = new RegisterPublisherRequest();
+    request.publisherContractId = publisherContractId;
+    request.publisherName = name;
+    request.feePercentage = feePercentage;
+    request.limit = limit;
     ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/register-publisher-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);
@@ -151,22 +169,13 @@ public class ScenarioTest {
     return response;
   }
 
-  private void placeOrder(String cartId, CustomerInformation customer) {
+  private void placeOrder(String cartId, CustomerInformation customer, CartDto cart) {
     PlaceOrderRequest orderRequest = new PlaceOrderRequest();
     orderRequest.orderId = cartId;
-    List<LineItemDto> items = new ArrayList<>();
-    LineItemDto item = new LineItemDto();
-    CreateBookRequest randomBook = createRandomBook();
-    item.bookId = randomBook.bookId;
-    item.price = randomBook.price;
-    item.quantity = 1;
-    item.title = randomBook.title;
-    items.add(item);
-    orderRequest.cart = new CartDto(cartId, items, randomBook.price, 1);
+    orderRequest.cart = cart;
     orderRequest.customerAddress = customer.address;
     orderRequest.customerName = customer.customerName;
     orderRequest.customerEmail = customer.email;
-
 
     System.out.println("Placing order: " + orderRequest);
     placeOrder(orderRequest);
@@ -228,9 +237,14 @@ public class ScenarioTest {
 
   private CreateBookRequest createRandomBook() {
     BookId bookId = BookId.randomId();
-    String isbn = "0321125215";
-    PublisherContractId contractId = PublisherContractId.randomId();
-    return new CreateBookRequest(bookId.id, isbn, "DDD", "Domain Driven Design", 1000, contractId.id);
+    CreateBookRequest createBookRequest = new CreateBookRequest();
+    createBookRequest.bookId = bookId.id;
+    createBookRequest.isbn = "0321125215";
+    createBookRequest.title = "DDD";
+    createBookRequest.description = "Domain Driven Design";
+    createBookRequest.price = 1000;
+    createBookRequest.publisherContractId = null;
+    return createBookRequest;
   }
 
 }

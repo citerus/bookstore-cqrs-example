@@ -12,8 +12,8 @@ import se.citerus.cqrs.bookstore.admin.client.AdminBookClient;
 import se.citerus.cqrs.bookstore.admin.client.OrderClient;
 import se.citerus.cqrs.bookstore.admin.client.PublisherClient;
 import se.citerus.cqrs.bookstore.admin.web.AdminResource;
-import se.citerus.cqrs.bookstore.order.web.CartClient;
 import se.citerus.cqrs.bookstore.order.web.OrderCommandResource;
+import se.citerus.cqrs.bookstore.order.web.OrderResource;
 import se.citerus.cqrs.bookstore.order.web.PublisherResource;
 import se.citerus.cqrs.bookstore.bookcatalog.BookRepository;
 import se.citerus.cqrs.bookstore.bookcatalog.BookResource;
@@ -84,16 +84,16 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     PurchaseRegistrationSaga purchaseRegistrationSaga = new PurchaseRegistrationSaga(queryService, commandBus);
     domainEventBus.register(purchaseRegistrationSaga);
 
-    CartClient cartClient = CartClient.create(Client.create());
     OrderClient orderClient = OrderClient.create(Client.create());
     PublisherClient publisherClient = PublisherClient.create(Client.create());
     BookClient bookClient = BookClient.create(Client.create());
     AdminBookClient adminBookClient = AdminBookClient.create(Client.create());
-    environment.jersey().register(new OrderCommandResource(commandBus, cartClient));
+    environment.jersey().register(new OrderCommandResource(commandBus));
     environment.jersey().register(new BookResource(new BookRepository()));
     environment.jersey().register(new CartResource(bookClient, cartRepository));
     environment.jersey().register(new AdminResource(orderClient, publisherClient, adminBookClient));
     environment.jersey().register(new PublisherResource(commandBus));
+    environment.jersey().register(new OrderResource(queryService));
     logger.info("Server started!");
   }
 

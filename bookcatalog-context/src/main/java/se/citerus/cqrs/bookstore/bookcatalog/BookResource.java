@@ -24,7 +24,10 @@ public class BookResource {
   @Path("{bookId}")
   public BookDto getBook(@PathParam("bookId") String bookId) {
     Book book = bookRepository.getBook(bookId);
-    logger.info("Returning book with id {}", bookId);
+    if(book == null) {
+      throw new IllegalArgumentException("No such book: " + bookId);
+    }
+    logger.info("Returning book with id {}", book.bookId());
     return book.toDto();
   }
 

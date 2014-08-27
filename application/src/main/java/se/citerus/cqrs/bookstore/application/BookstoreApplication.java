@@ -60,6 +60,8 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     logger.info("Starting cqrs-bookstore server...");
     logger.info("Creating/registering denormalizers");
 
+    environment.jersey().setUrlPattern("/service/*");
+
     ObjectMapper objectMapper = environment.getObjectMapper();
     objectMapper.enable(INDENT_OUTPUT);
     objectMapper.enable(WRITE_DATES_AS_TIMESTAMPS);

@@ -49,7 +49,7 @@ public class AdminResource {
     List<Map<String, Object>> allEvents = orderClient.getAllEvents();
     List<String[]> eventsToReturn = new LinkedList<>();
     for (Map event : allEvents) {
-      eventsToReturn.add(new String[]{event.getClass().getSimpleName(), event.toString()});
+      eventsToReturn.add(new String[]{event.get("type").toString(), event.toString()});
     }
     logger.info("Returning [{}] events", eventsToReturn.size());
     return eventsToReturn;

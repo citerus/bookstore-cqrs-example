@@ -16,6 +16,9 @@ public class OrderClient {
 
   public static final GenericType<List<OrderDto>> ORDER_LIST_TYPE = new GenericType<List<OrderDto>>() {
   };
+
+  public static final GenericType<List<Map<String, Object>>> EVENT_LIST_TYPE = new GenericType<List<Map<String, Object>>>() {
+  };
   private final Client client;
 
   private OrderClient(Client client) {
@@ -40,6 +43,6 @@ public class OrderClient {
   }
 
   public List<Map<String, Object>> getAllEvents() {
-    return null;
+    return client.resource("http://localhost:8080/service/orders/events").accept(APPLICATION_JSON_TYPE).get(EVENT_LIST_TYPE);
   }
 }

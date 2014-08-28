@@ -24,6 +24,10 @@
     </dependency>
     <dependency>
       <groupId>se.citerus.cqrs.bookstore</groupId>
+      <artifactId>cqrs-lib</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>se.citerus.cqrs.bookstore</groupId>
       <artifactId>order-command</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>

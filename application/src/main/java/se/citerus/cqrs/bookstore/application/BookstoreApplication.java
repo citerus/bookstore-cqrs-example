@@ -95,7 +95,7 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     environment.jersey().register(new CartResource(bookClient, cartRepository));
     environment.jersey().register(new AdminResource(orderClient, publisherClient, adminBookClient));
     environment.jersey().register(new PublisherResource(commandBus));
-    environment.jersey().register(new OrderResource(queryService));
+    environment.jersey().register(new OrderResource(queryService, domainEventStore));
     logger.info("Server started!");
   }
 

@@ -17,11 +17,13 @@ public abstract class DomainEvent<T extends GenericId> implements Serializable {
   public final T aggregateId;
   public final int version;
   public final long timestamp;
+  public final String type;
 
   protected DomainEvent(T aggregateId, int version, long timestamp) {
     this.aggregateId = aggregateId;
     this.version = version;
     this.timestamp = timestamp;
+    this.type = getClass().getSimpleName();
   }
 
   @Override

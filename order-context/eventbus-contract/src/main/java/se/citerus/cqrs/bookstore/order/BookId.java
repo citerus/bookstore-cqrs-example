@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.book;
+package se.citerus.cqrs.bookstore.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import se.citerus.cqrs.bookstore.GenericId;

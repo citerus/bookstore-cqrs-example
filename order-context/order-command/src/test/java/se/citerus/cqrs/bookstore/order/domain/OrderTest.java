@@ -1,8 +1,8 @@
 package se.citerus.cqrs.bookstore.order.domain;
 
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.book.BookId;
 import se.citerus.cqrs.bookstore.event.DomainEvent;
+import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderLine;
@@ -17,7 +17,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.emptyIterable;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static se.citerus.cqrs.bookstore.order.OrderId.randomId;
 
 public class OrderTest {
@@ -28,7 +28,7 @@ public class OrderTest {
   @Test
   public void placingAnOrder() {
     Order order = new Order();
-    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L, null);
+    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L);
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
     List<DomainEvent> uncommittedEvents = order.getUncommittedEvents();
     assertThat(uncommittedEvents.size(), is(1));
@@ -38,7 +38,7 @@ public class OrderTest {
 
   @Test
   public void activatingAnOrder() {
-    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L, null);
+    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L);
     Order order = new Order();
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
     order.markChangesAsCommitted();

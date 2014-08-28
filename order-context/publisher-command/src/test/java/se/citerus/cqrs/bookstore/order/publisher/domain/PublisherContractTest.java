@@ -1,7 +1,7 @@
 package se.citerus.cqrs.bookstore.order.publisher.domain;
 
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.book.BookId;
+import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 import se.citerus.cqrs.bookstore.publisher.event.PublisherRegisteredEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PurchaseRegisteredEvent;

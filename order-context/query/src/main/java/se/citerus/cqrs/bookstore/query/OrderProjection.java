@@ -14,14 +14,14 @@ public class OrderProjection extends Projection {
   private final long orderPlacedTimestamp;
   private final long orderAmount;
   private final String customerName;
-  private final List<OrderLine> orderLines;
+  private final List<OrderLineProjection> orderLines;
   private OrderStatus status;
 
   public OrderProjection(@JsonProperty("orderId") OrderId orderId,
                          @JsonProperty("orderPlacedTimestamp") long orderPlacedTimestamp,
                          @JsonProperty("customerName") String customerName,
                          @JsonProperty("orderAmount") long orderAmount,
-                         @JsonProperty("orderLines") List<OrderLine> orderLines,
+                         @JsonProperty("orderLines") List<OrderLineProjection> orderLines,
                          @JsonProperty("status") OrderStatus status) {
     this.orderId = orderId;
     this.orderPlacedTimestamp = orderPlacedTimestamp;
@@ -31,7 +31,7 @@ public class OrderProjection extends Projection {
     this.status = status;
   }
 
-  public List<OrderLine> getOrderLines() {
+  public List<OrderLineProjection> getOrderLines() {
     return orderLines;
   }
 

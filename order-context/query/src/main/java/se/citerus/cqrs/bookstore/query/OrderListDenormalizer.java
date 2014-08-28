@@ -10,6 +10,8 @@ import se.citerus.cqrs.bookstore.order.event.OrderActivatedEvent;
 import se.citerus.cqrs.bookstore.order.event.OrderPlacedEvent;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static se.citerus.cqrs.bookstore.order.OrderStatus.ACTIVATED;
@@ -27,7 +29,16 @@ public class OrderListDenormalizer implements DomainEventListener {
   @Subscribe
   public void handleEvent(OrderPlacedEvent event) {
     logger.info("Received: " + event.toString());
-    List<OrderLine> orderLines = event.orderLines;
+    List<OrderLineProjection> orderLines = new LinkedList<>();
+    for (OrderLine orderLine : event.orderLines) {
+      OrderLineProjection line = new OrderLineProjection();
+      line.bookId = orderLine.bookId;
+      line.quantity = orderLine.quantity;
+      line.title = orderLine.title;
+      line.unitPrice = orderLine.unitPrice;
+      line.publisherContractId = orderLine.publisherContractId;
+      orderLines.add(line);
+    }
     OrderProjection orderProjection = new OrderProjection(event.aggregateId, event.timestamp,
         event.customerInformation.customerName, event.orderAmount, orderLines, PLACED);
     repository.save(orderProjection);

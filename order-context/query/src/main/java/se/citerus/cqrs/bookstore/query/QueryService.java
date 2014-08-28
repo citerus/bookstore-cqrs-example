@@ -1,7 +1,7 @@
 package se.citerus.cqrs.bookstore.query;
 
 import org.joda.time.LocalDate;
-import se.citerus.cqrs.bookstore.book.BookId;
+import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 

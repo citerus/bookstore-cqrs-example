@@ -1,6 +1,6 @@
 package se.citerus.cqrs.bookstore.order.web;
 
-import se.citerus.cqrs.bookstore.book.BookId;
+import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderLine;
@@ -37,7 +37,7 @@ public class CommandFactory {
       String title = lineItem.title;
       int quantity = lineItem.quantity;
       long price = lineItem.price;
-      itemsToOrder.add(new OrderLine(bookId, title, quantity, price, null));
+      itemsToOrder.add(new OrderLine(bookId, title, quantity, price));
     }
     return itemsToOrder;
   }

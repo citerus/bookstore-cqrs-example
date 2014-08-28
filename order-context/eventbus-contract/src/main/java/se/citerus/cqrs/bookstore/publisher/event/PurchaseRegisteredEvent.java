@@ -1,6 +1,6 @@
 package se.citerus.cqrs.bookstore.publisher.event;
 
-import se.citerus.cqrs.bookstore.book.BookId;
+import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 

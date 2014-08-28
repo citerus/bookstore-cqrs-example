@@ -7,6 +7,7 @@ import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.order.publisher.command.RegisterPurchaseCommand;
 import se.citerus.cqrs.bookstore.order.OrderLine;
 import se.citerus.cqrs.bookstore.order.event.OrderActivatedEvent;
+import se.citerus.cqrs.bookstore.query.OrderLineProjection;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
 import se.citerus.cqrs.bookstore.saga.Saga;
@@ -30,7 +31,7 @@ public class PurchaseRegistrationSaga extends Saga {
   public void handleEvent(OrderActivatedEvent event) {
     logger.info("Received: " + event.toString());
     OrderProjection order = queryService.getOrder(event.aggregateId);
-    for (final OrderLine orderLine : order.getOrderLines()) {
+    for (final OrderLineProjection orderLine : order.getOrderLines()) {
       if (orderLine.bookHasRegisteredPublisher()) {
         publish(new RegisterPurchaseCommand(orderLine.publisherContractId, orderLine.bookId, orderLine.amount()));
       }

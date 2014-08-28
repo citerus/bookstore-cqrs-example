@@ -3,6 +3,7 @@ package se.citerus.cqrs.bookstore.query.repository;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderLine;
+import se.citerus.cqrs.bookstore.query.OrderLineProjection;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 
 import java.util.Collections;
@@ -18,8 +19,8 @@ public class InMemOrderProjectionRepositoryTest {
   public void sortingOfOrders() {
     InMemOrderProjectionRepository repository = new InMemOrderProjectionRepository();
 
-    repository.save(new OrderProjection(OrderId.<OrderId>randomId(), 1, "Test Person", 0, Collections.<OrderLine>emptyList(), PLACED));
-    repository.save(new OrderProjection(OrderId.<OrderId>randomId(), 3, "Test Person 2", 0, Collections.<OrderLine>emptyList(), PLACED));
+    repository.save(new OrderProjection(OrderId.<OrderId>randomId(), 1, "Test Person", 0, Collections.<OrderLineProjection>emptyList(), PLACED));
+    repository.save(new OrderProjection(OrderId.<OrderId>randomId(), 3, "Test Person 2", 0, Collections.<OrderLineProjection>emptyList(), PLACED));
 
     Iterator<OrderProjection> iterator = repository.listOrdersByTimestamp().iterator();
     assertThat(iterator.next().getOrderPlacedTimestamp(), is(3L));

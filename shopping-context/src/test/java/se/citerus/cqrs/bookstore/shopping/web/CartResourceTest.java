@@ -6,6 +6,8 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
+import se.citerus.cqrs.bookstore.shopping.web.infrastructure.BookClient;
+import se.citerus.cqrs.bookstore.shopping.web.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
 import se.citerus.cqrs.bookstore.shopping.web.model.PublisherContractId;
 import se.citerus.cqrs.bookstore.shopping.web.transport.BookProjection;

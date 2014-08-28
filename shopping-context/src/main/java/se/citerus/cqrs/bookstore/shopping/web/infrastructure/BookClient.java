@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.shopping.web;
+package se.citerus.cqrs.bookstore.shopping.web.infrastructure;
 
 
 import com.sun.jersey.api.client.Client;

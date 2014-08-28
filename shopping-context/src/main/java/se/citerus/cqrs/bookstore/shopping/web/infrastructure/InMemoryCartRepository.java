@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.shopping.web;
+package se.citerus.cqrs.bookstore.shopping.web.infrastructure;
 
 import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
 import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;

@@ -2,6 +2,7 @@ package se.citerus.cqrs.bookstore.shopping.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.citerus.cqrs.bookstore.shopping.web.infrastructure.BookClient;
 import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
 import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
 import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;

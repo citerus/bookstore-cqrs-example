@@ -6,7 +6,7 @@ public class Book {
   private final String isbn;
   private final String title;
   private final String description;
-  private final double price;
+  private final long price;
   private final String publisherContractId;
 
   public Book(String bookId, String isbn, String title, String description, long price, String publisherContractId) {

@@ -33,7 +33,7 @@ public class BookResource {
   }
 
   @POST
-  public void createBook(@Valid CreateBookRequest request) {
+  public void createBook(@Valid BookDto request) {
     Book book = new Book(request.bookId, request.isbn, request.title, request.description, request.price, request.publisherContractId);
     logger.info("Saving book with id {}", request.bookId);
     bookRepository.save(book);

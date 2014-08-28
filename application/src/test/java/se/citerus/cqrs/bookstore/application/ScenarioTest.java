@@ -151,16 +151,6 @@ public class ScenarioTest {
     return response;
   }
 
-
-  private ClientResponse updateBookPrice(BookId bookId, long price) {
-    UpdateBookPriceRequest request = new UpdateBookPriceRequest(bookId.id, price);
-    ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/update-book-price-requests")
-        .entity(request, APPLICATION_JSON)
-        .post(ClientResponse.class);
-    assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
-    return response;
-  }
-
   private ClientResponse addItemToCart(String cartId, String bookId) {
     ClientResponse response = client.resource(SERVER_ADDRESS + "/carts/" + cartId + "/items")
         .entity(new BookId(bookId), APPLICATION_JSON)
@@ -182,7 +172,8 @@ public class ScenarioTest {
   }
 
   private ClientResponse activateOrder(OrderId orderId) {
-    OrderActivationRequest request = new OrderActivationRequest(orderId.id);
+    OrderActivationRequest request = new OrderActivationRequest();
+    request.orderId = orderId.id;
     ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/order-activation-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);

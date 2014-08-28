@@ -1,15 +1,14 @@
 package se.citerus.cqrs.bookstore.shopping.web.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import se.citerus.cqrs.bookstore.TransportObject;
+import se.citerus.cqrs.bookstore.ValueObject;
 
 import java.util.UUID;
 
-public class BookId extends TransportObject {
+public class BookId extends ValueObject {
 
   public final String id;
 
-  public BookId(@JsonProperty("id") String id) {
+  public BookId(String id) {
     this.id = id;
   }
 

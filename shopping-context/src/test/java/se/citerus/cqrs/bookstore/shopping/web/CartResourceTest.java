@@ -9,10 +9,7 @@ import org.junit.Test;
 import se.citerus.cqrs.bookstore.shopping.web.infrastructure.BookClient;
 import se.citerus.cqrs.bookstore.shopping.web.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
-import se.citerus.cqrs.bookstore.shopping.web.transport.BookProjection;
-import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
-import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
-import se.citerus.cqrs.bookstore.shopping.web.transport.LineItemDto;
+import se.citerus.cqrs.bookstore.shopping.web.transport.*;
 
 import java.util.UUID;
 
@@ -47,20 +44,19 @@ public class CartResourceTest {
   public void getItemsFromSession() {
     String title = "test title";
     long price = 200L;
-    BookId bookId = BookId.randomId();
 
+    String bookId = UUID.randomUUID().toString();
     String cartId = UUID.randomUUID().toString();
     createCartWithId(cartId, resources.client());
 
-    BookProjection book = new BookProjection();
+    BookDto book = new BookDto();
     book.price = price;
     book.title = title;
-    when(bookClient.getBook(bookId.id)).thenReturn(book);
-
-    CartDto cart = addItemToCart(cartId, new BookId(bookId.id), resources.client()).getEntity(CartDto.class);
+    when(bookClient.getBook(bookId)).thenReturn(book);
+    CartDto cart = addItemToCart(cartId, addBookItemRequest(bookId), resources.client()).getEntity(CartDto.class);
 
     LineItemDto expectedLineItem = new LineItemDto();
-    expectedLineItem.bookId = bookId.id;
+    expectedLineItem.bookId = bookId;
     expectedLineItem.title = title;
     expectedLineItem.price = price;
     expectedLineItem.quantity = 1;
@@ -72,13 +68,19 @@ public class CartResourceTest {
 
   @Test
   public void cannotAddNonExistingItem() {
-    BookId bookId = BookId.randomId();
     String cartId = UUID.randomUUID().toString();
     createCartWithId(cartId, resources.client());
 
-    ClientResponse response = addItemToCart(cartId, new BookId(bookId.id), resources.client());
+    AddItemRequest addItemRequest = addBookItemRequest(UUID.randomUUID().toString());
+    ClientResponse response = addItemToCart(cartId, addItemRequest, resources.client());
 
     assertThat(response.getStatusInfo().getStatusCode(), is(BAD_REQUEST.getStatusCode()));
+  }
+
+  private AddItemRequest addBookItemRequest(String bookId) {
+    AddItemRequest addItemRequest = new AddItemRequest();
+    addItemRequest.bookId = bookId;
+    return addItemRequest;
   }
 
   @Test
@@ -116,15 +118,16 @@ public class CartResourceTest {
     createCartWithId(cartId, resources.client());
   }
 
-  public static ClientResponse addItemToCart(String cartId, BookId bookId, Client client) {
+  public static ClientResponse addItemToCart(String cartId, AddItemRequest addItemRequest, Client client) {
     return client
         .resource(CART_RESOURCE + "/" + cartId + "/items")
-        .entity(bookId, APPLICATION_JSON_TYPE)
+        .entity(addItemRequest, APPLICATION_JSON_TYPE)
         .post(ClientResponse.class);
   }
 
   public static void createCartWithId(String cartId, Client client) {
-    CreateCartRequest createCart = new CreateCartRequest(cartId);
+    CreateCartRequest createCart = new CreateCartRequest();
+    createCart.cartId = cartId;
     client
         .resource(CART_RESOURCE)
         .entity(createCart, APPLICATION_JSON_TYPE)

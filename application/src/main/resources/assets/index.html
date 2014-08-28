@@ -123,7 +123,7 @@ jQuery(document).ready(function () {
 $(document).on("click", "#book-list button", function () {
     var buttonId = this.id;
     var bookId = buttonId.replace("#add-item-", "");
-    postJSON(rootURL + "/carts/" + cartId() + "/items", JSON.stringify({"id":bookId }))
+    postJSON(rootURL + "/carts/" + cartId() + "/items", JSON.stringify({"bookId":bookId }))
             .error(function (data) {
                 alert("Error: " + data);
             })

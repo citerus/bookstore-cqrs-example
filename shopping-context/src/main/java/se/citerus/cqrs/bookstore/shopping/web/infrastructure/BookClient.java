@@ -2,7 +2,7 @@ package se.citerus.cqrs.bookstore.shopping.web.infrastructure;
 
 
 import com.sun.jersey.api.client.Client;
-import se.citerus.cqrs.bookstore.shopping.web.transport.BookProjection;
+import se.citerus.cqrs.bookstore.shopping.web.transport.BookDto;
 
 public class BookClient {
 
@@ -16,7 +16,7 @@ public class BookClient {
     return new BookClient(client);
   }
 
-  public BookProjection getBook(String bookId) {
-    return client.resource("http://localhost:8080/service/books/" + bookId).get(BookProjection.class);
+  public BookDto getBook(String bookId) {
+    return client.resource("http://localhost:8080/service/books/" + bookId).get(BookDto.class);
   }
 }

@@ -4,9 +4,9 @@ import se.citerus.cqrs.bookstore.TransportObject;
 
 import javax.validation.constraints.NotNull;
 
-public class CreateCartRequest extends TransportObject {
+public class AddItemRequest extends TransportObject {
 
   @NotNull
-  public String cartId;
+  public String bookId;
 
 }

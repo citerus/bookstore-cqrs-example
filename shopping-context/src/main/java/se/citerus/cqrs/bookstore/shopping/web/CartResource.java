@@ -7,7 +7,8 @@ import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
 import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
 import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.web.model.Item;
-import se.citerus.cqrs.bookstore.shopping.web.transport.BookProjection;
+import se.citerus.cqrs.bookstore.shopping.web.transport.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.web.transport.BookDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
 
@@ -45,12 +46,12 @@ public class CartResource {
 
   @POST
   @Path("{cartId}/items")
-  public CartDto addItem(@PathParam("cartId") String cartId, BookId bookId) {
+  public CartDto addItem(@PathParam("cartId") String cartId, AddItemRequest addItemRequest) {
     Cart cart = cartRepository.get(cartId);
-    logger.debug("Got addItem request " + bookId);
-    BookProjection book = bookClient.getBook(bookId.id);
-    assertBookExists(bookId, book);
-    Item item = new Item(bookId, book.title, book.price);
+    logger.debug("Got addItem request " + addItemRequest);
+    BookDto book = bookClient.getBook(addItemRequest.bookId);
+    assertBookExists(addItemRequest.bookId, book);
+    Item item = new Item(new BookId(addItemRequest.bookId), book.title, book.price);
     logger.info("Adding item to cart: " + item);
     cart.add(item);
     return CartDto.fromCart(cart);
@@ -75,7 +76,7 @@ public class CartResource {
     logger.info("Shopping cart for session '{}' cleared", cartId);
   }
 
-  private void assertBookExists(BookId bookId, BookProjection book) {
+  private void assertBookExists(String bookId, BookDto book) {
     if (book == null) {
       throw new WebApplicationException(status(BAD_REQUEST)
           .entity("Book with id '" + bookId + "' could not be found").build());

@@ -16,6 +16,7 @@ import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
 import se.citerus.cqrs.bookstore.query.BookDto;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
+import se.citerus.cqrs.bookstore.shopping.web.transport.AddItemRequest;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
 import se.citerus.cqrs.bookstore.shopping.web.transport.PlaceOrderRequest;
@@ -151,8 +152,10 @@ public class ScenarioTest {
   }
 
   private ClientResponse addItemToCart(String cartId, String bookId) {
+    AddItemRequest addItemRequest = new AddItemRequest();
+    addItemRequest.bookId = bookId;
     ClientResponse response = client.resource(SERVER_ADDRESS + "/carts/" + cartId + "/items")
-        .entity(new BookId(bookId), APPLICATION_JSON)
+        .entity(addItemRequest, APPLICATION_JSON)
         .post(ClientResponse.class);
     assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
@@ -201,7 +204,9 @@ public class ScenarioTest {
   }
 
   private ClientResponse createCart(String cartId) {
-    CreateCartRequest createCartRequest = new CreateCartRequest(cartId);
+    CreateCartRequest createCartRequest1 = new CreateCartRequest();
+    createCartRequest1.cartId = cartId;
+    CreateCartRequest createCartRequest = createCartRequest1;
     ClientResponse response = client.resource(SERVER_ADDRESS + "/carts")
         .entity(createCartRequest, APPLICATION_JSON)
         .post(ClientResponse.class);

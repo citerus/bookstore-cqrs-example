@@ -37,7 +37,7 @@ public class OrderCommandResource {
   }
 
   @POST
-  public void placeOrder(PlaceOrderRequest placeOrderRequest) {
+  public void placeOrder(@Valid PlaceOrderRequest placeOrderRequest) {
     logger.info("Placing customer order: " + placeOrderRequest);
     CartDto cart = placeOrderRequest.cart;
     PlaceOrderCommand placeOrderCommand = commandFactory.toCommand(cart, placeOrderRequest);

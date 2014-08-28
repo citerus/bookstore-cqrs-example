@@ -284,28 +284,34 @@ function getCoverImageUrl(isbn, callback) {
 }
 
 function placeOrder() {
-    postJSON(rootURL + "/order-requests", createOrderRequestJson())
-            .error(function (data) {
-                var message = '<div class="alert alert-error">' +
-                        '<span>There was an error processing your order</span>' +
-                        '</div>';
-                $("#order-result-message").html(message).show().delay(3000).fadeOut();
-            })
-            .done(function (data) {
-                var message = '<div class="alert alert-success">' +
-                        '<span>Order was successfully placed!</span>' +
-                        '</div>';
-                $("#order-result-message").html(message).show().delay(3000).fadeOut();
-                clearCartItems();
-                deleteSession();
-                initCartSession();
-                $("#order-info input").val("");
-            });
+    console.log("Placing order...");
+    var sessionId = cartId();
+    $.getJSON(rootURL + "/carts/" + sessionId, function (cart) {
+        console.log("Reading contents in session: " + cart);
+        postJSON(rootURL + "/order-requests", createOrderRequestJson(cart))
+                .error(function (data) {
+                    var message = '<div class="alert alert-error">' +
+                            '<span>There was an error processing your order</span>' +
+                            '</div>';
+                    $("#order-result-message").html(message).show().delay(3000).fadeOut();
+                })
+                .done(function (data) {
+                    var message = '<div class="alert alert-success">' +
+                            '<span>Order was successfully placed!</span>' +
+                            '</div>';
+                    $("#order-result-message").html(message).show().delay(3000).fadeOut();
+                    clearCartItems();
+                    deleteSession();
+                    initCartSession();
+                    $("#order-info input").val("");
+                });
+    });
 }
 
-function createOrderRequestJson() {
+function createOrderRequestJson(cart) {
+    console.log("Sending cart: " + cart);
     return JSON.stringify({
-        "cartId":cartId(),
+        "cart":cart,
         "orderId":guid(),
         "customerName":$('#customerName').val(),
         "customerEmail":$('#customerEmail').val(),

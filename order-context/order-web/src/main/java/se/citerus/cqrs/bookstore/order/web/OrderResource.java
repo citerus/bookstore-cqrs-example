@@ -1,7 +1,5 @@
 package se.citerus.cqrs.bookstore.order.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 import se.citerus.cqrs.bookstore.query.QueryService;
 
@@ -17,7 +15,6 @@ import java.util.Collection;
 @Consumes(MediaType.APPLICATION_JSON)
 public class OrderResource {
 
-  private final Logger logger = LoggerFactory.getLogger(getClass());
   private final QueryService queryService;
 
   public OrderResource(QueryService queryService) {

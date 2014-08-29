@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.shopping.model;
+package se.citerus.cqrs.bookstore.shopping.domain;
 
 import java.util.Collection;
 import java.util.Collections;

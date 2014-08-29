@@ -1,6 +1,6 @@
 package se.citerus.cqrs.bookstore.order;
 
-import se.citerus.cqrs.bookstore.ValueObject;
+import se.citerus.cqrs.bookstore.domain.ValueObject;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 public class OrderLine extends ValueObject {

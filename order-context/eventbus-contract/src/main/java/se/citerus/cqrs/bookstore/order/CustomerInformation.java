@@ -1,6 +1,6 @@
 package se.citerus.cqrs.bookstore.order;
 
-import se.citerus.cqrs.bookstore.ValueObject;
+import se.citerus.cqrs.bookstore.domain.ValueObject;
 
 public class CustomerInformation extends ValueObject {
 

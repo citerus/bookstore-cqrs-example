@@ -1,7 +1,11 @@
-package se.citerus.cqrs.bookstore.bookcatalog;
+package se.citerus.cqrs.bookstore.bookcatalog.resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.citerus.cqrs.bookstore.bookcatalog.api.BookDto;
+import se.citerus.cqrs.bookstore.bookcatalog.api.BookDtoFactory;
+import se.citerus.cqrs.bookstore.bookcatalog.domain.Book;
+import se.citerus.cqrs.bookstore.bookcatalog.domain.BookRepository;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -25,11 +29,11 @@ public class BookResource {
   @Path("{bookId}")
   public BookDto getBook(@PathParam("bookId") String bookId) {
     Book book = bookRepository.getBook(bookId);
-    if(book == null) {
+    if (book == null) {
       throw new IllegalArgumentException("No such book: " + bookId);
     }
-    logger.info("Returning book with id {}", book.bookId());
-    return book.toDto();
+    logger.info("Returning book with id {}", book.bookId);
+    return BookDtoFactory.fromBook(book);
   }
 
   @POST
@@ -43,7 +47,7 @@ public class BookResource {
   public Collection<BookDto> getBooks() {
     Collection<BookDto> books = new ArrayList<>();
     for (Book book : bookRepository.listBooks()) {
-      books.add(book.toDto());
+      books.add(BookDtoFactory.fromBook(book));
     }
     logger.info("Returning [{}] books", bookRepository.listBooks().size());
     return books;

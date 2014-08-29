@@ -1,6 +1,6 @@
 package se.citerus.cqrs.bookstore.order.publisher.domain;
 
-import se.citerus.cqrs.bookstore.ValueObject;
+import se.citerus.cqrs.bookstore.domain.ValueObject;
 
 import java.math.BigDecimal;
 

@@ -1,8 +1,8 @@
 package se.citerus.cqrs.bookstore.shopping.api;
 
-import se.citerus.cqrs.bookstore.shopping.model.Cart;
-import se.citerus.cqrs.bookstore.shopping.model.Item;
-import se.citerus.cqrs.bookstore.shopping.model.LineItem;
+import se.citerus.cqrs.bookstore.shopping.domain.Cart;
+import se.citerus.cqrs.bookstore.shopping.domain.Item;
+import se.citerus.cqrs.bookstore.shopping.domain.LineItem;
 
 import java.util.ArrayList;
 import java.util.List;

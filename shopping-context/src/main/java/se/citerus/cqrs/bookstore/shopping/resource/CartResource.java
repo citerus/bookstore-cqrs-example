@@ -8,10 +8,10 @@ import se.citerus.cqrs.bookstore.shopping.api.CartDtoFactory;
 import se.citerus.cqrs.bookstore.shopping.api.CreateCartRequest;
 import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookClient;
 import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookDto;
-import se.citerus.cqrs.bookstore.shopping.model.BookId;
-import se.citerus.cqrs.bookstore.shopping.model.Cart;
-import se.citerus.cqrs.bookstore.shopping.model.CartRepository;
-import se.citerus.cqrs.bookstore.shopping.model.Item;
+import se.citerus.cqrs.bookstore.shopping.domain.BookId;
+import se.citerus.cqrs.bookstore.shopping.domain.Cart;
+import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
+import se.citerus.cqrs.bookstore.shopping.domain.Item;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;

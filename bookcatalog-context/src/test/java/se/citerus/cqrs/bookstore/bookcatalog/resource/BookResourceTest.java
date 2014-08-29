@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.bookcatalog;
+package se.citerus.cqrs.bookstore.bookcatalog.resource;
 
 
 import com.sun.jersey.api.client.GenericType;
@@ -6,6 +6,10 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
+import se.citerus.cqrs.bookstore.bookcatalog.api.BookDto;
+import se.citerus.cqrs.bookstore.bookcatalog.api.BookDtoFactory;
+import se.citerus.cqrs.bookstore.bookcatalog.domain.Book;
+import se.citerus.cqrs.bookstore.bookcatalog.domain.BookRepository;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -13,7 +17,7 @@ import java.util.UUID;
 import static java.util.Arrays.asList;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -46,7 +50,7 @@ public class BookResourceTest {
         .accept(APPLICATION_JSON_TYPE)
         .get(BOOK_COLLECTION_TYPE);
 
-    assertThat(books, hasItem(book.toDto()));
+    assertThat(books, hasItem(BookDtoFactory.fromBook(book)));
   }
 
   @Test
@@ -62,7 +66,7 @@ public class BookResourceTest {
         .accept(APPLICATION_JSON_TYPE)
         .get(BookDto.class);
 
-    assertThat(retrievedBook, is(book.toDto()));
+    assertThat(retrievedBook, is(BookDtoFactory.fromBook(book)));
   }
 
 }

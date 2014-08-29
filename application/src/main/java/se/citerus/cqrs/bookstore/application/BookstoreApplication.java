@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.admin.client.bookcatalog.BookCatalogClient;
 import se.citerus.cqrs.bookstore.admin.client.order.OrderClient;
 import se.citerus.cqrs.bookstore.admin.resource.AdminResource;
-import se.citerus.cqrs.bookstore.bookcatalog.BookRepository;
-import se.citerus.cqrs.bookstore.bookcatalog.BookResource;
+import se.citerus.cqrs.bookstore.bookcatalog.infrastructure.InMemoryBookRepository;
+import se.citerus.cqrs.bookstore.bookcatalog.resource.BookResource;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
@@ -32,8 +32,8 @@ import se.citerus.cqrs.bookstore.query.OrdersPerDayAggregator;
 import se.citerus.cqrs.bookstore.query.QueryService;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
 import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookClient;
+import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
-import se.citerus.cqrs.bookstore.shopping.model.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.resource.CartResource;
 
 import java.net.URISyntaxException;
@@ -92,7 +92,7 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     OrderClient orderClient = OrderClient.create(Client.create());
 
     environment.jersey().register(new OrderCommandResource(commandBus));
-    environment.jersey().register(new BookResource(new BookRepository()));
+    environment.jersey().register(new BookResource(new InMemoryBookRepository()));
     environment.jersey().register(new CartResource(bookClient, cartRepository));
     environment.jersey().register(new AdminResource(bookCatalogClient1, orderClient));
     environment.jersey().register(new PublisherResource(commandBus));

@@ -12,14 +12,14 @@ import org.junit.Test;
 import se.citerus.cqrs.bookstore.admin.api.CreateBookRequest;
 import se.citerus.cqrs.bookstore.admin.api.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.admin.api.RegisterPublisherContractRequest;
-import se.citerus.cqrs.bookstore.order.BookId;
-import se.citerus.cqrs.bookstore.order.CustomerInformation;
-import se.citerus.cqrs.bookstore.order.OrderId;
-import se.citerus.cqrs.bookstore.order.OrderStatus;
-import se.citerus.cqrs.bookstore.order.api.CartDto;
-import se.citerus.cqrs.bookstore.order.api.PlaceOrderRequest;
-import se.citerus.cqrs.bookstore.query.BookDto;
-import se.citerus.cqrs.bookstore.query.OrderProjection;
+import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
+import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
+import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
+import se.citerus.cqrs.bookstore.ordercontext.order.OrderStatus;
+import se.citerus.cqrs.bookstore.ordercontext.order.api.CartDto;
+import se.citerus.cqrs.bookstore.ordercontext.order.api.PlaceOrderRequest;
+import se.citerus.cqrs.bookstore.query.client.bookcatalog.BookDto;
+import se.citerus.cqrs.bookstore.query.orderlist.OrderProjection;
 import se.citerus.cqrs.bookstore.shopping.api.AddItemRequest;
 import se.citerus.cqrs.bookstore.shopping.api.CreateCartRequest;
 
@@ -34,7 +34,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.Family.SUCCESSFUL;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static se.citerus.cqrs.bookstore.order.OrderStatus.ACTIVATED;
+import static se.citerus.cqrs.bookstore.ordercontext.order.OrderStatus.ACTIVATED;
 
 public class ScenarioTest {
 

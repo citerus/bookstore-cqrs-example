@@ -10,7 +10,7 @@
   <modules>
     <module>cqrs-lib</module>
     <module>application</module>
-    <module>order-context</module>
+    <module>order-context-parent</module>
     <module>shopping-context</module>
     <module>admin-context</module>
     <module>bookcatalog-context</module>
@@ -78,17 +78,7 @@
       </dependency>
       <dependency>
         <groupId>se.citerus.cqrs.bookstore</groupId>
-        <artifactId>order-command</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>se.citerus.cqrs.bookstore</groupId>
         <artifactId>admin-context</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>se.citerus.cqrs.bookstore</groupId>
-        <artifactId>order-sagas</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -102,23 +92,33 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>se.citerus.cqrs.bookstore</groupId>
+        <groupId>se.citerus.cqrs.bookstore.ordercontext</groupId>
+        <artifactId>order-command</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>se.citerus.cqrs.bookstore.ordercontext</groupId>
+        <artifactId>sagas</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>se.citerus.cqrs.bookstore.ordercontext</groupId>
         <artifactId>publishercontract-command</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>se.citerus.cqrs.bookstore.ordercontext</groupId>
+        <artifactId>order-query</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>se.citerus.cqrs.bookstore.ordercontext</groupId>
+        <artifactId>eventbus-contract</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>se.citerus.cqrs.bookstore</groupId>
         <artifactId>cqrs-lib</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>se.citerus.cqrs.bookstore</groupId>
-        <artifactId>order-query</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>se.citerus.cqrs.bookstore</groupId>
-        <artifactId>eventbus-contract</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

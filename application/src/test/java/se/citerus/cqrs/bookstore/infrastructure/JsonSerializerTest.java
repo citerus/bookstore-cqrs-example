@@ -1,7 +1,7 @@
 package se.citerus.cqrs.bookstore.infrastructure;
 
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherRequest;
 
 import java.io.IOException;
 

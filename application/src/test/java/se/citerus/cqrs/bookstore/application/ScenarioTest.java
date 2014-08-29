@@ -7,9 +7,9 @@ import com.sun.jersey.api.client.GenericType;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.admin.web.transport.CreateBookRequest;
-import se.citerus.cqrs.bookstore.admin.web.transport.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.admin.web.transport.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.admin.web.request.CreateBookRequest;
+import se.citerus.cqrs.bookstore.admin.web.request.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherRequest;
 import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
@@ -52,7 +52,7 @@ public class ScenarioTest {
 
   @Test
   public void testCreateBook() {
-    CreateBookRequest book = createRandomBook();
+    CreateBookRequest book = createRandomBook(UUID.randomUUID().toString());
     createBook(book);
     BookDto bookProjection = getBook(book.bookId);
     assertThat(bookProjection.title, is("DDD"));
@@ -62,7 +62,7 @@ public class ScenarioTest {
 
   @Test
   public void testPlaceOrder() throws InterruptedException {
-    CreateBookRequest randomBook = createRandomBook();
+    CreateBookRequest randomBook = createRandomBook(UUID.randomUUID().toString());
     createBook(randomBook);
 
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
@@ -79,7 +79,7 @@ public class ScenarioTest {
 
   @Test
   public void testGetOrders() throws InterruptedException {
-    CreateBookRequest randomBook = createRandomBook();
+    CreateBookRequest randomBook = createRandomBook(UUID.randomUUID().toString());
     createBook(randomBook);
     int initialSize = getOrders().size();
 
@@ -103,8 +103,7 @@ public class ScenarioTest {
     String publisherContractId = UUID.randomUUID().toString();
     registerPublisher(publisherContractId, "Addison-Wesley", 10.0, 1000);
 
-    CreateBookRequest randomBook = createRandomBook();
-    randomBook.publisherContractId = publisherContractId;
+    CreateBookRequest randomBook = createRandomBook(publisherContractId);
     createBook(randomBook);
 
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
@@ -230,7 +229,7 @@ public class ScenarioTest {
     return response;
   }
 
-  private CreateBookRequest createRandomBook() {
+  private CreateBookRequest createRandomBook(String publisherContractId) {
     BookId bookId = BookId.randomId();
     CreateBookRequest createBookRequest = new CreateBookRequest();
     createBookRequest.bookId = bookId.id;
@@ -238,7 +237,7 @@ public class ScenarioTest {
     createBookRequest.title = "DDD";
     createBookRequest.description = "Domain Driven Design";
     createBookRequest.price = 1000;
-    createBookRequest.publisherContractId = null;
+    createBookRequest.publisherContractId = publisherContractId;
     return createBookRequest;
   }
 

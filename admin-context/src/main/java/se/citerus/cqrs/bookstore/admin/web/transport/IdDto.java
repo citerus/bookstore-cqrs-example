@@ -2,15 +2,11 @@ package se.citerus.cqrs.bookstore.admin.web.transport;
 
 import se.citerus.cqrs.bookstore.TransportObject;
 
-import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 public class IdDto extends TransportObject {
 
+  @NotNull
   public String id;
 
-  public static IdDto random() {
-    IdDto idDto = new IdDto();
-    idDto.id = UUID.randomUUID().toString();
-    return idDto;
-  }
 }

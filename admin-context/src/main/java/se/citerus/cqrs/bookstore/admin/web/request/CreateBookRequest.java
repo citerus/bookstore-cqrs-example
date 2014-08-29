@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.admin.web.transport;
+package se.citerus.cqrs.bookstore.admin.web.request;
 
 import se.citerus.cqrs.bookstore.TransportObject;
 
@@ -9,17 +9,20 @@ public class CreateBookRequest extends TransportObject {
 
   @NotNull
   public String bookId;
+
   @NotNull
   public String isbn;
+
   @NotNull
   public String title;
+
   @NotNull
   public String description;
+
   @Min(1)
   public long price;
-  /**
-   * Optional.
-   */
+
+  @NotNull
   public String publisherContractId;
 
 }

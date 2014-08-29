@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.admin.web.transport;
+package se.citerus.cqrs.bookstore.admin.web.request;
 
 import se.citerus.cqrs.bookstore.TransportObject;
 

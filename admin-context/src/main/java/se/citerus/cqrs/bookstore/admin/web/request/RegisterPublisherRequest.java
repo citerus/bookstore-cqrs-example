@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.admin.web.transport;
+package se.citerus.cqrs.bookstore.admin.web.request;
 
 import se.citerus.cqrs.bookstore.TransportObject;
 
@@ -9,10 +9,13 @@ public class RegisterPublisherRequest extends TransportObject {
 
   @NotNull
   public String publisherContractId;
+
   @NotNull
   public String publisherName;
+
   @Min(1)
   public double feePercentage;
+
   @Min(1)
   public long limit;
 

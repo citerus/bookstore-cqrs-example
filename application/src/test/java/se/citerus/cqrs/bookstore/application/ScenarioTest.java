@@ -16,7 +16,7 @@ import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
-import se.citerus.cqrs.bookstore.order.web.transport.CartDto;
+import se.citerus.cqrs.bookstore.order.api.CartDto;
 import se.citerus.cqrs.bookstore.order.api.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.query.BookDto;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
@@ -154,7 +154,7 @@ public class ScenarioTest {
     request.publisherName = name;
     request.feePercentage = feePercentage;
     request.limit = limit;
-    ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/publisher-contract-requests")
+    ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/publishercontract-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);
     assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));

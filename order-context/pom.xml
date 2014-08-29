@@ -15,9 +15,8 @@
     <module>eventbus-contract</module>
     <module>order-command</module>
     <module>order-sagas</module>
-    <module>order-web</module>
     <module>order-query</module>
-    <module>publisher-command</module>
+    <module>publishercontract-command</module>
   </modules>
 
   <dependencies>

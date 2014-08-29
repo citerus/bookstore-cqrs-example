@@ -83,7 +83,27 @@
       </dependency>
       <dependency>
         <groupId>se.citerus.cqrs.bookstore</groupId>
-        <artifactId>publisher-command</artifactId>
+        <artifactId>admin-context</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>se.citerus.cqrs.bookstore</groupId>
+        <artifactId>order-sagas</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>se.citerus.cqrs.bookstore</groupId>
+        <artifactId>shopping-context</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>se.citerus.cqrs.bookstore</groupId>
+        <artifactId>bookcatalog-context</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>se.citerus.cqrs.bookstore</groupId>
+        <artifactId>publishercontract-command</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

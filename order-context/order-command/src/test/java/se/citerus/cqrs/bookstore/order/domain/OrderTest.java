@@ -22,7 +22,6 @@ import static se.citerus.cqrs.bookstore.order.OrderId.randomId;
 
 public class OrderTest {
 
-
   private static final CustomerInformation JOHN_DOE = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
 
   @Test

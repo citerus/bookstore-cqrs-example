@@ -10,25 +10,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>order-command</artifactId>
+  <artifactId>publishercontract-command</artifactId>
 
   <dependencies>
-    <dependency>
-      <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>cqrs-lib</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>eventbus-contract</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>order-query</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.dropwizard</groupId>
-      <artifactId>dropwizard-client</artifactId>
-    </dependency>
     <dependency>
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-core</artifactId>
@@ -37,6 +21,14 @@
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-testing</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>se.citerus.cqrs.bookstore</groupId>
+      <artifactId>cqrs-lib</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>se.citerus.cqrs.bookstore</groupId>
+      <artifactId>eventbus-contract</artifactId>
     </dependency>
   </dependencies>
 

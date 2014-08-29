@@ -8,8 +8,9 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.admin.client.AdminClient;
-import se.citerus.cqrs.bookstore.admin.web.AdminResource;
+import se.citerus.cqrs.bookstore.admin.web.client.bookcatalog.BookCatalogClient;
+import se.citerus.cqrs.bookstore.admin.web.client.order.OrderClient;
+import se.citerus.cqrs.bookstore.admin.web.resource.AdminResource;
 import se.citerus.cqrs.bookstore.bookcatalog.BookRepository;
 import se.citerus.cqrs.bookstore.bookcatalog.BookResource;
 import se.citerus.cqrs.bookstore.command.CommandBus;
@@ -26,15 +27,14 @@ import se.citerus.cqrs.bookstore.order.saga.PurchaseRegistrationSaga;
 import se.citerus.cqrs.bookstore.order.web.OrderCommandResource;
 import se.citerus.cqrs.bookstore.order.web.OrderResource;
 import se.citerus.cqrs.bookstore.order.web.PublisherResource;
-import se.citerus.cqrs.bookstore.query.BookCatalogClient;
 import se.citerus.cqrs.bookstore.query.OrderListDenormalizer;
 import se.citerus.cqrs.bookstore.query.OrdersPerDayAggregator;
 import se.citerus.cqrs.bookstore.query.QueryService;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
-import se.citerus.cqrs.bookstore.shopping.web.CartResource;
-import se.citerus.cqrs.bookstore.shopping.web.infrastructure.BookClient;
+import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookClient;
 import se.citerus.cqrs.bookstore.shopping.web.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;
+import se.citerus.cqrs.bookstore.shopping.web.resource.CartResource;
 
 import java.net.URISyntaxException;
 
@@ -73,7 +73,7 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     OrderListDenormalizer orderListDenormalizer = domainEventBus.register(new OrderListDenormalizer(orderRepository));
     OrdersPerDayAggregator ordersPerDayAggregator = domainEventBus.register(new OrdersPerDayAggregator());
 
-    BookCatalogClient bookCatalogClient = BookCatalogClient.create(Client.create());
+    se.citerus.cqrs.bookstore.query.BookCatalogClient bookCatalogClient = se.citerus.cqrs.bookstore.query.BookCatalogClient.create(Client.create());
     QueryService queryService = new QueryService(orderListDenormalizer, ordersPerDayAggregator, bookCatalogClient);
 
     DomainEventStore domainEventStore = new InMemoryDomainEventStore();
@@ -87,12 +87,14 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     PurchaseRegistrationSaga purchaseRegistrationSaga = new PurchaseRegistrationSaga(queryService, commandBus);
     domainEventBus.register(purchaseRegistrationSaga);
 
-    AdminClient adminClient = AdminClient.create(Client.create());
+    BookCatalogClient bookCatalogClient1 = BookCatalogClient.create(Client.create());
     BookClient bookClient = BookClient.create(Client.create());
+    OrderClient orderClient = OrderClient.create(Client.create());
+
     environment.jersey().register(new OrderCommandResource(commandBus));
     environment.jersey().register(new BookResource(new BookRepository()));
     environment.jersey().register(new CartResource(bookClient, cartRepository));
-    environment.jersey().register(new AdminResource(adminClient));
+    environment.jersey().register(new AdminResource(bookCatalogClient1, orderClient));
     environment.jersey().register(new PublisherResource(commandBus));
     environment.jersey().register(new OrderResource(queryService, domainEventStore));
     logger.info("Server started!");

@@ -1,16 +1,17 @@
-package se.citerus.cqrs.bookstore.shopping.web;
+package se.citerus.cqrs.bookstore.shopping.web.resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.shopping.web.infrastructure.BookClient;
+import se.citerus.cqrs.bookstore.shopping.web.api.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.web.api.CartDto;
+import se.citerus.cqrs.bookstore.shopping.web.api.CartDtoFactory;
+import se.citerus.cqrs.bookstore.shopping.web.api.CreateCartRequest;
+import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookClient;
+import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookDto;
 import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
 import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
 import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.web.model.Item;
-import se.citerus.cqrs.bookstore.shopping.web.request.AddItemRequest;
-import se.citerus.cqrs.bookstore.shopping.web.request.CreateCartRequest;
-import se.citerus.cqrs.bookstore.shopping.web.transport.BookDto;
-import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -51,7 +52,7 @@ public class CartResource {
     Item item = new Item(new BookId(addItemRequest.bookId), book.title, book.price);
     logger.info("Adding item to cart: " + item);
     cart.add(item);
-    return CartDto.fromCart(cart);
+    return CartDtoFactory.fromCart(cart);
   }
 
   @GET
@@ -62,7 +63,7 @@ public class CartResource {
       return status(NOT_FOUND).entity(format("Cart with id '%s' does not exist", cartId)).build();
     } else {
       logger.info("Returning cart with [{}] lines", cart.getLineCount());
-      return Response.ok().entity(CartDto.fromCart(cart)).build();
+      return Response.ok().entity(CartDtoFactory.fromCart(cart)).build();
     }
   }
 

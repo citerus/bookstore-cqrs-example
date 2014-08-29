@@ -5,11 +5,12 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.admin.client.AdminClient;
-import se.citerus.cqrs.bookstore.admin.web.AdminResource;
-import se.citerus.cqrs.bookstore.admin.web.transport.IdDto;
-import se.citerus.cqrs.bookstore.admin.web.transport.OrderDto;
-import se.citerus.cqrs.bookstore.admin.web.transport.OrderLineDto;
+import se.citerus.cqrs.bookstore.admin.web.client.bookcatalog.BookCatalogClient;
+import se.citerus.cqrs.bookstore.admin.web.client.order.IdDto;
+import se.citerus.cqrs.bookstore.admin.web.client.order.OrderClient;
+import se.citerus.cqrs.bookstore.admin.web.client.order.OrderDto;
+import se.citerus.cqrs.bookstore.admin.web.client.order.OrderLineDto;
+import se.citerus.cqrs.bookstore.admin.web.resource.AdminResource;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 
 import java.util.ArrayList;
@@ -29,19 +30,20 @@ public class AdminResourceTest {
   private static final String ADMIN_RESOURCE = "/admin";
 
   private static final DomainEventStore eventStore = mock(DomainEventStore.class);
-  private static final AdminClient ADMIN_CLIENT = mock(AdminClient.class);
+  private static final BookCatalogClient BOOK_CATALOG_CLIENT = mock(BookCatalogClient.class);
+  private static final OrderClient ORDER_CLIENT = mock(OrderClient.class);
 
   public static final GenericType<List<OrderDto>> ORDER_LIST_TYPE = new GenericType<List<OrderDto>>() {
   };
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new AdminResource(ADMIN_CLIENT))
+      .addResource(new AdminResource(BOOK_CATALOG_CLIENT, ORDER_CLIENT))
       .build();
 
   @After
   public void tearDown() throws Exception {
-    reset(eventStore, ADMIN_CLIENT);
+    reset(eventStore, BOOK_CATALOG_CLIENT, ORDER_CLIENT);
   }
 
   @Test
@@ -68,7 +70,7 @@ public class AdminResourceTest {
     orderProjections.add(order1);
     orderProjections.add(order2);
 
-    when(ADMIN_CLIENT.listOrders()).thenReturn(orderProjections);
+    when(ORDER_CLIENT.listOrders()).thenReturn(orderProjections);
 
     List<OrderDto> orders = resources.client()
         .resource(ADMIN_RESOURCE + "/orders")

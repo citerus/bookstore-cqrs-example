@@ -6,13 +6,14 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.shopping.web.infrastructure.BookClient;
+import se.citerus.cqrs.bookstore.shopping.web.api.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.web.api.CartDto;
+import se.citerus.cqrs.bookstore.shopping.web.api.CreateCartRequest;
+import se.citerus.cqrs.bookstore.shopping.web.api.LineItemDto;
+import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookClient;
+import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookDto;
 import se.citerus.cqrs.bookstore.shopping.web.infrastructure.InMemoryCartRepository;
-import se.citerus.cqrs.bookstore.shopping.web.request.AddItemRequest;
-import se.citerus.cqrs.bookstore.shopping.web.request.CreateCartRequest;
-import se.citerus.cqrs.bookstore.shopping.web.transport.BookDto;
-import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
-import se.citerus.cqrs.bookstore.shopping.web.transport.LineItemDto;
+import se.citerus.cqrs.bookstore.shopping.web.resource.CartResource;
 
 import java.util.UUID;
 

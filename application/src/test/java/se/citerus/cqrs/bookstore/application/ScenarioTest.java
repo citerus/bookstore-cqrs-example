@@ -1,31 +1,35 @@
 package se.citerus.cqrs.bookstore.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import io.dropwizard.testing.junit.DropwizardAppRule;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.admin.web.request.CreateBookRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherContractRequest;
+import se.citerus.cqrs.bookstore.admin.web.api.CreateBookRequest;
+import se.citerus.cqrs.bookstore.admin.web.api.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.admin.web.api.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
+import se.citerus.cqrs.bookstore.order.web.transport.CartDto;
+import se.citerus.cqrs.bookstore.order.web.transport.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.query.BookDto;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
-import se.citerus.cqrs.bookstore.shopping.web.request.AddItemRequest;
-import se.citerus.cqrs.bookstore.shopping.web.request.CreateCartRequest;
-import se.citerus.cqrs.bookstore.shopping.web.request.PlaceOrderRequest;
-import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
+import se.citerus.cqrs.bookstore.shopping.web.api.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.web.api.CreateCartRequest;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.UUID;
 
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.Family.SUCCESSFUL;
 import static org.hamcrest.core.Is.is;
@@ -40,6 +44,8 @@ public class ScenarioTest {
   public static final DropwizardAppRule<BookstoreConfiguration> RULE =
       new DropwizardAppRule<>(BookstoreApplication.class, resourceFilePath("test.yml"));
 
+  private Client client = new Client();
+
   public static String resourceFilePath(String resourceClassPathLocation) {
     try {
       return new File(Resources.getResource(resourceClassPathLocation).toURI()).getAbsolutePath();
@@ -48,7 +54,12 @@ public class ScenarioTest {
     }
   }
 
-  private Client client = new Client();
+  @Before
+  public void setUp() throws Exception {
+    ObjectMapper objectMapper = RULE.getEnvironment().getObjectMapper();
+    objectMapper.enable(INDENT_OUTPUT);
+    objectMapper.enable(WRITE_DATES_AS_TIMESTAMPS);
+  }
 
   @Test
   public void testCreateBook() {
@@ -153,9 +164,11 @@ public class ScenarioTest {
   private ClientResponse addItemToCart(String cartId, String bookId) {
     AddItemRequest addItemRequest = new AddItemRequest();
     addItemRequest.bookId = bookId;
+
     ClientResponse response = client.resource(SERVER_ADDRESS + "/carts/" + cartId + "/items")
         .entity(addItemRequest, APPLICATION_JSON)
         .post(ClientResponse.class);
+
     assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
   }
@@ -225,6 +238,7 @@ public class ScenarioTest {
     ClientResponse response = client.resource(SERVER_ADDRESS + "/order-requests")
         .entity(orderRequest, APPLICATION_JSON)
         .post(ClientResponse.class);
+
     assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
   }

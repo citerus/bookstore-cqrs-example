@@ -1,13 +1,14 @@
-package se.citerus.cqrs.bookstore.admin.web;
+package se.citerus.cqrs.bookstore.admin.web.resource;
 
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.admin.client.AdminClient;
-import se.citerus.cqrs.bookstore.admin.web.request.CreateBookRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherContractRequest;
-import se.citerus.cqrs.bookstore.admin.web.transport.OrderDto;
+import se.citerus.cqrs.bookstore.admin.web.api.CreateBookRequest;
+import se.citerus.cqrs.bookstore.admin.web.api.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.admin.web.api.RegisterPublisherContractRequest;
+import se.citerus.cqrs.bookstore.admin.web.client.bookcatalog.BookCatalogClient;
+import se.citerus.cqrs.bookstore.admin.web.client.order.OrderClient;
+import se.citerus.cqrs.bookstore.admin.web.client.order.OrderDto;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -23,16 +24,18 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class AdminResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
-  private final AdminClient adminClient;
+  private final BookCatalogClient bookCatalogClient;
+  private final OrderClient orderClient;
 
-  public AdminResource(AdminClient adminClient) {
-    this.adminClient = adminClient;
+  public AdminResource(BookCatalogClient bookCatalogClient, OrderClient orderClient) {
+    this.bookCatalogClient = bookCatalogClient;
+    this.orderClient = orderClient;
   }
 
   @GET
   @Path("orders")
   public List<OrderDto> getOrders() {
-    List<OrderDto> projections = adminClient.listOrders();
+    List<OrderDto> projections = orderClient.listOrders();
     logger.info("Returning [{}] orders", projections.size());
     return projections;
   }
@@ -40,7 +43,7 @@ public class AdminResource {
   @GET
   @Path("events")
   public List<String[]> getEvents() {
-    List<Map<String, Object>> allEvents = adminClient.getAllEvents();
+    List<Map<String, Object>> allEvents = orderClient.getAllEvents();
     List<String[]> eventsToReturn = new LinkedList<>();
     for (Map event : allEvents) {
       eventsToReturn.add(new String[]{event.get("type").toString(), event.toString()});
@@ -53,28 +56,28 @@ public class AdminResource {
   @Path("order-activation-requests")
   public void orderActivationRequest(@Valid OrderActivationRequest activationRequest) {
     logger.info("Activating orderId: " + activationRequest.orderId);
-    adminClient.activate(activationRequest);
+    orderClient.activate(activationRequest);
   }
 
   @POST
   @Path("create-book-requests")
   public void bookRequest(@Valid CreateBookRequest createBookRequest) {
     logger.info("Creating book: " + createBookRequest.bookId);
-    adminClient.createBook(createBookRequest);
+    bookCatalogClient.createBook(createBookRequest);
   }
 
   @POST
   @Path("register-publisher-requests")
   public void registerPublisher(@Valid RegisterPublisherContractRequest registerPublisherContractRequest) {
     logger.info("Registering publisher: " + registerPublisherContractRequest.publisherContractId);
-    adminClient.registerPublisherContract(registerPublisherContractRequest);
+    orderClient.registerPublisherContract(registerPublisherContractRequest);
   }
 
   // TODO: Add Simple bar chart to admin gui!
   @GET
   @Path("orders-per-day")
   public Map<LocalDate, Integer> getOrdersPerDay() {
-    return adminClient.getOrdersPerDay();
+    return orderClient.getOrdersPerDay();
   }
 
 }

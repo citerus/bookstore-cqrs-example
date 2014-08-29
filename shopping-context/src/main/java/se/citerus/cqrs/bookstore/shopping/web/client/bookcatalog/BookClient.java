@@ -1,8 +1,7 @@
-package se.citerus.cqrs.bookstore.shopping.web.infrastructure;
+package se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog;
 
 
 import com.sun.jersey.api.client.Client;
-import se.citerus.cqrs.bookstore.shopping.web.transport.BookDto;
 
 public class BookClient {
 

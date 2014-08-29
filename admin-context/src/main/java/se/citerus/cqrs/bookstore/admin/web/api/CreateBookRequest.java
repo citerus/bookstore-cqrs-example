@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.admin.web.request;
+package se.citerus.cqrs.bookstore.admin.web.api;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import se.citerus.cqrs.bookstore.TransportObject;

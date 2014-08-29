@@ -1,19 +1,17 @@
-package se.citerus.cqrs.bookstore.admin.client;
+package se.citerus.cqrs.bookstore.admin.web.client.order;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import org.joda.time.LocalDate;
-import se.citerus.cqrs.bookstore.admin.web.request.CreateBookRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherContractRequest;
-import se.citerus.cqrs.bookstore.admin.web.transport.OrderDto;
+import se.citerus.cqrs.bookstore.admin.web.api.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.admin.web.api.RegisterPublisherContractRequest;
 
 import java.util.List;
 import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-public class AdminClient {
+public class OrderClient {
 
   public static final GenericType<List<OrderDto>> ORDER_LIST_TYPE = new GenericType<List<OrderDto>>() {
   };
@@ -23,17 +21,12 @@ public class AdminClient {
 
   private final Client client;
 
-  private AdminClient(Client client) {
+  private OrderClient(Client client) {
     this.client = client;
   }
 
-  public static AdminClient create(Client client) {
-    return new AdminClient(client);
-  }
-
-  public void createBook(CreateBookRequest createBookRequest) {
-    client.resource("http://localhost:8080/service/books")
-        .entity(createBookRequest, APPLICATION_JSON_TYPE).post();
+  public static OrderClient create(Client client) {
+    return new OrderClient(client);
   }
 
   public void activate(OrderActivationRequest activationRequest) {

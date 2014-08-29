@@ -3,8 +3,8 @@ package se.citerus.cqrs.bookstore.application;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.io.Resources;
 import org.junit.Ignore;
-import se.citerus.cqrs.bookstore.admin.web.request.CreateBookRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherContractRequest;
+import se.citerus.cqrs.bookstore.admin.web.api.CreateBookRequest;
+import se.citerus.cqrs.bookstore.admin.web.api.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.infrastructure.JsonSerializer;
 
 import java.util.List;

@@ -25,7 +25,7 @@ public class TestDataImporter {
   private static void importBooks() {
 
     try {
-      TestHttpClient publisherClient = new TestHttpClient(SERVER_ADDRESS + "/service/publishercontract-requests").init();
+      TestHttpClient publisherClient = new TestHttpClient(SERVER_ADDRESS + "/publishercontract-requests").init();
 
       // Add publisher contracts
       String contractsJson = Resources.toString(getResource("se/citerus/cqrs/bookstore/testdata/publishercontracts.json"), UTF_8);
@@ -37,7 +37,7 @@ public class TestDataImporter {
         publisherClient.post(JsonSerializer.serialize(request));
       }
 
-      TestHttpClient bookClient = new TestHttpClient(SERVER_ADDRESS + "/service/books").init();
+      TestHttpClient bookClient = new TestHttpClient(SERVER_ADDRESS + "/books").init();
 
       // Add books
       String booksJson = Resources.toString(getResource("se/citerus/cqrs/bookstore/testdata/books.json"), UTF_8);

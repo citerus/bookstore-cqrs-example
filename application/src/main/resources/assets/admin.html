@@ -144,7 +144,7 @@
   $(document).on("click", "#list-orders button", function () {
     var buttonId = this.id;
     var orderId = buttonId.replace("activate-order-", "");
-    postJSON(serviceRootUrl + "/admin/order-activation-requests", JSON.stringify({"orderId": orderId }))
+    postJSON(serviceRootUrl + "/order-requests/activations", JSON.stringify({"orderId": orderId }))
         .error(function (data) {
           alert("Error: " + data);
         })

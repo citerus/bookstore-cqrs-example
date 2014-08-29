@@ -21,15 +21,17 @@ import se.citerus.cqrs.bookstore.infrastructure.DefaultRepository;
 import se.citerus.cqrs.bookstore.infrastructure.GuavaCommandBus;
 import se.citerus.cqrs.bookstore.infrastructure.GuavaDomainEventBus;
 import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
+import se.citerus.cqrs.bookstore.ordercontext.infrastructure.InMemOrderProjectionRepository;
 import se.citerus.cqrs.bookstore.ordercontext.order.command.OrderCommandHandler;
-import se.citerus.cqrs.bookstore.ordercontext.order.resource.OrderResource;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.command.PublisherContractCommandHandler;
-import se.citerus.cqrs.bookstore.ordercontext.publishercontract.resource.PublisherContractResource;
+import se.citerus.cqrs.bookstore.ordercontext.query.QueryService;
+import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderListDenormalizer;
+import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjectionRepository;
+import se.citerus.cqrs.bookstore.ordercontext.query.sales.OrdersPerDayAggregator;
+import se.citerus.cqrs.bookstore.ordercontext.resource.OrderCommandResource;
+import se.citerus.cqrs.bookstore.ordercontext.resource.OrderQueryResource;
+import se.citerus.cqrs.bookstore.ordercontext.resource.PublisherContractResource;
 import se.citerus.cqrs.bookstore.ordercontext.saga.PurchaseRegistrationSaga;
-import se.citerus.cqrs.bookstore.query.orderlist.OrderListDenormalizer;
-import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
-import se.citerus.cqrs.bookstore.query.sales.OrdersPerDayAggregator;
-import se.citerus.cqrs.bookstore.query.service.QueryService;
 import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookClient;
 import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
@@ -68,11 +70,11 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
 
     CartRepository cartRepository = new InMemoryCartRepository();
     DomainEventBus domainEventBus = new GuavaDomainEventBus();
-    InMemOrderProjectionRepository orderRepository = new InMemOrderProjectionRepository();
+    OrderProjectionRepository orderRepository = new InMemOrderProjectionRepository();
     OrderListDenormalizer orderListDenormalizer = domainEventBus.register(new OrderListDenormalizer(orderRepository));
     OrdersPerDayAggregator ordersPerDayAggregator = domainEventBus.register(new OrdersPerDayAggregator());
 
-    se.citerus.cqrs.bookstore.query.client.bookcatalog.BookCatalogClient bookCatalogClient = se.citerus.cqrs.bookstore.query.client.bookcatalog.BookCatalogClient.create(Client.create());
+    se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookCatalogClient bookCatalogClient = se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookCatalogClient.create(Client.create());
     QueryService queryService = new QueryService(orderListDenormalizer, ordersPerDayAggregator, bookCatalogClient);
 
     DomainEventStore domainEventStore = new InMemoryDomainEventStore();
@@ -90,12 +92,12 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     BookClient bookClient = BookClient.create(Client.create());
     OrderClient orderClient = OrderClient.create(Client.create());
 
-    environment.jersey().register(new OrderResource(commandBus));
+    environment.jersey().register(new OrderCommandResource(commandBus));
     environment.jersey().register(new BookResource(new InMemoryBookRepository()));
     environment.jersey().register(new CartResource(bookClient, cartRepository));
     environment.jersey().register(new AdminResource(bookCatalogClient1, orderClient));
     environment.jersey().register(new PublisherContractResource(commandBus));
-    environment.jersey().register(new se.citerus.cqrs.bookstore.query.resource.OrderResource(queryService, domainEventStore));
+    environment.jersey().register(new OrderQueryResource(queryService, domainEventStore));
     logger.info("Server started!");
   }
 

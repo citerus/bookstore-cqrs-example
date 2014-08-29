@@ -1,13 +1,13 @@
 package se.citerus.cqrs.bookstore.ordercontext.order.command;
 
+import se.citerus.cqrs.bookstore.ordercontext.api.CartDto;
+import se.citerus.cqrs.bookstore.ordercontext.api.LineItemDto;
+import se.citerus.cqrs.bookstore.ordercontext.api.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
 import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderLine;
-import se.citerus.cqrs.bookstore.ordercontext.order.api.CartDto;
-import se.citerus.cqrs.bookstore.ordercontext.order.api.LineItemDto;
-import se.citerus.cqrs.bookstore.ordercontext.order.api.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.ordercontext.order.api.PlaceOrderRequest;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package se.citerus.cqrs.bookstore.ordercontext.publishercontract.command;
 
+import se.citerus.cqrs.bookstore.ordercontext.api.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContractId;
-import se.citerus.cqrs.bookstore.ordercontext.publishercontract.api.RegisterPublisherContractRequest;
 
 public class CommandFactory {
 

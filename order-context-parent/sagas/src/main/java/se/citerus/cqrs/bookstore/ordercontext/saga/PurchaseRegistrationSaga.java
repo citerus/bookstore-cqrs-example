@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderActivatedEvent;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.command.RegisterPurchaseCommand;
-import se.citerus.cqrs.bookstore.query.orderlist.OrderLineProjection;
-import se.citerus.cqrs.bookstore.query.orderlist.OrderProjection;
-import se.citerus.cqrs.bookstore.query.service.QueryService;
+import se.citerus.cqrs.bookstore.ordercontext.query.QueryService;
+import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderLineProjection;
+import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjection;
 import se.citerus.cqrs.bookstore.saga.Saga;
 
 import java.util.concurrent.ExecutorService;

@@ -6,7 +6,7 @@ import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderLine;
 import se.citerus.cqrs.bookstore.ordercontext.order.domain.Order;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContractId;
-import se.citerus.cqrs.bookstore.query.service.QueryService;
+import se.citerus.cqrs.bookstore.ordercontext.query.QueryService;
 
 import java.util.ArrayList;
 import java.util.List;

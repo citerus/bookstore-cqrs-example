@@ -12,14 +12,14 @@ import org.junit.Test;
 import se.citerus.cqrs.bookstore.admin.api.CreateBookRequest;
 import se.citerus.cqrs.bookstore.admin.api.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.admin.api.RegisterPublisherContractRequest;
+import se.citerus.cqrs.bookstore.ordercontext.api.CartDto;
+import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
+import se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookDto;
 import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
 import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderStatus;
-import se.citerus.cqrs.bookstore.ordercontext.order.api.CartDto;
-import se.citerus.cqrs.bookstore.ordercontext.order.api.PlaceOrderRequest;
-import se.citerus.cqrs.bookstore.query.client.bookcatalog.BookDto;
-import se.citerus.cqrs.bookstore.query.orderlist.OrderProjection;
+import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjection;
 import se.citerus.cqrs.bookstore.shopping.api.AddItemRequest;
 import se.citerus.cqrs.bookstore.shopping.api.CreateCartRequest;
 

@@ -2,7 +2,6 @@ package se.citerus.cqrs.bookstore.query.repository;
 
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.order.OrderId;
-import se.citerus.cqrs.bookstore.order.OrderLine;
 import se.citerus.cqrs.bookstore.query.OrderLineProjection;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 

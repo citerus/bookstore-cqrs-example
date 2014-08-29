@@ -23,7 +23,7 @@
     </dependency>
     <dependency>
       <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>query</artifactId>
+      <artifactId>order-query</artifactId>
     </dependency>
     <dependency>
       <groupId>io.dropwizard</groupId>

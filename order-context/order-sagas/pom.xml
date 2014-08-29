@@ -12,7 +12,6 @@
 
   <artifactId>order-sagas</artifactId>
 
-
   <dependencies>
     <dependency>
       <groupId>se.citerus.cqrs.bookstore</groupId>

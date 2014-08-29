@@ -10,7 +10,6 @@ import se.citerus.cqrs.bookstore.order.event.OrderActivatedEvent;
 import se.citerus.cqrs.bookstore.order.event.OrderPlacedEvent;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

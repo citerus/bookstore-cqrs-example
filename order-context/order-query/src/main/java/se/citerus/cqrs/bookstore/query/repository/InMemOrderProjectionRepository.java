@@ -3,12 +3,7 @@ package se.citerus.cqrs.bookstore.query.repository;
 import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemOrderProjectionRepository {
 

@@ -2,7 +2,6 @@ package se.citerus.cqrs.bookstore.query;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import se.citerus.cqrs.bookstore.order.OrderId;
-import se.citerus.cqrs.bookstore.order.OrderLine;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
 
 import java.util.ArrayList;

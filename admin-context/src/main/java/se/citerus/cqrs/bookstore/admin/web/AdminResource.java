@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.admin.client.AdminClient;
 import se.citerus.cqrs.bookstore.admin.web.request.CreateBookRequest;
 import se.citerus.cqrs.bookstore.admin.web.request.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.admin.web.transport.OrderDto;
 
 import javax.validation.Valid;
@@ -65,9 +65,9 @@ public class AdminResource {
 
   @POST
   @Path("register-publisher-requests")
-  public void registerPublisher(@Valid RegisterPublisherRequest registerPublisherRequest) {
-    logger.info("Registering publisher: " + registerPublisherRequest.publisherContractId);
-    adminClient.registerPublisher(registerPublisherRequest);
+  public void registerPublisher(@Valid RegisterPublisherContractRequest registerPublisherContractRequest) {
+    logger.info("Registering publisher: " + registerPublisherContractRequest.publisherContractId);
+    adminClient.registerPublisherContract(registerPublisherContractRequest);
   }
 
   // TODO: Add Simple bar chart to admin gui!

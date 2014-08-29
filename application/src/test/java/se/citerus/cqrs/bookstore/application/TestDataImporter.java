@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.io.Resources;
 import org.junit.Ignore;
 import se.citerus.cqrs.bookstore.admin.web.request.CreateBookRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.infrastructure.JsonSerializer;
 
 import java.util.List;
@@ -29,11 +29,11 @@ public class TestDataImporter {
 
       // Add publisher contracts
       String contractsJson = Resources.toString(getResource("se/citerus/cqrs/bookstore/testdata/publishercontracts.json"), UTF_8);
-      TypeReference<List<RegisterPublisherRequest>> listOfRegisterPublisherRequests = new TypeReference<List<RegisterPublisherRequest>>() {
+      TypeReference<List<RegisterPublisherContractRequest>> listOfRegisterPublisherRequests = new TypeReference<List<RegisterPublisherContractRequest>>() {
       };
-      List<RegisterPublisherRequest> publishersRequests = deserialize(contractsJson, listOfRegisterPublisherRequests);
+      List<RegisterPublisherContractRequest> publishersRequests = deserialize(contractsJson, listOfRegisterPublisherRequests);
 
-      for (RegisterPublisherRequest request : publishersRequests) {
+      for (RegisterPublisherContractRequest request : publishersRequests) {
         publisherClient.post(JsonSerializer.serialize(request));
       }
 

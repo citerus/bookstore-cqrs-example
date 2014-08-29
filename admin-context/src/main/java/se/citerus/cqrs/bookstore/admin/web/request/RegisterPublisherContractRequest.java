@@ -5,7 +5,7 @@ import se.citerus.cqrs.bookstore.TransportObject;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class RegisterPublisherRequest extends TransportObject {
+public class RegisterPublisherContractRequest extends TransportObject {
 
   @NotNull
   public String publisherContractId;

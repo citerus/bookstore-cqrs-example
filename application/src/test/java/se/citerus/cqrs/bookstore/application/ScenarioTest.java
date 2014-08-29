@@ -9,7 +9,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.admin.web.request.CreateBookRequest;
 import se.citerus.cqrs.bookstore.admin.web.request.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.order.OrderId;
@@ -138,7 +138,7 @@ public class ScenarioTest {
   }
 
   private ClientResponse registerPublisher(String publisherContractId, String name, double feePercentage, long limit) {
-    RegisterPublisherRequest request = new RegisterPublisherRequest();
+    RegisterPublisherContractRequest request = new RegisterPublisherContractRequest();
     request.publisherContractId = publisherContractId;
     request.publisherName = name;
     request.feePercentage = feePercentage;

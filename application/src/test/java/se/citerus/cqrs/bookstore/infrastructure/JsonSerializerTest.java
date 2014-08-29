@@ -1,7 +1,7 @@
 package se.citerus.cqrs.bookstore.infrastructure;
 
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherRequest;
+import se.citerus.cqrs.bookstore.admin.web.request.RegisterPublisherContractRequest;
 
 import java.io.IOException;
 
@@ -19,10 +19,13 @@ public class JsonSerializerTest {
         "        \"limit\":1000\n" +
         "    }\n";
 
-    RegisterPublisherRequest command = JsonSerializer.deserialize(publisherJson, RegisterPublisherRequest.class);
-    assertThat(command.toString(), is("RegisterPublisherRequest[" +
+    RegisterPublisherContractRequest command = JsonSerializer.deserialize(
+        publisherJson, RegisterPublisherContractRequest.class);
+    assertThat(command.toString(), is("RegisterPublisherContractRequest[" +
         "publisherContractId=11113865-24e7-4c7c-8b93-eb6caac48111,publisherName=Addison-Wesley,feePercentage=5.5,limit=1000" +
         "]"));
   }
+
+  // TODO: Replace RPCR with inner static class suited for testing only.
 
 }

@@ -1,6 +1,5 @@
-package se.citerus.cqrs.bookstore.shopping.web;
+package se.citerus.cqrs.bookstore.shopping.web.resource;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
@@ -13,7 +12,6 @@ import se.citerus.cqrs.bookstore.shopping.web.api.LineItemDto;
 import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookClient;
 import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookDto;
 import se.citerus.cqrs.bookstore.shopping.web.infrastructure.InMemoryCartRepository;
-import se.citerus.cqrs.bookstore.shopping.web.resource.CartResource;
 
 import java.util.UUID;
 
@@ -49,13 +47,13 @@ public class CartResourceTest {
 
     String bookId = UUID.randomUUID().toString();
     String cartId = UUID.randomUUID().toString();
-    createCartWithId(cartId, resources.client());
+    createCartWithId(cartId);
 
     BookDto book = new BookDto();
     book.price = price;
     book.title = title;
     when(bookClient.getBook(bookId)).thenReturn(book);
-    CartDto cart = addItemToCart(cartId, addBookItemRequest(bookId), resources.client()).getEntity(CartDto.class);
+    CartDto cart = addItemToCart(cartId, addBookItemRequest(bookId)).getEntity(CartDto.class);
 
     LineItemDto expectedLineItem = new LineItemDto();
     expectedLineItem.bookId = bookId;
@@ -71,10 +69,10 @@ public class CartResourceTest {
   @Test
   public void cannotAddNonExistingItem() {
     String cartId = UUID.randomUUID().toString();
-    createCartWithId(cartId, resources.client());
+    createCartWithId(cartId);
 
     AddItemRequest addItemRequest = addBookItemRequest(UUID.randomUUID().toString());
-    ClientResponse response = addItemToCart(cartId, addItemRequest, resources.client());
+    ClientResponse response = addItemToCart(cartId, addItemRequest);
 
     assertThat(response.getStatusInfo().getStatusCode(), is(BAD_REQUEST.getStatusCode()));
   }
@@ -99,7 +97,7 @@ public class CartResourceTest {
   @Test
   public void shouldSaveCartBetweenCalls() {
     String cartId = UUID.randomUUID().toString();
-    createCartWithId(cartId, resources.client());
+    createCartWithId(cartId);
 
     CartDto cart = resources.client()
         .resource(CART_RESOURCE + "/" + cartId)
@@ -113,26 +111,27 @@ public class CartResourceTest {
   @Test
   public void shouldClearCart() {
     String cartId = UUID.randomUUID().toString();
-    createCartWithId(cartId, resources.client());
+    createCartWithId(cartId);
 
     resources.client().resource(CART_RESOURCE + "/" + cartId).delete();
 
-    createCartWithId(cartId, resources.client());
+    createCartWithId(cartId);
   }
 
-  public static ClientResponse addItemToCart(String cartId, AddItemRequest addItemRequest, Client client) {
-    return client
+  private ClientResponse addItemToCart(String cartId, AddItemRequest addItemRequest) {
+    return resources.client()
         .resource(CART_RESOURCE + "/" + cartId + "/items")
         .entity(addItemRequest, APPLICATION_JSON_TYPE)
         .post(ClientResponse.class);
   }
 
-  public static void createCartWithId(String cartId, Client client) {
+  private void createCartWithId(String cartId) {
     CreateCartRequest createCart = new CreateCartRequest();
     createCart.cartId = cartId;
-    client
+    resources.client()
         .resource(CART_RESOURCE)
         .entity(createCart, APPLICATION_JSON_TYPE)
         .post();
   }
+
 }

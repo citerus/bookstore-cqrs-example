@@ -9,15 +9,13 @@ public class GenericId {
 
   public final String id;
 
-  private static final Pattern PATTERN =
-      Pattern.compile("^(([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12})$");
+  public static final String ID_PATTERN =
+      "^(([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12})$";
+
+  private static final Pattern PATTERN = Pattern.compile(ID_PATTERN);
 
   public GenericId(String id) {
     this.id = id;
-  }
-
-  public static boolean isValid(String id) {
-    return id != null && PATTERN.matcher(id).matches();
   }
 
   @Override

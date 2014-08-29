@@ -16,10 +16,13 @@ public class CartDto extends TransportObject {
 
   @NotNull
   public final String cartId;
+
   @Min(1)
   public final long totalPrice;
+
   @Min(1)
   public final int totalQuantity;
+
   @NotNull
   public final List<LineItemDto> lineItems;
 

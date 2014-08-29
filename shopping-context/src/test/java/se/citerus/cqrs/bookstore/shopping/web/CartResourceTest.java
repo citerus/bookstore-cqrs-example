@@ -8,7 +8,11 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.shopping.web.infrastructure.BookClient;
 import se.citerus.cqrs.bookstore.shopping.web.infrastructure.InMemoryCartRepository;
-import se.citerus.cqrs.bookstore.shopping.web.transport.*;
+import se.citerus.cqrs.bookstore.shopping.web.request.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.web.request.CreateCartRequest;
+import se.citerus.cqrs.bookstore.shopping.web.transport.BookDto;
+import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
+import se.citerus.cqrs.bookstore.shopping.web.transport.LineItemDto;
 
 import java.util.UUID;
 

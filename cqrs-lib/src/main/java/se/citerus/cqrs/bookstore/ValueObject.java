@@ -30,6 +30,4 @@ public abstract class ValueObject implements Serializable {
     return ToStringBuilder.reflectionToString(this, SHORT_PREFIX_STYLE);
   }
 
-  // TODO: delete package leaf bookstore.
-
 }

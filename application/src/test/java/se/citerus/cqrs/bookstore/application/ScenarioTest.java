@@ -16,10 +16,10 @@ import se.citerus.cqrs.bookstore.order.OrderId;
 import se.citerus.cqrs.bookstore.order.OrderStatus;
 import se.citerus.cqrs.bookstore.query.BookDto;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
-import se.citerus.cqrs.bookstore.shopping.web.transport.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.web.request.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.web.request.CreateCartRequest;
+import se.citerus.cqrs.bookstore.shopping.web.request.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
-import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
-import se.citerus.cqrs.bookstore.shopping.web.transport.PlaceOrderRequest;
 
 import java.io.File;
 import java.util.Collection;

@@ -7,22 +7,20 @@ import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
 import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
 import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.web.model.Item;
-import se.citerus.cqrs.bookstore.shopping.web.transport.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.web.request.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.web.request.CreateCartRequest;
 import se.citerus.cqrs.bookstore.shopping.web.transport.BookDto;
 import se.citerus.cqrs.bookstore.shopping.web.transport.CartDto;
-import se.citerus.cqrs.bookstore.shopping.web.transport.CreateCartRequest;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.String.format;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.status;
-import static se.citerus.cqrs.bookstore.GenericId.isValid;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -40,7 +38,6 @@ public class CartResource {
 
   @POST
   public void initCart(@Valid CreateCartRequest cart) {
-    checkArgument(isValid(cart.cartId), "Invalid ID!");
     cartRepository.save(new Cart(cart.cartId));
   }
 

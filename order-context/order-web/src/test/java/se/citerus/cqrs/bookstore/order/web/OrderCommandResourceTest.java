@@ -15,13 +15,12 @@ import java.util.List;
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 
 public class OrderCommandResourceTest {
 
-  private static final String SERVICE_ADDRESS = "http://localhost:8080";
-  private static final String ORDER_RESOURCE = SERVICE_ADDRESS + "/order-requests";
+  private static final String ORDER_RESOURCE = "/order-requests";
 
   private static final CommandBus commandBus = mock(CommandBus.class);
   private static final QueryService queryService = mock(QueryService.class);

@@ -14,14 +14,12 @@ import static java.util.Arrays.asList;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 public class BookResourceTest {
 
-  private static final String BOOK_RESOURCE = "http://localhost:8080/books";
+  private static final String BOOK_RESOURCE = "/books";
   private static final GenericType<Collection<BookDto>> BOOK_COLLECTION_TYPE = new GenericType<Collection<BookDto>>() {
   };
 

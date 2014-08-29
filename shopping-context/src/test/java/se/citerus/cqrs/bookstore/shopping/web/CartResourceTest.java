@@ -8,7 +8,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.shopping.web.infrastructure.BookClient;
 import se.citerus.cqrs.bookstore.shopping.web.infrastructure.InMemoryCartRepository;
-import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
 import se.citerus.cqrs.bookstore.shopping.web.transport.*;
 
 import java.util.UUID;
@@ -26,9 +25,7 @@ public class CartResourceTest {
 
   private static BookClient bookClient = mock(BookClient.class);
 
-  private static final String SERVICE_ADDRESS = "http://localhost:8080";
-  private static final String CART_RESOURCE = SERVICE_ADDRESS + "/carts";
-
+  private static final String CART_RESOURCE = "/carts";
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()

@@ -14,7 +14,9 @@ import se.citerus.cqrs.bookstore.admin.web.transport.OrderDto;
 import se.citerus.cqrs.bookstore.admin.web.transport.OrderLineDto;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -25,8 +27,7 @@ import static org.mockito.Mockito.*;
 
 public class AdminResourceTest {
 
-  private static final String SERVICE_ADDRESS = "http://localhost:8080";
-  private static final String ADMIN_RESOURCE = SERVICE_ADDRESS + "/admin";
+  private static final String ADMIN_RESOURCE = "/admin";
 
   private static final DomainEventStore eventStore = mock(DomainEventStore.class);
   private static final OrderClient orderClient = mock(OrderClient.class);

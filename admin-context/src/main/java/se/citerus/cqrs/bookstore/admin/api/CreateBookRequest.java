@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.admin.web.api;
+package se.citerus.cqrs.bookstore.admin.api;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import se.citerus.cqrs.bookstore.TransportObject;
@@ -9,19 +9,26 @@ import javax.validation.constraints.Pattern;
 
 import static se.citerus.cqrs.bookstore.GenericId.ID_PATTERN;
 
-public class RegisterPublisherContractRequest extends TransportObject {
+public class CreateBookRequest extends TransportObject {
+
+  @NotEmpty
+  @Pattern(regexp = ID_PATTERN)
+  public String bookId;
+
+  @NotNull
+  public String isbn;
+
+  @NotNull
+  public String title;
+
+  @NotNull
+  public String description;
+
+  @Min(1)
+  public long price;
 
   @NotEmpty
   @Pattern(regexp = ID_PATTERN)
   public String publisherContractId;
-
-  @NotNull
-  public String publisherName;
-
-  @Min(1)
-  public double feePercentage;
-
-  @Min(1)
-  public long limit;
 
 }

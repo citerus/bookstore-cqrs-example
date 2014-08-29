@@ -1,10 +1,10 @@
-package se.citerus.cqrs.bookstore.admin.web.client.order;
+package se.citerus.cqrs.bookstore.admin.client.order;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import org.joda.time.LocalDate;
-import se.citerus.cqrs.bookstore.admin.web.api.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.admin.web.api.RegisterPublisherContractRequest;
+import se.citerus.cqrs.bookstore.admin.api.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.admin.api.RegisterPublisherContractRequest;
 
 import java.util.List;
 import java.util.Map;

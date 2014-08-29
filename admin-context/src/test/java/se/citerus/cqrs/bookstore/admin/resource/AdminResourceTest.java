@@ -1,16 +1,15 @@
-package se.citerus.cqrs.bookstore.order.web;
+package se.citerus.cqrs.bookstore.admin.resource;
 
 import com.sun.jersey.api.client.GenericType;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.admin.web.client.bookcatalog.BookCatalogClient;
-import se.citerus.cqrs.bookstore.admin.web.client.order.IdDto;
-import se.citerus.cqrs.bookstore.admin.web.client.order.OrderClient;
-import se.citerus.cqrs.bookstore.admin.web.client.order.OrderDto;
-import se.citerus.cqrs.bookstore.admin.web.client.order.OrderLineDto;
-import se.citerus.cqrs.bookstore.admin.web.resource.AdminResource;
+import se.citerus.cqrs.bookstore.admin.client.bookcatalog.BookCatalogClient;
+import se.citerus.cqrs.bookstore.admin.client.order.IdDto;
+import se.citerus.cqrs.bookstore.admin.client.order.OrderClient;
+import se.citerus.cqrs.bookstore.admin.client.order.OrderDto;
+import se.citerus.cqrs.bookstore.admin.client.order.OrderLineDto;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 
 import java.util.ArrayList;

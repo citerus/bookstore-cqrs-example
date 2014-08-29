@@ -1,7 +1,7 @@
-package se.citerus.cqrs.bookstore.admin.web.client.bookcatalog;
+package se.citerus.cqrs.bookstore.admin.client.bookcatalog;
 
 import com.sun.jersey.api.client.Client;
-import se.citerus.cqrs.bookstore.admin.web.api.CreateBookRequest;
+import se.citerus.cqrs.bookstore.admin.api.CreateBookRequest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 

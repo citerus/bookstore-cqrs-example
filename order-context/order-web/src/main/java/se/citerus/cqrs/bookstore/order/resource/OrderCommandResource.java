@@ -1,10 +1,12 @@
-package se.citerus.cqrs.bookstore.order.web;
+package se.citerus.cqrs.bookstore.order.resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.order.command.ActivateOrderCommand;
 import se.citerus.cqrs.bookstore.order.command.PlaceOrderCommand;
+import se.citerus.cqrs.bookstore.order.web.CommandFactory;
+import se.citerus.cqrs.bookstore.order.web.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.order.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.order.web.transport.PlaceOrderRequest;
 

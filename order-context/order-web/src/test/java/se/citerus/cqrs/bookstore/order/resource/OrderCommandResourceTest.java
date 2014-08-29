@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.order.web;
+package se.citerus.cqrs.bookstore.order.resource;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;

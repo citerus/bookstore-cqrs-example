@@ -67,7 +67,7 @@ public class AdminResource {
   }
 
   @POST
-  @Path("register-publisher-requests")
+  @Path("publisher-contract-requests")
   public void registerPublisher(@Valid RegisterPublisherContractRequest registerPublisherContractRequest) {
     logger.info("Registering publisher: " + registerPublisherContractRequest.publisherContractId);
     orderClient.registerPublisherContract(registerPublisherContractRequest);

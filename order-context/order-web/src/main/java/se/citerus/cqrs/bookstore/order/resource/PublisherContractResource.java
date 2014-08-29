@@ -1,9 +1,11 @@
-package se.citerus.cqrs.bookstore.order.web;
+package se.citerus.cqrs.bookstore.order.resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.order.publisher.command.RegisterPublisherContractCommand;
+import se.citerus.cqrs.bookstore.order.web.CommandFactory;
+import se.citerus.cqrs.bookstore.order.web.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 import javax.validation.Valid;
@@ -13,27 +15,27 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("register-publisher-requests")
+@Path("publisher-contract-requests")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 
-public class PublisherResource {
+public class PublisherContractResource {
 
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
   private final CommandBus commandBus;
   private final CommandFactory commandFactory = new CommandFactory();
 
-  public PublisherResource(CommandBus commandBus) {
+  public PublisherContractResource(CommandBus commandBus) {
     this.commandBus = commandBus;
   }
 
   @POST
   @Path("register")
-  public void registerPublisher(@Valid RegisterPublisherRequest registerPublisherRequest) {
-    PublisherContractId publisherContractId = new PublisherContractId(registerPublisherRequest.publisherContractId);
+  public void registerPublisher(@Valid RegisterPublisherContractRequest registerPublisherContractRequest) {
+    PublisherContractId publisherContractId = new PublisherContractId(registerPublisherContractRequest.publisherContractId);
     logger.info("Registering publisher: " + publisherContractId);
-    RegisterPublisherContractCommand command = commandFactory.toCommand(publisherContractId, registerPublisherRequest);
+    RegisterPublisherContractCommand command = commandFactory.toCommand(publisherContractId, registerPublisherContractRequest);
     commandBus.dispatch(command);
   }
 

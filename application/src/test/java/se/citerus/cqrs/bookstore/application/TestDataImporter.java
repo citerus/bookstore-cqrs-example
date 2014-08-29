@@ -25,7 +25,7 @@ public class TestDataImporter {
   private static void importBooks() {
 
     try {
-      TestHttpClient publisherClient = new TestHttpClient(SERVER_ADDRESS + "/admin/register-publisher-requests").init();
+      TestHttpClient publisherClient = new TestHttpClient(SERVER_ADDRESS + "/admin/publisher-contract-requests").init();
 
       // Add publisher contracts
       String contractsJson = Resources.toString(getResource("se/citerus/cqrs/bookstore/testdata/publishercontracts.json"), UTF_8);

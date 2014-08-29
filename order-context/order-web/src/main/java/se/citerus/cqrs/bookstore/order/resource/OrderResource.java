@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.order.web;
+package se.citerus.cqrs.bookstore.order.resource;
 
 import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;

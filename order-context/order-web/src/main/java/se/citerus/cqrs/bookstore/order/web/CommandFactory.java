@@ -17,9 +17,10 @@ import java.util.List;
 
 public class CommandFactory {
 
-  public RegisterPublisherContractCommand toCommand(PublisherContractId publisherContractId, RegisterPublisherRequest request) {
+  public RegisterPublisherContractCommand toCommand(PublisherContractId publisherContractId, RegisterPublisherContractRequest request) {
     return new RegisterPublisherContractCommand(publisherContractId, request.publisherName, request.feePercentage, request.limit);
   }
+
   public PlaceOrderCommand toCommand(CartDto cart, PlaceOrderRequest request) {
     List<OrderLine> itemsToOrder = getOrderLines(cart);
     CustomerInformation customerInformation = getCustomerInformation(request);

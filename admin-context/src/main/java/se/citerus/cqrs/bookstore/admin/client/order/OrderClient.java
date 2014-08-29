@@ -35,7 +35,7 @@ public class OrderClient {
   }
 
   public void registerPublisherContract(RegisterPublisherContractRequest registerPublisherContractRequest) {
-    client.resource("http://localhost:8080/service/register-publisher-requests/register")
+    client.resource("http://localhost:8080/service/publisher-contract-requests/register")
         .entity(registerPublisherContractRequest, APPLICATION_JSON_TYPE).post();
   }
 

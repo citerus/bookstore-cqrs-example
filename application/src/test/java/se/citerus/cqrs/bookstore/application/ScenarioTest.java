@@ -154,7 +154,7 @@ public class ScenarioTest {
     request.publisherName = name;
     request.feePercentage = feePercentage;
     request.limit = limit;
-    ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/register-publisher-requests")
+    ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/publisher-contract-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);
     assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));

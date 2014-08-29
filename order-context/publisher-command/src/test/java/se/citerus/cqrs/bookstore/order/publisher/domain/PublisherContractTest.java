@@ -3,7 +3,7 @@ package se.citerus.cqrs.bookstore.order.publisher.domain;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.order.BookId;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
-import se.citerus.cqrs.bookstore.publisher.event.PublisherRegisteredEvent;
+import se.citerus.cqrs.bookstore.publisher.event.PublisherContractRegisteredEvent;
 import se.citerus.cqrs.bookstore.publisher.event.PurchaseRegisteredEvent;
 
 import java.util.Iterator;
@@ -25,8 +25,8 @@ public class PublisherContractTest {
 
     contract.register(publisherContractId, "Addison Wesley", feePercentage, LIMIT);
 
-    PublisherRegisteredEvent event = getOnlyElement(filter(contract.getUncommittedEvents(),
-        PublisherRegisteredEvent.class));
+    PublisherContractRegisteredEvent event = getOnlyElement(filter(contract.getUncommittedEvents(),
+        PublisherContractRegisteredEvent.class));
 
     assertThat(event.feePercentage, is(5.0));
     assertThat(event.publisherName, is("Addison Wesley"));

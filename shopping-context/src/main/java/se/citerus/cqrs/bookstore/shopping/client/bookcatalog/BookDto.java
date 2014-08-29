@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog;
+package se.citerus.cqrs.bookstore.shopping.client.bookcatalog;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import se.citerus.cqrs.bookstore.TransportObject;

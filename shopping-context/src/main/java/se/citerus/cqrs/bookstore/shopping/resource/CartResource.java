@@ -1,17 +1,17 @@
-package se.citerus.cqrs.bookstore.shopping.web.resource;
+package se.citerus.cqrs.bookstore.shopping.resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.shopping.web.api.AddItemRequest;
-import se.citerus.cqrs.bookstore.shopping.web.api.CartDto;
-import se.citerus.cqrs.bookstore.shopping.web.api.CartDtoFactory;
-import se.citerus.cqrs.bookstore.shopping.web.api.CreateCartRequest;
-import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookClient;
-import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookDto;
-import se.citerus.cqrs.bookstore.shopping.web.model.BookId;
-import se.citerus.cqrs.bookstore.shopping.web.model.Cart;
-import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;
-import se.citerus.cqrs.bookstore.shopping.web.model.Item;
+import se.citerus.cqrs.bookstore.shopping.api.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.api.CartDto;
+import se.citerus.cqrs.bookstore.shopping.api.CartDtoFactory;
+import se.citerus.cqrs.bookstore.shopping.api.CreateCartRequest;
+import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookClient;
+import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookDto;
+import se.citerus.cqrs.bookstore.shopping.model.BookId;
+import se.citerus.cqrs.bookstore.shopping.model.Cart;
+import se.citerus.cqrs.bookstore.shopping.model.CartRepository;
+import se.citerus.cqrs.bookstore.shopping.model.Item;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;

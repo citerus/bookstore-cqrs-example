@@ -31,10 +31,10 @@ import se.citerus.cqrs.bookstore.query.OrderListDenormalizer;
 import se.citerus.cqrs.bookstore.query.OrdersPerDayAggregator;
 import se.citerus.cqrs.bookstore.query.QueryService;
 import se.citerus.cqrs.bookstore.query.repository.InMemOrderProjectionRepository;
-import se.citerus.cqrs.bookstore.shopping.web.client.bookcatalog.BookClient;
-import se.citerus.cqrs.bookstore.shopping.web.infrastructure.InMemoryCartRepository;
-import se.citerus.cqrs.bookstore.shopping.web.model.CartRepository;
-import se.citerus.cqrs.bookstore.shopping.web.resource.CartResource;
+import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookClient;
+import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
+import se.citerus.cqrs.bookstore.shopping.model.CartRepository;
+import se.citerus.cqrs.bookstore.shopping.resource.CartResource;
 
 import java.net.URISyntaxException;
 

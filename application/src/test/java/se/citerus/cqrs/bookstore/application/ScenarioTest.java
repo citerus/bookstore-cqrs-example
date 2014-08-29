@@ -20,8 +20,8 @@ import se.citerus.cqrs.bookstore.order.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.order.web.transport.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.query.BookDto;
 import se.citerus.cqrs.bookstore.query.OrderProjection;
-import se.citerus.cqrs.bookstore.shopping.web.api.AddItemRequest;
-import se.citerus.cqrs.bookstore.shopping.web.api.CreateCartRequest;
+import se.citerus.cqrs.bookstore.shopping.api.AddItemRequest;
+import se.citerus.cqrs.bookstore.shopping.api.CreateCartRequest;
 
 import java.io.File;
 import java.util.Collection;

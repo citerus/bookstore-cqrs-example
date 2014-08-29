@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.shopping.web.model;
+package se.citerus.cqrs.bookstore.shopping.model;
 
 import se.citerus.cqrs.bookstore.ValueObject;
 

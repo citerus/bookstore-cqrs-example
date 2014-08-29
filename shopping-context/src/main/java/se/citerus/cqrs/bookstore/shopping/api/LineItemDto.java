@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.shopping.web.api;
+package se.citerus.cqrs.bookstore.shopping.api;
 
 import se.citerus.cqrs.bookstore.TransportObject;
 

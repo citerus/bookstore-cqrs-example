@@ -3,9 +3,9 @@ package se.citerus.cqrs.bookstore.application;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.io.Resources;
 import org.junit.Ignore;
-import se.citerus.cqrs.bookstore.admin.api.CreateBookRequest;
-import se.citerus.cqrs.bookstore.admin.api.RegisterPublisherContractRequest;
+import se.citerus.cqrs.bookstore.bookcatalog.api.BookDto;
 import se.citerus.cqrs.bookstore.infrastructure.JsonSerializer;
+import se.citerus.cqrs.bookstore.ordercontext.api.RegisterPublisherContractRequest;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class TestDataImporter {
   private static void importBooks() {
 
     try {
-      TestHttpClient publisherClient = new TestHttpClient(SERVER_ADDRESS + "/admin/publishercontract-requests").init();
+      TestHttpClient publisherClient = new TestHttpClient(SERVER_ADDRESS + "/service/publishercontract-requests").init();
 
       // Add publisher contracts
       String contractsJson = Resources.toString(getResource("se/citerus/cqrs/bookstore/testdata/publishercontracts.json"), UTF_8);
@@ -37,16 +37,17 @@ public class TestDataImporter {
         publisherClient.post(JsonSerializer.serialize(request));
       }
 
-      TestHttpClient bookClient = new TestHttpClient(SERVER_ADDRESS + "/admin/create-book-requests").init();
+      TestHttpClient bookClient = new TestHttpClient(SERVER_ADDRESS + "/service/books").init();
 
       // Add books
       String booksJson = Resources.toString(getResource("se/citerus/cqrs/bookstore/testdata/books.json"), UTF_8);
-      TypeReference<List<CreateBookRequest>> listOfCreateBookRequests = new TypeReference<List<CreateBookRequest>>() {
+      TypeReference<List<BookDto>> listOfCreateBookRequests = new TypeReference<List<BookDto>>() {
       };
-      List<CreateBookRequest> bookRequests = deserialize(booksJson, listOfCreateBookRequests);
 
-      for (CreateBookRequest bookRequest : bookRequests) {
-        bookClient.post(JsonSerializer.serialize(bookRequest));
+      List<BookDto> books = deserialize(booksJson, listOfCreateBookRequests);
+
+      for (BookDto book : books) {
+        bookClient.post(JsonSerializer.serialize(book));
       }
 
     } catch (Exception e) {

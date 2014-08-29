@@ -4,9 +4,12 @@ server:
       port: 8080
 
 logging:
-  level: DEBUG
+  level: WARN
   loggers:
     se.citerus: DEBUG
 
   appenders:
     - type: console
+
+eventStore : se.citerus.cqrs.bookstore.infrastructure.SimpleFileBasedEventStore
+#eventStore : se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore

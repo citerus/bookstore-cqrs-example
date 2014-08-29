@@ -9,11 +9,10 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.admin.api.CreateBookRequest;
 import se.citerus.cqrs.bookstore.admin.api.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.admin.api.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.CartDto;
 import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
+import se.citerus.cqrs.bookstore.ordercontext.api.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookDto;
 import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
 import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
@@ -63,7 +62,7 @@ public class ScenarioTest {
 
   @Test
   public void testCreateBook() {
-    CreateBookRequest book = createRandomBook(UUID.randomUUID().toString());
+    BookDto book = createRandomBook(UUID.randomUUID().toString());
     createBook(book);
     BookDto bookProjection = getBook(book.bookId);
     assertThat(bookProjection.title, is("DDD"));
@@ -73,7 +72,7 @@ public class ScenarioTest {
 
   @Test
   public void testPlaceOrder() throws InterruptedException {
-    CreateBookRequest randomBook = createRandomBook(UUID.randomUUID().toString());
+    BookDto randomBook = createRandomBook(UUID.randomUUID().toString());
     createBook(randomBook);
 
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
@@ -90,7 +89,7 @@ public class ScenarioTest {
 
   @Test
   public void testGetOrders() throws InterruptedException {
-    CreateBookRequest randomBook = createRandomBook(UUID.randomUUID().toString());
+    BookDto randomBook = createRandomBook(UUID.randomUUID().toString());
     createBook(randomBook);
     int initialSize = getOrders().size();
 
@@ -114,7 +113,7 @@ public class ScenarioTest {
     String publisherContractId = UUID.randomUUID().toString();
     registerPublisher(publisherContractId, "Addison-Wesley", 10.0, 1000);
 
-    CreateBookRequest randomBook = createRandomBook(publisherContractId);
+    BookDto randomBook = createRandomBook(publisherContractId);
     createBook(randomBook);
 
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
@@ -154,7 +153,7 @@ public class ScenarioTest {
     request.publisherName = name;
     request.feePercentage = feePercentage;
     request.limit = limit;
-    ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/publishercontract-requests")
+    ClientResponse response = client.resource(SERVER_ADDRESS + "/publishercontract-requests")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);
     assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
@@ -226,8 +225,8 @@ public class ScenarioTest {
     return response;
   }
 
-  private ClientResponse createBook(CreateBookRequest createBookRequest) {
-    ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/create-book-requests")
+  private ClientResponse createBook(BookDto createBookRequest) {
+    ClientResponse response = client.resource(SERVER_ADDRESS + "/books")
         .entity(createBookRequest, APPLICATION_JSON)
         .post(ClientResponse.class);
     assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
@@ -243,9 +242,9 @@ public class ScenarioTest {
     return response;
   }
 
-  private CreateBookRequest createRandomBook(String publisherContractId) {
+  private BookDto createRandomBook(String publisherContractId) {
     BookId bookId = BookId.randomId();
-    CreateBookRequest createBookRequest = new CreateBookRequest();
+    BookDto createBookRequest = new BookDto();
     createBookRequest.bookId = bookId.id;
     createBookRequest.isbn = "0321125215";
     createBookRequest.title = "DDD";

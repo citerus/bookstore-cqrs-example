@@ -4,7 +4,6 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import org.joda.time.LocalDate;
 import se.citerus.cqrs.bookstore.admin.api.OrderActivationRequest;
-import se.citerus.cqrs.bookstore.admin.api.RegisterPublisherContractRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -32,11 +31,6 @@ public class OrderClient {
   public void activate(OrderActivationRequest activationRequest) {
     client.resource("http://localhost:8080/service/order-requests/activations")
         .entity(activationRequest, APPLICATION_JSON_TYPE).post();
-  }
-
-  public void registerPublisherContract(RegisterPublisherContractRequest registerPublisherContractRequest) {
-    client.resource("http://localhost:8080/service/publishercontract-requests/register")
-        .entity(registerPublisherContractRequest, APPLICATION_JSON_TYPE).post();
   }
 
   public List<OrderDto> listOrders() {

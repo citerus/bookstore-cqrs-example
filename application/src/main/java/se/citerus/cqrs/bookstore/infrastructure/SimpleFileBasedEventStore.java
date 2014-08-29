@@ -17,9 +17,14 @@ import static se.citerus.cqrs.bookstore.infrastructure.JsonSerializer.serialize;
 
 public class SimpleFileBasedEventStore implements DomainEventStore {
 
+  private static final String DEFAULT_FILE_NAME = "events.txt";
   private final File eventStoreFile;
 
-  public SimpleFileBasedEventStore(File eventStoreFile) throws IOException {
+  public SimpleFileBasedEventStore() throws IOException {
+    this(DEFAULT_FILE_NAME);
+  }
+
+  public SimpleFileBasedEventStore(String eventStoreFile) throws IOException {
     this.eventStoreFile = createIfNotExist(eventStoreFile);
   }
 
@@ -68,13 +73,14 @@ public class SimpleFileBasedEventStore implements DomainEventStore {
     return event.getClass().getName() + "\t" + serialize(event) + "\n";
   }
 
-  private File createIfNotExist(File eventStoreFile) throws IOException {
-    if (!eventStoreFile.exists()) {
-      if (!eventStoreFile.createNewFile()) {
+  private File createIfNotExist(String eventStoreFile) throws IOException {
+    File file = new File(eventStoreFile);
+    if (!file.exists()) {
+      if (!file.createNewFile()) {
         throw new IOException("Unable to create file: " + eventStoreFile);
       }
     }
-    return eventStoreFile;
+    return file;
   }
 
 }

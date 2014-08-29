@@ -5,7 +5,6 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.admin.client.bookcatalog.BookCatalogClient;
 import se.citerus.cqrs.bookstore.admin.client.order.IdDto;
 import se.citerus.cqrs.bookstore.admin.client.order.OrderClient;
 import se.citerus.cqrs.bookstore.admin.client.order.OrderDto;
@@ -29,7 +28,6 @@ public class AdminResourceTest {
   private static final String ADMIN_RESOURCE = "/admin";
 
   private static final DomainEventStore eventStore = mock(DomainEventStore.class);
-  private static final BookCatalogClient BOOK_CATALOG_CLIENT = mock(BookCatalogClient.class);
   private static final OrderClient ORDER_CLIENT = mock(OrderClient.class);
 
   public static final GenericType<List<OrderDto>> ORDER_LIST_TYPE = new GenericType<List<OrderDto>>() {
@@ -37,12 +35,11 @@ public class AdminResourceTest {
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new AdminResource(BOOK_CATALOG_CLIENT, ORDER_CLIENT))
-      .build();
+      .addResource(new AdminResource(ORDER_CLIENT)).build();
 
   @After
   public void tearDown() throws Exception {
-    reset(eventStore, BOOK_CATALOG_CLIENT, ORDER_CLIENT);
+    reset(eventStore, ORDER_CLIENT);
   }
 
   @Test

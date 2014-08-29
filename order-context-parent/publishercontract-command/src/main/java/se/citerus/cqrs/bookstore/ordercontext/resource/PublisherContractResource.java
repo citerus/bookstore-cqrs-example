@@ -30,7 +30,6 @@ public class PublisherContractResource {
   }
 
   @POST
-  @Path("register")
   public void registerPublisher(@Valid RegisterPublisherContractRequest request) {
     PublisherContractId publisherContractId = new PublisherContractId(request.publisherContractId);
     logger.info("Registering publisher: " + publisherContractId);

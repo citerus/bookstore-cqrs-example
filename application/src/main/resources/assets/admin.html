@@ -1,70 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CQRS - Bookstore</title>
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
-          rel="stylesheet"/>
+  <title>CQRS - Bookstore</title>
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+        rel="stylesheet"/>
 </head>
 <body>
 
 <div class="container" style="width:80%">
-    <div class="navbar navbar-inverse">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="#" name="top">CQRS Bookstore Admin</a>
+  <div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="#" name="top">CQRS Bookstore Admin</a>
 
-                <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        <li class="active"><a href="#" id="nav-list-orders"><i class="icon-envelope icon-white"></i>
-                            Orders</a></li>
-                        <li class="divider-vertical"></li>
-                        <li><a href="#" id="nav-list-events"><i class="icon-align-justify icon-white"></i> Events</a>
-                        </li>
-                        <li class="divider-vertical"></li>
-                    </ul>
-                </div>
-            </div>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li class="active"><a href="#" id="nav-list-orders"><i class="icon-envelope icon-white"></i>
+              Orders</a></li>
+            <li class="divider-vertical"></li>
+            <li><a href="#" id="nav-list-events"><i class="icon-align-justify icon-white"></i> Events</a>
+            </li>
+            <li class="divider-vertical"></li>
+          </ul>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div id="list-orders">
-        <div class="well">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>OrderId</th>
-                    <th>Customer</th>
-                    <th>Total price</th>
-                    <th>Status</th>
-                    <th style="width: 36px;"></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+  <div id="list-orders">
+    <div class="well">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>OrderId</th>
+          <th>Customer</th>
+          <th>Total price</th>
+          <th>Status</th>
+          <th style="width: 36px;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
     </div>
+  </div>
 
-    <div id="list-events">
-        <div class="well">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Data</th>
-                </tr>
-                </thead>
-                <tbody>
+  <div id="list-events">
+    <div class="well">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Type</th>
+          <th>Data</th>
+        </tr>
+        </thead>
+        <tbody>
 
-                </tbody>
-            </table>
-        </div>
+        </tbody>
+      </table>
     </div>
+  </div>
 
 </div>
 
@@ -76,120 +76,109 @@
 <!-- Load all books -->
 <script language="javascript">
 
-    var serviceRootUrl = "http://localhost:8080/service";
+  var serviceRootUrl = "http://localhost:8080/service";
 
-    jQuery(document).ready(function () {
-        $("#list-events").hide();
-        initNavigation();
-        getAllOrders();
+  jQuery(document).ready(function () {
+    $("#list-events").hide();
+    initNavigation();
+    getAllOrders();
+  });
+
+  function initNavigation() {
+
+    $('#nav-list-orders').click(function () {
+      $('#nav-list-orders').closest('li').addClass("active");
+      $('#nav-list-events').closest('li').removeClass("active");
+      $("#list-events").hide();
+      $("#list-orders").show();
+      getAllOrders();
+      return false;
     });
 
-    function initNavigation() {
-
-        $('#nav-list-orders').click(function () {
-            $('#nav-list-orders').closest('li').addClass("active");
-            $('#nav-list-events').closest('li').removeClass("active");
-            $("#list-events").hide();
-            $("#list-orders").show();
-            getAllOrders();
-            return false;
-        });
-
-        $('#nav-list-events').click(function () {
-            $('#nav-list-orders').closest('li').removeClass("active");
-            $('#nav-list-events').closest('li').addClass("active");
-            $("#list-orders").hide();
-            $("#list-events").show();
-            getAllEvents();
-            return false;
-        });
-    }
-
-    function renderOrders(data) {
-        var list = data == null ? [] : (data instanceof Array ? data : [data]);
-        $('#list-orders').find("tbody tr").remove();
-        $.each(list, function (index, order) {
-            var orderId = order.orderId.id;
-            var itemId = 'activate-order-' + orderId;
-            var customerName = order.customerName;
-            var orderAmount = order.orderAmount;
-            var status = order.status;
-            var activationButton = status == 'PLACED' ? '<button class="btn-small btn-success" id="' + itemId + '">Activate</button>' : '';
-            $('#list-orders').find("tbody")
-                    .append('<tr><td>' + orderId + '</td>' +
-                    '<td>' + customerName + '</td>' +
-                    '<td>' + orderAmount + '</td>' +
-                    '<td>' + status + '</td>' +
-                    '<td>' + activationButton + ' </td></tr>');
-        });
-    }
-
-
-    function getAllEvents() {
-        $.getJSON(serviceRootUrl + "/admin/events", function (data) {
-            renderEvents(data);
-        });
-    }
-
-    function renderEvents(data) {
-        var list = data == null ? [] : (data instanceof Array ? data : [data]);
-        $('#list-events').find("tbody tr").remove();
-        $.each(list, function (index, event) {
-            $('#list-events').find("tbody")
-                    .append('<tr><td>' + event[0] + '</td>' +
-                    '<td>' + JSON.stringify(event[1], undefined, 2) + '</td></tr>');
-        });
-    }
-
-    $(document).on("click", "#list-orders button", function () {
-        var buttonId = this.id;
-        var orderId = buttonId.replace("activate-order-", "");
-        postJSON(serviceRootUrl + "/admin/order-activation-requests", JSON.stringify({"orderId":orderId }))
-                .error(function (data) {
-                    alert("Error: " + data);
-                })
-                .done(function (data) {
-                    $("#" + buttonId).remove();
-                });
+    $('#nav-list-events').click(function () {
+      $('#nav-list-orders').closest('li').removeClass("active");
+      $('#nav-list-events').closest('li').addClass("active");
+      $("#list-orders").hide();
+      $("#list-events").show();
+      getAllEvents();
+      return false;
     });
+  }
 
-    function getAllOrders() {
-        $.getJSON(serviceRootUrl + "/admin/orders", function (data) {
-            renderOrders(data);
-        });
-    }
-
-    $('#btn-create-book').click(function () {
-        postJSON(serviceRootUrl + "/admin/create-book-requests", formToJSON())
-                .error(function (data) {
-                    alert("ERROR!" + data);
-                })
-                .done(function (data) {
-                    alert("Book created successfully!");
-                });
-        return false;
+  function renderOrders(data) {
+    var list = data == null ? [] : (data instanceof Array ? data : [data]);
+    $('#list-orders').find("tbody tr").remove();
+    $.each(list, function (index, order) {
+      var orderId = order.orderId.id;
+      var itemId = 'activate-order-' + orderId;
+      var customerName = order.customerName;
+      var orderAmount = order.orderAmount;
+      var status = order.status;
+      var activationButton = status == 'PLACED' ? '<button class="btn-small btn-success" id="' + itemId + '">Activate</button>' : '';
+      $('#list-orders').find("tbody")
+          .append('<tr><td>' + orderId + '</td>' +
+              '<td>' + customerName + '</td>' +
+              '<td>' + orderAmount + '</td>' +
+              '<td>' + status + '</td>' +
+              '<td>' + activationButton + ' </td></tr>');
     });
+  }
 
-    function formToJSON() {
-        return JSON.stringify({
-            "bookId":$('#new-book-id').val(),
-            "isbn":$('#new-book-isbn').val(),
-            "title":$('#new-book-title').val(),
-            "description":$('#new-book-description').val(),
-            "price":$('#new-book-price').val()
-        });
-    }
 
-    function postJSON(url, data, callback) {
-        return $.ajax({
-            'type':'POST',
-            'url':url,
-            'contentType':'application/json',
-            'data':data,
-            'dataType':'json',
-            'success':callback
+  function getAllEvents() {
+    $.getJSON(serviceRootUrl + "/admin/events", function (data) {
+      renderEvents(data);
+    });
+  }
+
+  function renderEvents(data) {
+    var list = data == null ? [] : (data instanceof Array ? data : [data]);
+    $('#list-events').find("tbody tr").remove();
+    $.each(list, function (index, event) {
+      $('#list-events').find("tbody")
+          .append('<tr><td>' + event[0] + '</td>' +
+              '<td>' + JSON.stringify(event[1], undefined, 2) + '</td></tr>');
+    });
+  }
+
+  $(document).on("click", "#list-orders button", function () {
+    var buttonId = this.id;
+    var orderId = buttonId.replace("activate-order-", "");
+    postJSON(serviceRootUrl + "/admin/order-activation-requests", JSON.stringify({"orderId": orderId }))
+        .error(function (data) {
+          alert("Error: " + data);
+        })
+        .done(function (data) {
+          $("#" + buttonId).remove();
         });
-    }
+  });
+
+  function getAllOrders() {
+    $.getJSON(serviceRootUrl + "/admin/orders", function (data) {
+      renderOrders(data);
+    });
+  }
+
+  function formToJSON() {
+    return JSON.stringify({
+      "bookId": $('#new-book-id').val(),
+      "isbn": $('#new-book-isbn').val(),
+      "title": $('#new-book-title').val(),
+      "description": $('#new-book-description').val(),
+      "price": $('#new-book-price').val()
+    });
+  }
+
+  function postJSON(url, data, callback) {
+    return $.ajax({
+      'type': 'POST',
+      'url': url,
+      'contentType': 'application/json',
+      'data': data,
+      'dataType': 'json',
+      'success': callback
+    });
+  }
 
 </script>
 

@@ -8,7 +8,6 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.admin.client.bookcatalog.BookCatalogClient;
 import se.citerus.cqrs.bookstore.admin.client.order.OrderClient;
 import se.citerus.cqrs.bookstore.admin.resource.AdminResource;
 import se.citerus.cqrs.bookstore.bookcatalog.infrastructure.InMemoryBookRepository;
@@ -20,7 +19,6 @@ import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.infrastructure.DefaultRepository;
 import se.citerus.cqrs.bookstore.infrastructure.GuavaCommandBus;
 import se.citerus.cqrs.bookstore.infrastructure.GuavaDomainEventBus;
-import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
 import se.citerus.cqrs.bookstore.ordercontext.infrastructure.InMemOrderProjectionRepository;
 import se.citerus.cqrs.bookstore.ordercontext.order.command.OrderCommandHandler;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.command.PublisherContractCommandHandler;
@@ -36,8 +34,6 @@ import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookClient;
 import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.shopping.resource.CartResource;
-
-import java.net.URISyntaxException;
 
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
@@ -57,7 +53,7 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
   }
 
   @Override
-  public void run(BookstoreConfiguration bookstoreConfiguration, Environment environment) throws URISyntaxException {
+  public void run(BookstoreConfiguration bookstoreConfiguration, Environment environment) throws Exception {
 
     logger.info("Starting cqrs-bookstore server...");
     logger.info("Creating/registering denormalizers");
@@ -77,7 +73,8 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookCatalogClient bookCatalogClient = se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookCatalogClient.create(Client.create());
     QueryService queryService = new QueryService(orderListDenormalizer, ordersPerDayAggregator, bookCatalogClient);
 
-    DomainEventStore domainEventStore = new InMemoryDomainEventStore();
+    DomainEventStore domainEventStore = (DomainEventStore) bookstoreConfiguration.eventStore.newInstance();
+    logger.info("Using eventStore: " + domainEventStore.getClass().getName());
     Repository aggregateRepository = new DefaultRepository(domainEventBus, domainEventStore);
 
     CommandBus commandBus = GuavaCommandBus.asyncGuavaCommandBus();
@@ -88,14 +85,13 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     PurchaseRegistrationSaga purchaseRegistrationSaga = new PurchaseRegistrationSaga(queryService, commandBus);
     domainEventBus.register(purchaseRegistrationSaga);
 
-    BookCatalogClient bookCatalogClient1 = BookCatalogClient.create(Client.create());
     BookClient bookClient = BookClient.create(Client.create());
     OrderClient orderClient = OrderClient.create(Client.create());
 
     environment.jersey().register(new OrderResource(commandBus));
     environment.jersey().register(new BookResource(new InMemoryBookRepository()));
     environment.jersey().register(new CartResource(bookClient, cartRepository));
-    environment.jersey().register(new AdminResource(bookCatalogClient1, orderClient));
+    environment.jersey().register(new AdminResource(orderClient));
     environment.jersey().register(new PublisherContractResource(commandBus));
     environment.jersey().register(new QueryResource(queryService, domainEventStore));
     logger.info("Server started!");

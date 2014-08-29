@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.order.command.ActivateOrderCommand;
 import se.citerus.cqrs.bookstore.order.command.PlaceOrderCommand;
-import se.citerus.cqrs.bookstore.order.web.CommandFactory;
-import se.citerus.cqrs.bookstore.order.web.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.order.CommandFactory;
+import se.citerus.cqrs.bookstore.order.api.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.order.web.transport.CartDto;
-import se.citerus.cqrs.bookstore.order.web.transport.PlaceOrderRequest;
+import se.citerus.cqrs.bookstore.order.api.PlaceOrderRequest;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -17,9 +17,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 @Path("order-requests")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 public class OrderCommandResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -31,19 +33,19 @@ public class OrderCommandResource {
   }
 
   @POST
-  @Path("activations")
-  public void orderActivationRequest(@Valid OrderActivationRequest activationRequest) {
-    logger.info("Activating orderId: " + activationRequest.orderId);
-    ActivateOrderCommand command = commandFactory.toCommand(activationRequest);
-    commandBus.dispatch(command);
-  }
-
-  @POST
   public void placeOrder(@Valid PlaceOrderRequest placeOrderRequest) {
     logger.info("Placing customer order: " + placeOrderRequest);
     CartDto cart = placeOrderRequest.cart;
     PlaceOrderCommand placeOrderCommand = commandFactory.toCommand(cart, placeOrderRequest);
     commandBus.dispatch(placeOrderCommand);
+  }
+
+  @POST
+  @Path("activations")
+  public void orderActivationRequest(@Valid OrderActivationRequest activationRequest) {
+    logger.info("Activating orderId: " + activationRequest.orderId);
+    ActivateOrderCommand command = commandFactory.toCommand(activationRequest);
+    commandBus.dispatch(command);
   }
 
 }

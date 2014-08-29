@@ -7,7 +7,7 @@ import org.junit.Test;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.order.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.order.web.transport.LineItemDto;
-import se.citerus.cqrs.bookstore.order.web.transport.PlaceOrderRequest;
+import se.citerus.cqrs.bookstore.order.api.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.query.QueryService;
 
 import java.util.ArrayList;

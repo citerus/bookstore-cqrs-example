@@ -9,19 +9,20 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 import java.util.List;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 @Path("orders")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-public class OrderResource {
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
+public class OrderQueryResource {
 
   private final QueryService queryService;
   private final DomainEventStore eventStore;
 
-  public OrderResource(QueryService queryService, DomainEventStore eventStore) {
+  public OrderQueryResource(QueryService queryService, DomainEventStore eventStore) {
     this.queryService = queryService;
     this.eventStore = eventStore;
   }

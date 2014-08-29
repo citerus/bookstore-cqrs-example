@@ -1,6 +1,7 @@
-package se.citerus.cqrs.bookstore.order.web.transport;
+package se.citerus.cqrs.bookstore.order.api;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import se.citerus.cqrs.bookstore.order.web.transport.CartDto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

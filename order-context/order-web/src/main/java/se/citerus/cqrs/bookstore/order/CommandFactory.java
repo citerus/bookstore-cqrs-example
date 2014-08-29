@@ -1,15 +1,13 @@
-package se.citerus.cqrs.bookstore.order.web;
+package se.citerus.cqrs.bookstore.order;
 
-import se.citerus.cqrs.bookstore.order.BookId;
-import se.citerus.cqrs.bookstore.order.CustomerInformation;
-import se.citerus.cqrs.bookstore.order.OrderId;
-import se.citerus.cqrs.bookstore.order.OrderLine;
 import se.citerus.cqrs.bookstore.order.command.ActivateOrderCommand;
 import se.citerus.cqrs.bookstore.order.command.PlaceOrderCommand;
 import se.citerus.cqrs.bookstore.order.publisher.command.RegisterPublisherContractCommand;
+import se.citerus.cqrs.bookstore.order.api.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.order.api.RegisterPublisherContractRequest;
 import se.citerus.cqrs.bookstore.order.web.transport.CartDto;
 import se.citerus.cqrs.bookstore.order.web.transport.LineItemDto;
-import se.citerus.cqrs.bookstore.order.web.transport.PlaceOrderRequest;
+import se.citerus.cqrs.bookstore.order.api.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.publisher.PublisherContractId;
 
 import java.util.ArrayList;
@@ -17,8 +15,10 @@ import java.util.List;
 
 public class CommandFactory {
 
-  public RegisterPublisherContractCommand toCommand(PublisherContractId publisherContractId, RegisterPublisherContractRequest request) {
-    return new RegisterPublisherContractCommand(publisherContractId, request.publisherName, request.feePercentage, request.limit);
+  public RegisterPublisherContractCommand toCommand(PublisherContractId publisherContractId,
+                                                    RegisterPublisherContractRequest request) {
+    return new RegisterPublisherContractCommand(publisherContractId, request.publisherName, request.feePercentage,
+        request.limit);
   }
 
   public PlaceOrderCommand toCommand(CartDto cart, PlaceOrderRequest request) {
@@ -44,8 +44,7 @@ public class CommandFactory {
   }
 
   private CustomerInformation getCustomerInformation(PlaceOrderRequest request) {
-    return new CustomerInformation(request.customerName,
-        request.customerEmail, request.customerAddress);
+    return new CustomerInformation(request.customerName, request.customerEmail, request.customerAddress);
   }
 
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class PlaceOrderCommand extends Command {
+
   public final OrderId orderId;
   public final CustomerInformation customerInformation;
   public final List<OrderLine> orderLines;
@@ -20,7 +21,6 @@ public class PlaceOrderCommand extends Command {
     checkArgument(customerInformation != null, "CustomerInformation cannot be null");
     checkArgument(orderLines != null, "Items cannot be null");
     checkArgument(!orderLines.isEmpty(), "Item list cannot be empty");
-
     this.orderId = orderId;
     this.customerInformation = customerInformation;
     this.orderLines = Collections.unmodifiableList(orderLines);

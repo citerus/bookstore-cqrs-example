@@ -18,7 +18,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 
-public class OrderCommandResourceTest {
+public class OrderResourceTest {
 
   private static final String ORDER_RESOURCE = "/order-requests";
 
@@ -27,7 +27,7 @@ public class OrderCommandResourceTest {
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new OrderCommandResource(commandBus))
+      .addResource(new OrderResource(commandBus))
       .build();
 
   @After

@@ -1,11 +1,10 @@
-package se.citerus.cqrs.bookstore.ordercontext.query;
+package se.citerus.cqrs.bookstore.ordercontext.query.sales;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderLine;
 import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderPlacedEvent;
-import se.citerus.cqrs.bookstore.ordercontext.query.sales.OrdersPerDayAggregator;
 
 import java.util.Collections;
 

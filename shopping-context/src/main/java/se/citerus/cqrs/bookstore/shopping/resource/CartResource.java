@@ -15,17 +15,17 @@ import se.citerus.cqrs.bookstore.shopping.domain.Item;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import static java.lang.String.format;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.status;
 
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 @Path("carts")
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 public class CartResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());

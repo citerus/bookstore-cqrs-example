@@ -21,5 +21,4 @@ public class BookCatalogClient {
         .accept(MediaType.APPLICATION_JSON_TYPE).get(BookDto.class);
   }
 
-
 }

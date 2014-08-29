@@ -19,7 +19,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Path("publishercontract-requests")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
-
 public class PublisherContractResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());

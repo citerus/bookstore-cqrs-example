@@ -37,7 +37,7 @@ public class QueryService {
 
   public PublisherContractId findPublisher(BookId bookId) {
     BookDto book = bookCatalogClient.getBook(bookId.id);
-    return book.hasPublisher() ? new PublisherContractId(book.publisherContractId) : null;
+    return new PublisherContractId(book.publisherContractId);
   }
 
   public Map<LocalDate, Integer> getOrdersPerDay() {

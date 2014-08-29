@@ -6,14 +6,14 @@ import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContrac
 public class OrderLineProjection {
 
   public BookId bookId;
-  public String title;
-  public int quantity;
-  public long unitPrice;
-  public PublisherContractId publisherContractId;
 
-  public boolean bookHasRegisteredPublisher() {
-    return publisherContractId != null;
-  }
+  public String title;
+
+  public int quantity;
+
+  public long unitPrice;
+
+  public PublisherContractId publisherContractId;
 
   // TODO: Calculate this on event?
   public long amount() {

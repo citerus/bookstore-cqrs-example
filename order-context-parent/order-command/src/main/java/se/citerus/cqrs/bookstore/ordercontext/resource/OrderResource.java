@@ -21,13 +21,13 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Path("order-requests")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
-public class OrderCommandResource {
+public class OrderResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
   private final CommandBus commandBus;
   private final CommandFactory commandFactory = new CommandFactory();
 
-  public OrderCommandResource(CommandBus commandBus) {
+  public OrderResource(CommandBus commandBus) {
     this.commandBus = commandBus;
   }
 

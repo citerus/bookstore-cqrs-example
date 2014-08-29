@@ -40,12 +40,12 @@ public class OrderClient {
   }
 
   public List<OrderDto> listOrders() {
-    return client.resource("http://localhost:8080/service/orders")
+    return client.resource("http://localhost:8080/service/query/orders")
         .accept(APPLICATION_JSON_TYPE).get(ORDER_LIST_TYPE);
   }
 
   public List<Map<String, Object>> getAllEvents() {
-    return client.resource("http://localhost:8080/service/orders/events")
+    return client.resource("http://localhost:8080/service/query/events")
         .accept(APPLICATION_JSON_TYPE).get(EVENT_LIST_TYPE);
   }
 

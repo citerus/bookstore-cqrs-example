@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.ordercontext.query;
+package se.citerus.cqrs.bookstore.ordercontext.query.orderlist;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,8 +8,6 @@ import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderLine;
 import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderActivatedEvent;
 import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderPlacedEvent;
-import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderListDenormalizer;
-import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjection;
 
 import java.util.Collections;
 import java.util.Iterator;

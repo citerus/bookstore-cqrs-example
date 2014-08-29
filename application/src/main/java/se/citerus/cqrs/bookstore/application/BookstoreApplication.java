@@ -28,9 +28,9 @@ import se.citerus.cqrs.bookstore.ordercontext.query.QueryService;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderListDenormalizer;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjectionRepository;
 import se.citerus.cqrs.bookstore.ordercontext.query.sales.OrdersPerDayAggregator;
-import se.citerus.cqrs.bookstore.ordercontext.resource.OrderCommandResource;
-import se.citerus.cqrs.bookstore.ordercontext.resource.OrderQueryResource;
+import se.citerus.cqrs.bookstore.ordercontext.resource.OrderResource;
 import se.citerus.cqrs.bookstore.ordercontext.resource.PublisherContractResource;
+import se.citerus.cqrs.bookstore.ordercontext.resource.QueryResource;
 import se.citerus.cqrs.bookstore.ordercontext.saga.PurchaseRegistrationSaga;
 import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookClient;
 import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
@@ -92,12 +92,12 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     BookClient bookClient = BookClient.create(Client.create());
     OrderClient orderClient = OrderClient.create(Client.create());
 
-    environment.jersey().register(new OrderCommandResource(commandBus));
+    environment.jersey().register(new OrderResource(commandBus));
     environment.jersey().register(new BookResource(new InMemoryBookRepository()));
     environment.jersey().register(new CartResource(bookClient, cartRepository));
     environment.jersey().register(new AdminResource(bookCatalogClient1, orderClient));
     environment.jersey().register(new PublisherContractResource(commandBus));
-    environment.jersey().register(new OrderQueryResource(queryService, domainEventStore));
+    environment.jersey().register(new QueryResource(queryService, domainEventStore));
     logger.info("Server started!");
   }
 

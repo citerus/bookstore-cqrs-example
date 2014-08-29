@@ -14,15 +14,15 @@ import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Path("orders")
+@Path("query")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
-public class OrderQueryResource {
+public class QueryResource {
 
   private final QueryService queryService;
   private final DomainEventStore eventStore;
 
-  public OrderQueryResource(QueryService queryService, DomainEventStore eventStore) {
+  public QueryResource(QueryService queryService, DomainEventStore eventStore) {
     this.queryService = queryService;
     this.eventStore = eventStore;
   }
@@ -34,6 +34,7 @@ public class OrderQueryResource {
   }
 
   @GET
+  @Path("orders")
   public Collection<OrderProjection> getAllOrders() {
     return queryService.listOrders();
   }

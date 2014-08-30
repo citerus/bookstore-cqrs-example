@@ -39,13 +39,13 @@ public class InMemoryDomainEventStoreTest {
     assertThat(events.size(), is(2));
   }
 
+  static class TestAggregate extends AggregateRoot<TestId> {
+  }
+
   static public class TestId extends GenericId {
     public TestId(String id) {
       super(id);
     }
-  }
-
-  static class TestAggregate extends AggregateRoot<TestId> {
   }
 
   static public class Event1 extends DomainEvent<TestId> {

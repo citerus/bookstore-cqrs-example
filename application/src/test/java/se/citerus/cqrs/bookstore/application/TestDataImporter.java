@@ -31,11 +31,12 @@ public class TestDataImporter {
       String contractsJson = Resources.toString(getResource("se/citerus/cqrs/bookstore/testdata/publishercontracts.json"), UTF_8);
       TypeReference<List<RegisterPublisherContractRequest>> listOfRegisterPublisherRequests = new TypeReference<List<RegisterPublisherContractRequest>>() {
       };
-      List<RegisterPublisherContractRequest> publishersRequests = deserialize(contractsJson, listOfRegisterPublisherRequests);
+      List<RegisterPublisherContractRequest> publisherContractsRequests = deserialize(contractsJson, listOfRegisterPublisherRequests);
 
-      for (RegisterPublisherContractRequest request : publishersRequests) {
+      for (RegisterPublisherContractRequest request : publisherContractsRequests) {
         publisherClient.post(JsonSerializer.serialize(request));
       }
+      System.out.println("Imported [" + publisherContractsRequests.size() + "] contracts...");
 
       TestHttpClient bookClient = new TestHttpClient(SERVER_ADDRESS + "/books").init();
 
@@ -49,6 +50,7 @@ public class TestDataImporter {
       for (BookDto book : books) {
         bookClient.post(JsonSerializer.serialize(book));
       }
+      System.out.println("Imported [" + publisherContractsRequests.size() + "] books...");
 
     } catch (Exception e) {
       e.printStackTrace();

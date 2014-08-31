@@ -50,7 +50,7 @@ public class TestDataImporter {
       for (BookDto book : books) {
         bookClient.post(JsonSerializer.serialize(book));
       }
-      System.out.println("Imported [" + publisherContractsRequests.size() + "] books...");
+      System.out.println("Imported [" + books.size() + "] books...");
 
     } catch (Exception e) {
       e.printStackTrace();

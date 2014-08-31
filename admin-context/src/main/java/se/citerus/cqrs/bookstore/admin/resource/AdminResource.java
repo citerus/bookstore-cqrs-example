@@ -37,11 +37,11 @@ public class AdminResource {
 
   @GET
   @Path("events")
-  public List<String[]> getEvents() {
+  public List<Object[]> getEvents() {
     List<Map<String, Object>> allEvents = orderClient.getAllEvents();
-    List<String[]> eventsToReturn = new LinkedList<>();
+    List<Object[]> eventsToReturn = new LinkedList<>();
     for (Map event : allEvents) {
-      eventsToReturn.add(new String[]{event.get("type").toString(), event.toString()});
+      eventsToReturn.add(new Object[]{event.get("type").toString(), event});
     }
     logger.info("Returning [{}] events", eventsToReturn.size());
     return eventsToReturn;

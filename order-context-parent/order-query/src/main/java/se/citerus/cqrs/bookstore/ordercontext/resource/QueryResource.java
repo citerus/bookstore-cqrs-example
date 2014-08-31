@@ -1,6 +1,5 @@
 package se.citerus.cqrs.bookstore.ordercontext.resource;
 
-import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.ordercontext.query.QueryService;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjection;
@@ -29,7 +28,7 @@ public class QueryResource {
 
   @GET
   @Path("events")
-  public List<DomainEvent> getAllEvents() {
+  public List getAllEvents() {
     return eventStore.getAllEvents();
   }
 

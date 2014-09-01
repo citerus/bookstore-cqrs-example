@@ -32,7 +32,7 @@ public class OrderLine extends ValueObject {
     return new OrderLine(this.bookId, this.title, this.quantity, this.unitPrice, publisherContractId);
   }
 
-  public long amount() {
+  public long totalPrice() {
     return unitPrice * quantity;
   }
 

@@ -9,18 +9,21 @@ public class PurchaseRegisteredEvent extends DomainEvent<PublisherContractId> {
 
   public final BookId bookId;
   public final long purchaseAmount;
-  public final double feeAmount;
+  public final long feeAmount;
+  public final long accumulatedFee;
 
   public PurchaseRegisteredEvent(@JsonProperty("aggregateId") PublisherContractId aggregateId,
                                  @JsonProperty("version") int version,
                                  @JsonProperty("timestamp") long timestamp,
                                  @JsonProperty("bookId") BookId bookId,
                                  @JsonProperty("purchaseAmount") long purchaseAmount,
-                                 @JsonProperty("feeAmount") double feeAmount) {
+                                 @JsonProperty("feeAmount") long feeAmount,
+                                 @JsonProperty("accumulatedFee") long accumulatedFee) {
     super(aggregateId, version, timestamp);
     this.bookId = bookId;
     this.purchaseAmount = purchaseAmount;
     this.feeAmount = feeAmount;
+    this.accumulatedFee = accumulatedFee;
   }
 
 }

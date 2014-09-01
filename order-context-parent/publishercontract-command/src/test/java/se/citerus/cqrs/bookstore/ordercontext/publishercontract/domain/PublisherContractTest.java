@@ -45,22 +45,22 @@ public class PublisherContractTest {
   public void testRegisterPurchase() {
     PublisherContract contract = new PublisherContract();
     PublisherContractId publisherContractId = PublisherContractId.randomId();
-    contract.register(publisherContractId, "Addison Wesley", 10.0, 100);
+    contract.register(publisherContractId, "Addison Wesley", 10.0, 10000);
 
-    contract.registerPurchase(BookId.randomId(), 600);
-    contract.registerPurchase(BookId.randomId(), 600);
-    contract.registerPurchase(BookId.randomId(), 600);
+    contract.registerPurchase(BookId.randomId(), 60000);
+    contract.registerPurchase(BookId.randomId(), 60000);
+    contract.registerPurchase(BookId.randomId(), 60000);
 
     Iterator<PurchaseRegisteredEvent> purchases = filter(contract.getUncommittedEvents(),
         PurchaseRegisteredEvent.class).iterator();
-    assertThat(purchases.next().purchaseAmount, is(600L));
-    assertThat(purchases.next().purchaseAmount, is(600L));
-    assertThat(purchases.next().purchaseAmount, is(600L));
+    assertThat(purchases.next().purchaseAmount, is(60000L));
+    assertThat(purchases.next().purchaseAmount, is(60000L));
+    assertThat(purchases.next().purchaseAmount, is(60000L));
 
     purchases = filter(contract.getUncommittedEvents(), PurchaseRegisteredEvent.class).iterator();
-    assertThat(purchases.next().feeAmount, is(60.0));
-    assertThat(purchases.next().feeAmount, is(40.0));
-    assertThat(purchases.next().feeAmount, is(0.0));
+    assertThat(purchases.next().feeAmount, is(6000L));
+    assertThat(purchases.next().feeAmount, is(4000L));
+    assertThat(purchases.next().feeAmount, is(0L));
   }
 
 }

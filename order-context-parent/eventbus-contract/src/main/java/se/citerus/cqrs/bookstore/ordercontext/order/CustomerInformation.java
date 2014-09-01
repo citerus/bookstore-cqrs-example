@@ -1,9 +1,9 @@
 package se.citerus.cqrs.bookstore.ordercontext.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import se.citerus.cqrs.bookstore.domain.ValueObject;
+import se.citerus.cqrs.bookstore.TransportObject;
 
-public class CustomerInformation extends ValueObject {
+public class CustomerInformation extends TransportObject {
 
   public final String customerName;
   public final String email;

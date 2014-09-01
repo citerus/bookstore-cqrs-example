@@ -1,10 +1,10 @@
 package se.citerus.cqrs.bookstore.ordercontext.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import se.citerus.cqrs.bookstore.domain.ValueObject;
+import se.citerus.cqrs.bookstore.TransportObject;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContractId;
 
-public class OrderLine extends ValueObject {
+public class OrderLine extends TransportObject {
 
   public final BookId bookId;
   public final String title;

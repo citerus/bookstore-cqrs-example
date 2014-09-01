@@ -1,5 +1,6 @@
 package se.citerus.cqrs.bookstore.ordercontext.order;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import se.citerus.cqrs.bookstore.domain.ValueObject;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContractId;
 
@@ -15,7 +16,11 @@ public class OrderLine extends ValueObject {
     this(bookId, title, quantity, unitPrice, null);
   }
 
-  public OrderLine(BookId bookId, String title, int quantity, long unitPrice, PublisherContractId publisherContractId) {
+  public OrderLine(@JsonProperty("bookId") BookId bookId,
+                   @JsonProperty("title") String title,
+                   @JsonProperty("quantity") int quantity,
+                   @JsonProperty("unitPrice") long unitPrice,
+                   @JsonProperty("publisherContractId") PublisherContractId publisherContractId) {
     this.bookId = bookId;
     this.title = title;
     this.quantity = quantity;

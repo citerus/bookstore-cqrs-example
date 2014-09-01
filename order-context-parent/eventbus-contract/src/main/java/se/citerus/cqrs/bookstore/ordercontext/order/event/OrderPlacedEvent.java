@@ -1,5 +1,6 @@
 package se.citerus.cqrs.bookstore.ordercontext.order.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
@@ -14,8 +15,12 @@ public class OrderPlacedEvent extends DomainEvent<OrderId> {
   public final List<OrderLine> orderLines;
   public final long orderAmount;
 
-  public OrderPlacedEvent(OrderId id, int version, long timestamp, CustomerInformation customerInformation,
-                          List<OrderLine> orderLines, long orderAmount) {
+  public OrderPlacedEvent(@JsonProperty("aggregateId") OrderId id,
+                          @JsonProperty("version") int version,
+                          @JsonProperty("timestamp") long timestamp,
+                          @JsonProperty("customerInformation") CustomerInformation customerInformation,
+                          @JsonProperty("orderLines") List<OrderLine> orderLines,
+                          @JsonProperty("orderAmount") long orderAmount) {
     super(id, version, timestamp);
     this.customerInformation = customerInformation;
     this.orderLines = Collections.unmodifiableList(orderLines);

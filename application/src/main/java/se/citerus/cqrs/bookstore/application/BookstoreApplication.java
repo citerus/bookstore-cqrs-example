@@ -19,8 +19,6 @@ import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.infrastructure.DefaultRepository;
 import se.citerus.cqrs.bookstore.infrastructure.GuavaCommandBus;
 import se.citerus.cqrs.bookstore.infrastructure.GuavaDomainEventBus;
-import se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore;
-import se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookCatalogClient;
 import se.citerus.cqrs.bookstore.ordercontext.infrastructure.InMemOrderProjectionRepository;
 import se.citerus.cqrs.bookstore.ordercontext.order.command.OrderCommandHandler;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.command.PublisherContractCommandHandler;
@@ -37,6 +35,8 @@ import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.shopping.resource.CartResource;
 
+import static com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL;
+import static com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE;
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 
@@ -72,10 +72,10 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     OrderListDenormalizer orderListDenormalizer = domainEventBus.register(new OrderListDenormalizer(orderRepository));
     OrdersPerDayAggregator ordersPerDayAggregator = domainEventBus.register(new OrdersPerDayAggregator());
 
-    BookCatalogClient bookCatalogClient = BookCatalogClient.create(Client.create());
+    se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookCatalogClient bookCatalogClient = se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookCatalogClient.create(Client.create());
     QueryService queryService = new QueryService(orderListDenormalizer, ordersPerDayAggregator, bookCatalogClient);
 
-    DomainEventStore domainEventStore = new InMemoryDomainEventStore();
+    DomainEventStore domainEventStore = (DomainEventStore) bookstoreConfiguration.eventStore.newInstance();
     logger.info("Using eventStore: " + domainEventStore.getClass().getName());
     Repository aggregateRepository = new DefaultRepository(domainEventBus, domainEventStore);
 

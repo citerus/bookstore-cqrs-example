@@ -4,4 +4,6 @@ import io.dropwizard.Configuration;
 
 public class BookstoreConfiguration extends Configuration {
 
+  public Class eventStore;
+
 }

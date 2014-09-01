@@ -29,7 +29,7 @@ public class AdminResource {
 
   @GET
   @Path("orders")
-  public List<OrderDto> getOrders() {
+  public List getOrders() {
     List<OrderDto> projections = orderClient.listOrders();
     logger.info("Returning [{}] orders", projections.size());
     return projections;
@@ -37,14 +37,10 @@ public class AdminResource {
 
   @GET
   @Path("events")
-  public List<Object[]> getEvents() {
-    List<Map<String, Object>> allEvents = orderClient.getAllEvents();
-    List<Object[]> eventsToReturn = new LinkedList<>();
-    for (Map event : allEvents) {
-      eventsToReturn.add(new Object[]{event.get("type").toString(), event});
-    }
-    logger.info("Returning [{}] events", eventsToReturn.size());
-    return eventsToReturn;
+  public List getEvents() {
+    List allEvents = orderClient.getAllEvents();
+    logger.info("Returning [{}] events", allEvents.size());
+    return allEvents;
   }
 
   @POST

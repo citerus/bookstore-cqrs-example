@@ -1,5 +1,6 @@
 package se.citerus.cqrs.bookstore.ordercontext.resource;
 
+import se.citerus.cqrs.bookstore.event.DomainEvent;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
 import se.citerus.cqrs.bookstore.ordercontext.query.QueryService;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjection;
@@ -9,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -28,8 +30,13 @@ public class QueryResource {
 
   @GET
   @Path("events")
-  public List getAllEvents() {
-    return eventStore.getAllEvents();
+  public List<Object[]> getAllEvents() {
+    List<DomainEvent> allEvents = eventStore.getAllEvents();
+    List<Object[]> eventsToReturn = new LinkedList<>();
+    for (DomainEvent event : allEvents) {
+      eventsToReturn.add(new Object[]{event.getClass().getSimpleName(), event});
+    }
+    return eventsToReturn;
   }
 
   @GET

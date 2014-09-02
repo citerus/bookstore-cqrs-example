@@ -8,8 +8,11 @@ import se.citerus.cqrs.bookstore.admin.client.order.OrderClient;
 import se.citerus.cqrs.bookstore.admin.client.order.OrderDto;
 
 import javax.validation.Valid;
-import javax.ws.rs.*;
-import java.util.LinkedList;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.List;
 import java.util.Map;
 

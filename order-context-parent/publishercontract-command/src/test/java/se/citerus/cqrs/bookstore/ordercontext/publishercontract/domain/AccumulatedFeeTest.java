@@ -1,13 +1,7 @@
 package se.citerus.cqrs.bookstore.ordercontext.publishercontract.domain;
 
-import org.hamcrest.core.Is;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
-import se.citerus.cqrs.bookstore.ordercontext.publishercontract.event.PurchaseRegisteredEvent;
 
-import java.util.Iterator;
-
-import static com.google.common.collect.Iterables.filter;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

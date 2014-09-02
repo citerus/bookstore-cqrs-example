@@ -35,8 +35,6 @@ import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.shopping.resource.CartResource;
 
-import static com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL;
-import static com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE;
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 

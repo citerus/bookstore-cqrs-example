@@ -3,7 +3,6 @@ package se.citerus.cqrs.bookstore.infrastructure;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.TransportObject;
-import se.citerus.cqrs.bookstore.ordercontext.api.RegisterPublisherContractRequest;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

@@ -126,7 +126,7 @@
 
 
   function getAllEvents() {
-    $.getJSON(serviceRootUrl + "/admin/events", function (data) {
+    $.getJSON(serviceRootUrl + "/query/events", function (data) {
       renderEvents(data);
     });
   }
@@ -154,18 +154,8 @@
   });
 
   function getAllOrders() {
-    $.getJSON(serviceRootUrl + "/admin/orders", function (data) {
+    $.getJSON(serviceRootUrl + "/query/orders", function (data) {
       renderOrders(data);
-    });
-  }
-
-  function formToJSON() {
-    return JSON.stringify({
-      "bookId": $('#new-book-id').val(),
-      "isbn": $('#new-book-isbn').val(),
-      "title": $('#new-book-title').val(),
-      "description": $('#new-book-description').val(),
-      "price": $('#new-book-price').val()
     });
   }
 

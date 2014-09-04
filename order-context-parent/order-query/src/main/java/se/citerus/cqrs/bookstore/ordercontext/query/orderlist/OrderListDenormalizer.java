@@ -30,7 +30,7 @@ public class OrderListDenormalizer implements DomainEventListener {
     List<OrderLineProjection> orderLines = new LinkedList<>();
     for (OrderLine orderLine : event.orderLines) {
       OrderLineProjection line = new OrderLineProjection();
-      line.bookId = orderLine.bookId;
+      line.productId = orderLine.productId;
       line.quantity = orderLine.quantity;
       line.title = orderLine.title;
       line.unitPrice = orderLine.unitPrice;
@@ -49,7 +49,7 @@ public class OrderListDenormalizer implements DomainEventListener {
     orderProjection.setStatus(ACTIVATED);
   }
 
-  public List<OrderProjection> listOrders() {
+  public List<OrderProjection> getOrders() {
     return repository.listOrdersByTimestamp();
   }
 

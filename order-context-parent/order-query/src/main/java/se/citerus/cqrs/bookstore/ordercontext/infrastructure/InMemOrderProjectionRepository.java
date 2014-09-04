@@ -4,16 +4,11 @@ import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjection;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjectionRepository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemOrderProjectionRepository implements OrderProjectionRepository {
 
-  private final OrderTimestampComparator orderTimestampComparator = new OrderTimestampComparator();
+  private static final OrderTimestampComparator ORDER_TIMESTAMP_COMPARATOR = new OrderTimestampComparator();
   private final Map<OrderId, OrderProjection> orders = new HashMap<>();
 
   private void saveOrder(OrderId orderId, OrderProjection orderProjection) {
@@ -33,7 +28,7 @@ public class InMemOrderProjectionRepository implements OrderProjectionRepository
   @Override
   public List<OrderProjection> listOrdersByTimestamp() {
     List<OrderProjection> projections = new ArrayList<>(orders.values());
-    Collections.sort(projections, Collections.reverseOrder(orderTimestampComparator));
+    Collections.sort(projections, Collections.reverseOrder(ORDER_TIMESTAMP_COMPARATOR));
     return projections;
   }
 

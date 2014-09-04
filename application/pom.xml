@@ -14,10 +14,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>admin-context</artifactId>
-    </dependency>
-    <dependency>
       <groupId>se.citerus.cqrs.bookstore.ordercontext</groupId>
       <artifactId>order-command</artifactId>
     </dependency>
@@ -31,7 +27,7 @@
     </dependency>
     <dependency>
       <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>bookcatalog-context</artifactId>
+      <artifactId>productcatalog-context</artifactId>
     </dependency>
 
     <dependency>

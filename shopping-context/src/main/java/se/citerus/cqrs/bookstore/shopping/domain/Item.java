@@ -4,12 +4,12 @@ import se.citerus.cqrs.bookstore.domain.ValueObject;
 
 public class Item extends ValueObject {
 
-  public final BookId bookId;
+  public final ProductId productId;
   public final String title;
   public final long price;
 
-  public Item(BookId bookId, String title, long price) {
-    this.bookId = bookId;
+  public Item(ProductId productId, String title, long price) {
+    this.productId = productId;
     this.title = title;
     this.price = price;
   }

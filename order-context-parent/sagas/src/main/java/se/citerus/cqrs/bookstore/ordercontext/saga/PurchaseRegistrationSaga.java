@@ -31,7 +31,7 @@ public class PurchaseRegistrationSaga extends Saga {
     logger.info("Received: " + event.toString());
     OrderProjection order = queryService.getOrder(event.aggregateId);
     for (final OrderLineProjection orderLine : order.getOrderLines()) {
-      publish(new RegisterPurchaseCommand(orderLine.publisherContractId, orderLine.bookId, orderLine.amount()));
+      publish(new RegisterPurchaseCommand(orderLine.publisherContractId, orderLine.productId, orderLine.amount()));
     }
   }
 

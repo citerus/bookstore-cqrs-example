@@ -23,7 +23,7 @@ public class CartDtoFactory {
 
       Item item = lineItem.getItem();
       LineItemDto itemDto = new LineItemDto();
-      itemDto.bookId = item.bookId.id;
+      itemDto.productId = item.productId.id;
       itemDto.title = item.title;
       itemDto.price = item.price;
       itemDto.quantity = quantity;

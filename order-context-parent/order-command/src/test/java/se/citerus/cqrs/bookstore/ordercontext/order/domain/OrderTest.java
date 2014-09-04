@@ -2,10 +2,7 @@ package se.citerus.cqrs.bookstore.ordercontext.order.domain;
 
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.event.DomainEvent;
-import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
-import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
-import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
-import se.citerus.cqrs.bookstore.ordercontext.order.OrderLine;
+import se.citerus.cqrs.bookstore.ordercontext.order.*;
 import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderActivatedEvent;
 import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderPlacedEvent;
 
@@ -27,7 +24,7 @@ public class OrderTest {
   @Test
   public void placingAnOrder() {
     Order order = new Order();
-    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L);
+    OrderLine orderLine = new OrderLine(ProductId.<BookId>randomId(), "title", 10, 200L);
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
     List<DomainEvent> uncommittedEvents = order.getUncommittedEvents();
     assertThat(uncommittedEvents.size(), is(1));
@@ -37,7 +34,7 @@ public class OrderTest {
 
   @Test
   public void activatingAnOrder() {
-    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L);
+    OrderLine orderLine = new OrderLine(ProductId.<BookId>randomId(), "title", 10, 200L);
     Order order = new Order();
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
     order.markChangesAsCommitted();
@@ -57,7 +54,7 @@ public class OrderTest {
 
   @Test(expected = IllegalStateException.class)
   public void cannotPlaceAnOrderTwice() {
-    OrderLine orderLine = new OrderLine(BookId.<BookId>randomId(), "title", 10, 200L, null);
+    OrderLine orderLine = new OrderLine(ProductId.<BookId>randomId(), "title", 10, 200L, null);
     Order order = new Order();
     order.place(randomId(), JOHN_DOE, asList(orderLine));
     order.place(randomId(), JOHN_DOE, asList(orderLine));
@@ -66,9 +63,9 @@ public class OrderTest {
   @Test
   public void activatingTwiceDoesNotGenerateASecondActivationEvent() {
     Order order = new Order();
-    BookId bookId = BookId.randomId();
+    ProductId productId = ProductId.randomId();
     long unitPrice = 200L;
-    OrderLine orderLine = new OrderLine(bookId, "title", 10, unitPrice, null);
+    OrderLine orderLine = new OrderLine(productId, "title", 10, unitPrice, null);
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
 
     assertThat(order.version(), is(1));

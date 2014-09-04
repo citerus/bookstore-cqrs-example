@@ -12,8 +12,7 @@
     <module>application</module>
     <module>order-context-parent</module>
     <module>shopping-context</module>
-    <module>admin-context</module>
-    <module>bookcatalog-context</module>
+    <module>productcatalog-context</module>
   </modules>
 
   <name>CQRS Bookstore</name>
@@ -78,17 +77,12 @@
       </dependency>
       <dependency>
         <groupId>se.citerus.cqrs.bookstore</groupId>
-        <artifactId>admin-context</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>se.citerus.cqrs.bookstore</groupId>
         <artifactId>shopping-context</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>se.citerus.cqrs.bookstore</groupId>
-        <artifactId>bookcatalog-context</artifactId>
+        <artifactId>productcatalog-context</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

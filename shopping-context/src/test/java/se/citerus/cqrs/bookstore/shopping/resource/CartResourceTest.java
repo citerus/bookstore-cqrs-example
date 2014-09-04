@@ -9,8 +9,9 @@ import se.citerus.cqrs.bookstore.shopping.api.AddItemRequest;
 import se.citerus.cqrs.bookstore.shopping.api.CartDto;
 import se.citerus.cqrs.bookstore.shopping.api.CreateCartRequest;
 import se.citerus.cqrs.bookstore.shopping.api.LineItemDto;
-import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookClient;
-import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookDto;
+import se.citerus.cqrs.bookstore.shopping.client.productcatalog.BookDto;
+import se.citerus.cqrs.bookstore.shopping.client.productcatalog.ProductCatalogClient;
+import se.citerus.cqrs.bookstore.shopping.client.productcatalog.ProductDto;
 import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
 
 import java.util.UUID;
@@ -26,18 +27,18 @@ import static org.mockito.Mockito.*;
 
 public class CartResourceTest {
 
-  private static BookClient bookClient = mock(BookClient.class);
+  private static ProductCatalogClient productCatalogClient = mock(ProductCatalogClient.class);
 
   private static final String CART_RESOURCE = "/carts";
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new CartResource(bookClient, new InMemoryCartRepository()))
+      .addResource(new CartResource(productCatalogClient, new InMemoryCartRepository()))
       .build();
 
   @After
   public void tearDown() throws Exception {
-    reset(bookClient);
+    reset(productCatalogClient);
   }
 
   @Test
@@ -45,18 +46,19 @@ public class CartResourceTest {
     String title = "test title";
     long price = 200L;
 
-    String bookId = UUID.randomUUID().toString();
+    String productId = UUID.randomUUID().toString();
     String cartId = UUID.randomUUID().toString();
     createCartWithId(cartId);
 
-    BookDto book = new BookDto();
-    book.price = price;
-    book.title = title;
-    when(bookClient.getBook(bookId)).thenReturn(book);
-    CartDto cart = addItemToCart(cartId, addBookItemRequest(bookId)).getEntity(CartDto.class);
+    ProductDto productDto = new ProductDto();
+    productDto.price = price;
+    productDto.book = new BookDto();
+    productDto.book.title = title;
+    when(productCatalogClient.getProduct(productId)).thenReturn(productDto);
+    CartDto cart = addItemToCart(cartId, addProductItemRequest(productId)).getEntity(CartDto.class);
 
     LineItemDto expectedLineItem = new LineItemDto();
-    expectedLineItem.bookId = bookId;
+    expectedLineItem.productId = productId;
     expectedLineItem.title = title;
     expectedLineItem.price = price;
     expectedLineItem.quantity = 1;
@@ -71,15 +73,15 @@ public class CartResourceTest {
     String cartId = UUID.randomUUID().toString();
     createCartWithId(cartId);
 
-    AddItemRequest addItemRequest = addBookItemRequest(UUID.randomUUID().toString());
+    AddItemRequest addItemRequest = addProductItemRequest(UUID.randomUUID().toString());
     ClientResponse response = addItemToCart(cartId, addItemRequest);
 
     assertThat(response.getStatusInfo().getStatusCode(), is(BAD_REQUEST.getStatusCode()));
   }
 
-  private AddItemRequest addBookItemRequest(String bookId) {
+  private AddItemRequest addProductItemRequest(String productId) {
     AddItemRequest addItemRequest = new AddItemRequest();
-    addItemRequest.bookId = bookId;
+    addItemRequest.productId = productId;
     return addItemRequest;
   }
 

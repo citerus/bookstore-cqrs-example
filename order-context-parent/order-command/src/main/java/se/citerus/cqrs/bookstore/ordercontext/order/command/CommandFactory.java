@@ -4,10 +4,10 @@ import se.citerus.cqrs.bookstore.ordercontext.api.CartDto;
 import se.citerus.cqrs.bookstore.ordercontext.api.LineItemDto;
 import se.citerus.cqrs.bookstore.ordercontext.api.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
-import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
 import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderLine;
+import se.citerus.cqrs.bookstore.ordercontext.order.ProductId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +27,11 @@ public class CommandFactory {
   private List<OrderLine> getOrderLines(CartDto cart) {
     List<OrderLine> itemsToOrder = new ArrayList<>();
     for (LineItemDto lineItem : cart.lineItems) {
-      BookId bookId = new BookId(lineItem.bookId);
+      ProductId productId = new ProductId(lineItem.productId);
       String title = lineItem.title;
       int quantity = lineItem.quantity;
       long price = lineItem.price;
-      itemsToOrder.add(new OrderLine(bookId, title, quantity, price));
+      itemsToOrder.add(new OrderLine(productId, title, quantity, price));
     }
     return itemsToOrder;
   }

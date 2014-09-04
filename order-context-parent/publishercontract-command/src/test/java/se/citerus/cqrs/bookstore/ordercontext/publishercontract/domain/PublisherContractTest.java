@@ -1,7 +1,7 @@
 package se.citerus.cqrs.bookstore.ordercontext.publishercontract.domain;
 
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
+import se.citerus.cqrs.bookstore.ordercontext.order.ProductId;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContractId;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.event.PublisherContractRegisteredEvent;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.event.PurchaseRegisteredEvent;
@@ -47,9 +47,9 @@ public class PublisherContractTest {
     PublisherContractId publisherContractId = PublisherContractId.randomId();
     contract.register(publisherContractId, "Addison Wesley", 10.0, 10000);
 
-    contract.registerPurchase(BookId.randomId(), 60000);
-    contract.registerPurchase(BookId.randomId(), 60000);
-    contract.registerPurchase(BookId.randomId(), 60000);
+    contract.registerPurchase(ProductId.randomId(), 60000);
+    contract.registerPurchase(ProductId.randomId(), 60000);
+    contract.registerPurchase(ProductId.randomId(), 60000);
 
     Iterator<PurchaseRegisteredEvent> purchases = filter(contract.getUncommittedEvents(),
         PurchaseRegisteredEvent.class).iterator();

@@ -11,6 +11,6 @@ public class AddItemRequest extends TransportObject {
 
   @NotEmpty
   @Pattern(regexp = ID_PATTERN)
-  public String bookId;
+  public String productId;
 
 }

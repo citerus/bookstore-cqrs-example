@@ -37,7 +37,7 @@ public class OrderListDenormalizerTest {
     OrderActivatedEvent event2 = new OrderActivatedEvent(orderId, 1, 2);
     denormalizer.handleEvent(event2);
 
-    Iterator<OrderProjection> iterator = denormalizer.listOrders().iterator();
+    Iterator<OrderProjection> iterator = denormalizer.getOrders().iterator();
     OrderProjection order = iterator.next();
     assertThat(order.getOrderPlacedTimestamp(), is(1L));
     assertThat(order.getStatus(), is(ACTIVATED));

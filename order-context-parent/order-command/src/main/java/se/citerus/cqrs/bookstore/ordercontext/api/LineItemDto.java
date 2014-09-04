@@ -12,7 +12,7 @@ public class LineItemDto {
 
   @NotEmpty
   @Pattern(regexp = ID_PATTERN)
-  public String bookId;
+  public String productId;
 
   @NotNull
   public String title;

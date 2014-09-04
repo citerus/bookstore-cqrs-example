@@ -9,15 +9,13 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.admin.api.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.CartDto;
+import se.citerus.cqrs.bookstore.ordercontext.api.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.RegisterPublisherContractRequest;
-import se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookDto;
-import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
-import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
-import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
-import se.citerus.cqrs.bookstore.ordercontext.order.OrderStatus;
+import se.citerus.cqrs.bookstore.ordercontext.client.productcatalog.BookDto;
+import se.citerus.cqrs.bookstore.ordercontext.client.productcatalog.ProductDto;
+import se.citerus.cqrs.bookstore.ordercontext.order.*;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjection;
 import se.citerus.cqrs.bookstore.shopping.api.AddItemRequest;
 import se.citerus.cqrs.bookstore.shopping.api.CreateCartRequest;
@@ -62,21 +60,21 @@ public class ScenarioTest {
 
   @Test
   public void testCreateBook() {
-    BookDto book = createRandomBook(UUID.randomUUID().toString());
-    createBook(book);
-    BookDto bookProjection = getBook(book.bookId);
-    assertThat(bookProjection.title, is("DDD"));
-    assertThat(bookProjection.description, is("Domain Driven Design"));
-    assertThat(bookProjection.isbn, is(book.isbn));
+    ProductDto product = createRandomProduct(UUID.randomUUID().toString());
+    createProduct(product);
+    ProductDto bookProjection = getProduct(product.productId);
+    assertThat(bookProjection.book.title, is("DDD"));
+    assertThat(bookProjection.book.description, is("Domain Driven Design"));
+    assertThat(bookProjection.book.isbn, is(product.book.isbn));
   }
 
   @Test
   public void testPlaceOrder() throws InterruptedException {
-    BookDto randomBook = createRandomBook(UUID.randomUUID().toString());
-    createBook(randomBook);
+    ProductDto product = createRandomProduct(UUID.randomUUID().toString());
+    createProduct(product);
 
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
-    OrderId orderId = addBookToCartAndPlaceOrder(randomBook.bookId, customer);
+    OrderId orderId = addBookToCartAndPlaceOrder(product.productId, customer);
 
     Thread.sleep(500);
 
@@ -89,14 +87,14 @@ public class ScenarioTest {
 
   @Test
   public void testGetOrders() throws InterruptedException {
-    BookDto randomBook = createRandomBook(UUID.randomUUID().toString());
-    createBook(randomBook);
+    ProductDto product = createRandomProduct(UUID.randomUUID().toString());
+    createProduct(product);
     int initialSize = getOrders().size();
 
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
 
-    OrderId orderId1 = addBookToCartAndPlaceOrder(randomBook.bookId, customer);
-    OrderId orderId2 = addBookToCartAndPlaceOrder(randomBook.bookId, customer);
+    OrderId orderId1 = addBookToCartAndPlaceOrder(product.productId, customer);
+    OrderId orderId2 = addBookToCartAndPlaceOrder(product.productId, customer);
 
     Thread.sleep(500);
 
@@ -113,13 +111,13 @@ public class ScenarioTest {
     String publisherContractId = UUID.randomUUID().toString();
     registerPublisher(publisherContractId, "Addison-Wesley", 10.0, 1000);
 
-    BookDto randomBook = createRandomBook(publisherContractId);
-    createBook(randomBook);
+    ProductDto product = createRandomProduct(publisherContractId);
+    createProduct(product);
 
     CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
-    OrderId orderId = addBookToCartAndPlaceOrder(randomBook.bookId, customer);
+    OrderId orderId = addBookToCartAndPlaceOrder(product.productId, customer);
 
-    // TODO: Add await instea of sleep?
+    // TODO: Add await instead of sleep?
     Thread.sleep(200);
 
     activateOrder(orderId);
@@ -130,12 +128,12 @@ public class ScenarioTest {
     assertThat(order.getStatus(), is(ACTIVATED));
   }
 
-  private OrderId addBookToCartAndPlaceOrder(String bookId, CustomerInformation customer) throws InterruptedException {
+  private OrderId addBookToCartAndPlaceOrder(String productId, CustomerInformation customer) throws InterruptedException {
     String cartId = UUID.randomUUID().toString();
     Thread.sleep(200);
     createCart(cartId);
     Thread.sleep(200);
-    addItemToCart(cartId, bookId);
+    addItemToCart(cartId, productId);
     Thread.sleep(200);
     CartDto cart = getCart(cartId);
     placeOrder(cartId, customer, cart);
@@ -160,9 +158,9 @@ public class ScenarioTest {
     return response;
   }
 
-  private ClientResponse addItemToCart(String cartId, String bookId) {
+  private ClientResponse addItemToCart(String cartId, String productId) {
     AddItemRequest addItemRequest = new AddItemRequest();
-    addItemRequest.bookId = bookId;
+    addItemRequest.productId = productId;
 
     ClientResponse response = client.resource(SERVER_ADDRESS + "/carts/" + cartId + "/items")
         .entity(addItemRequest, APPLICATION_JSON)
@@ -187,7 +185,7 @@ public class ScenarioTest {
   private ClientResponse activateOrder(OrderId orderId) {
     OrderActivationRequest request = new OrderActivationRequest();
     request.orderId = orderId.id;
-    ClientResponse response = client.resource(SERVER_ADDRESS + "/admin/order-activation-requests")
+    ClientResponse response = client.resource(SERVER_ADDRESS + "/order-requests/activations")
         .entity(request, APPLICATION_JSON)
         .post(ClientResponse.class);
     assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
@@ -195,16 +193,16 @@ public class ScenarioTest {
   }
 
   private Collection<OrderProjection> getOrders() {
-    return client.resource(SERVER_ADDRESS + "/admin/orders")
+    return client.resource(SERVER_ADDRESS + "/query/orders")
         .accept(APPLICATION_JSON)
         .get(new GenericType<Collection<OrderProjection>>() {
         });
   }
 
-  private BookDto getBook(String bookId) {
-    return client.resource(SERVER_ADDRESS + "/books/" + bookId)
+  private ProductDto getProduct(String productId) {
+    return client.resource(SERVER_ADDRESS + "/products/" + productId)
         .accept(APPLICATION_JSON)
-        .get(BookDto.class);
+        .get(ProductDto.class);
   }
 
   private OrderProjection getOrder(OrderId id) {
@@ -225,9 +223,9 @@ public class ScenarioTest {
     return response;
   }
 
-  private ClientResponse createBook(BookDto createBookRequest) {
-    ClientResponse response = client.resource(SERVER_ADDRESS + "/books")
-        .entity(createBookRequest, APPLICATION_JSON)
+  private ClientResponse createProduct(ProductDto productRequest) {
+    ClientResponse response = client.resource(SERVER_ADDRESS + "/products")
+        .entity(productRequest, APPLICATION_JSON)
         .post(ClientResponse.class);
     assertThat(response.getStatusInfo().getFamily(), is(SUCCESSFUL));
     return response;
@@ -242,16 +240,20 @@ public class ScenarioTest {
     return response;
   }
 
-  private BookDto createRandomBook(String publisherContractId) {
+  private ProductDto createRandomProduct(String publisherContractId) {
     BookId bookId = BookId.randomId();
-    BookDto createBookRequest = new BookDto();
-    createBookRequest.bookId = bookId.id;
-    createBookRequest.isbn = "0321125215";
-    createBookRequest.title = "DDD";
-    createBookRequest.description = "Domain Driven Design";
-    createBookRequest.price = 1000;
-    createBookRequest.publisherContractId = publisherContractId;
-    return createBookRequest;
+    BookDto bookDto = new BookDto();
+    bookDto.bookId = bookId.id;
+    bookDto.isbn = "0321125215";
+    bookDto.title = "DDD";
+    bookDto.description = "Domain Driven Design";
+
+    ProductDto productDto = new ProductDto();
+    productDto.productId = ProductId.randomId().id;
+    productDto.book = bookDto;
+    productDto.price = 1000;
+    productDto.publisherContractId = publisherContractId;
+    return productDto;
   }
 
 }

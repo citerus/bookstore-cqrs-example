@@ -4,7 +4,7 @@ import se.citerus.cqrs.bookstore.TransportObject;
 
 public class LineItemDto extends TransportObject {
 
-  public String bookId;
+  public String productId;
 
   public String title;
 

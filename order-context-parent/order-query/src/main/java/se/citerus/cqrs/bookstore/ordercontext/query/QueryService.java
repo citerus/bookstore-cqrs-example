@@ -1,10 +1,10 @@
 package se.citerus.cqrs.bookstore.ordercontext.query;
 
 import org.joda.time.LocalDate;
-import se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookCatalogClient;
-import se.citerus.cqrs.bookstore.ordercontext.client.bookcatalog.BookDto;
-import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
+import se.citerus.cqrs.bookstore.ordercontext.client.productcatalog.ProductCatalogClient;
+import se.citerus.cqrs.bookstore.ordercontext.client.productcatalog.ProductDto;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
+import se.citerus.cqrs.bookstore.ordercontext.order.ProductId;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContractId;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderListDenormalizer;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderProjection;
@@ -17,27 +17,27 @@ public class QueryService {
 
   private final OrderListDenormalizer orderListDenormalizer;
   private final OrdersPerDayAggregator ordersPerDayAggregator;
-  private final BookCatalogClient bookCatalogClient;
+  private final ProductCatalogClient productCatalogClient;
 
   public QueryService(OrderListDenormalizer orderListDenormalizer,
                       OrdersPerDayAggregator ordersPerDayAggregator,
-                      BookCatalogClient bookCatalogClient) {
+                      ProductCatalogClient productCatalogClient) {
     this.orderListDenormalizer = orderListDenormalizer;
     this.ordersPerDayAggregator = ordersPerDayAggregator;
-    this.bookCatalogClient = bookCatalogClient;
+    this.productCatalogClient = productCatalogClient;
   }
 
   public OrderProjection getOrder(OrderId orderId) {
     return orderListDenormalizer.get(orderId);
   }
 
-  public List<OrderProjection> listOrders() {
-    return orderListDenormalizer.listOrders();
+  public List<OrderProjection> getOrders() {
+    return orderListDenormalizer.getOrders();
   }
 
-  public PublisherContractId findPublisher(BookId bookId) {
-    BookDto book = bookCatalogClient.getBook(bookId.id);
-    return new PublisherContractId(book.publisherContractId);
+  public PublisherContractId findPublisher(ProductId productId) {
+    ProductDto product = productCatalogClient.getProduct(productId.id);
+    return new PublisherContractId(product.publisherContractId);
   }
 
   public Map<LocalDate, Integer> getOrdersPerDay() {

@@ -1,7 +1,7 @@
 package se.citerus.cqrs.bookstore.ordercontext.publishercontract.domain;
 
 import se.citerus.cqrs.bookstore.domain.AggregateRoot;
-import se.citerus.cqrs.bookstore.ordercontext.order.BookId;
+import se.citerus.cqrs.bookstore.ordercontext.order.ProductId;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContractId;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.event.PublisherContractRegisteredEvent;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.event.PurchaseRegisteredEvent;
@@ -19,9 +19,9 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
     applyChange(new PublisherContractRegisteredEvent(publisherContractId, nextVersion(), now(), name, feePercentage, limit));
   }
 
-  public void registerPurchase(BookId bookId, long purchaseAmount) {
+  public void registerPurchase(ProductId productId, long purchaseAmount) {
     AccumulatedFee newFee = new AccumulatedFee(accumulatedFee, limit, feePercentage).addPurchase(purchaseAmount);
-    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), bookId, purchaseAmount, newFee.lastPurchaseFee(), newFee.accumulatedFee()));
+    applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), productId, purchaseAmount, newFee.lastPurchaseFee(), newFee.accumulatedFee()));
   }
 
   private void assertHasNotBeenRegistered() {

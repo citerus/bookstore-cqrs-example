@@ -27,7 +27,7 @@ public class OrderCommandHandler implements CommandHandler {
 
     List<OrderLine> orderLinesWithPublishers = new ArrayList<>();
     for (OrderLine orderLine : command.orderLines) {
-      PublisherContractId publisherContractId = queryService.findPublisher(orderLine.bookId);
+      PublisherContractId publisherContractId = queryService.findPublisher(orderLine.productId);
       orderLinesWithPublishers.add(orderLine.withPublisher(publisherContractId));
     }
     order.place(command.orderId, command.customerInformation, orderLinesWithPublishers);

@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -41,8 +42,14 @@ public class QueryResource {
 
   @GET
   @Path("orders")
-  public Collection<OrderProjection> getAllOrders() {
-    return queryService.listOrders();
+  public Collection<OrderProjection> getOrders() {
+    return queryService.getOrders();
+  }
+
+  @GET
+  @Path("orders-per-day")
+  public Map getOrdersPerDay() {
+    return queryService.getOrdersPerDay();
   }
 
 }

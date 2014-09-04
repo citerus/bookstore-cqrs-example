@@ -6,22 +6,15 @@ import se.citerus.cqrs.bookstore.shopping.api.AddItemRequest;
 import se.citerus.cqrs.bookstore.shopping.api.CartDto;
 import se.citerus.cqrs.bookstore.shopping.api.CartDtoFactory;
 import se.citerus.cqrs.bookstore.shopping.api.CreateCartRequest;
-import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookClient;
-import se.citerus.cqrs.bookstore.shopping.client.bookcatalog.BookDto;
-import se.citerus.cqrs.bookstore.shopping.domain.BookId;
+import se.citerus.cqrs.bookstore.shopping.client.productcatalog.ProductCatalogClient;
+import se.citerus.cqrs.bookstore.shopping.client.productcatalog.ProductDto;
 import se.citerus.cqrs.bookstore.shopping.domain.Cart;
 import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.domain.Item;
+import se.citerus.cqrs.bookstore.shopping.domain.ProductId;
 
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 import static java.lang.String.format;
@@ -36,11 +29,11 @@ import static javax.ws.rs.core.Response.status;
 public class CartResource {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
-  private final BookClient bookClient;
+  private final ProductCatalogClient productCatalogClient;
   private final CartRepository cartRepository;
 
-  public CartResource(BookClient bookClient, CartRepository cartRepository) {
-    this.bookClient = bookClient;
+  public CartResource(ProductCatalogClient productCatalogClient, CartRepository cartRepository) {
+    this.productCatalogClient = productCatalogClient;
     this.cartRepository = cartRepository;
   }
 
@@ -54,9 +47,9 @@ public class CartResource {
   public CartDto addItem(@PathParam("cartId") String cartId, AddItemRequest addItemRequest) {
     Cart cart = cartRepository.get(cartId);
     logger.debug("Got addItem request " + addItemRequest);
-    BookDto book = bookClient.getBook(addItemRequest.bookId);
-    assertBookExists(addItemRequest.bookId, book);
-    Item item = new Item(new BookId(addItemRequest.bookId), book.title, book.price);
+    ProductDto product = productCatalogClient.getProduct(addItemRequest.productId);
+    assertProductExists(addItemRequest.productId, product);
+    Item item = new Item(new ProductId(addItemRequest.productId), product.book.title, product.price);
     logger.info("Adding item to cart: " + item);
     cart.add(item);
     return CartDtoFactory.fromCart(cart);
@@ -78,13 +71,13 @@ public class CartResource {
   @Path("{cartId}")
   public void deleteCart(@PathParam("cartId") String cartId) {
     cartRepository.delete(cartId);
-    logger.info("Shopping cart for session '{}' cleared", cartId);
+    logger.info("Shopping cart for session [{}] cleared", cartId);
   }
 
-  private void assertBookExists(String bookId, BookDto book) {
-    if (book == null) {
+  private void assertProductExists(String productId, ProductDto product) {
+    if (product == null) {
       throw new WebApplicationException(status(BAD_REQUEST)
-          .entity("Book with id '" + bookId + "' could not be found").build());
+          .entity("Product with id '" + productId + "' could not be found").build());
     }
   }
 

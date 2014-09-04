@@ -6,22 +6,22 @@ import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContrac
 
 public class OrderLine extends TransportObject {
 
-  public final BookId bookId;
+  public final ProductId productId;
   public final String title;
   public final int quantity;
   public final long unitPrice;
   public final PublisherContractId publisherContractId;
 
-  public OrderLine(BookId bookId, String title, int quantity, long unitPrice) {
-    this(bookId, title, quantity, unitPrice, null);
+  public OrderLine(ProductId productId, String title, int quantity, long unitPrice) {
+    this(productId, title, quantity, unitPrice, null);
   }
 
-  public OrderLine(@JsonProperty("bookId") BookId bookId,
+  public OrderLine(@JsonProperty("productId") ProductId productId,
                    @JsonProperty("title") String title,
                    @JsonProperty("quantity") int quantity,
                    @JsonProperty("unitPrice") long unitPrice,
                    @JsonProperty("publisherContractId") PublisherContractId publisherContractId) {
-    this.bookId = bookId;
+    this.productId = productId;
     this.title = title;
     this.quantity = quantity;
     this.unitPrice = unitPrice;
@@ -29,7 +29,7 @@ public class OrderLine extends TransportObject {
   }
 
   public OrderLine withPublisher(PublisherContractId publisherContractId) {
-    return new OrderLine(this.bookId, this.title, this.quantity, this.unitPrice, publisherContractId);
+    return new OrderLine(this.productId, this.title, this.quantity, this.unitPrice, publisherContractId);
   }
 
   public long totalPrice() {

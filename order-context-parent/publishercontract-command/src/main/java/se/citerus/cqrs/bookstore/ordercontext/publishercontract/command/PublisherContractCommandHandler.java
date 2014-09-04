@@ -23,7 +23,7 @@ public class PublisherContractCommandHandler implements CommandHandler {
   @Subscribe
   public void handle(RegisterPurchaseCommand command) {
     PublisherContract contract = repository.load(command.publisherContractId, PublisherContract.class);
-    contract.registerPurchase(command.bookId, command.amount);
+    contract.registerPurchase(command.productId, command.amount);
     repository.save(contract);
   }
 

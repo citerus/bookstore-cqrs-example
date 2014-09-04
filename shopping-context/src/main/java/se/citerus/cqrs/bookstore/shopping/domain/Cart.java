@@ -9,20 +9,20 @@ public class Cart {
 
   public final String cartId;
 
-  private final Map<BookId, LineItem> lineItems = new LinkedHashMap<>();
+  private final Map<ProductId, LineItem> lineItems = new LinkedHashMap<>();
 
   public Cart(String cartId) {
     this.cartId = cartId;
   }
 
   public void add(Item item) {
-    LineItem lineItem = lineItems.get(item.bookId);
+    LineItem lineItem = lineItems.get(item.productId);
     if (lineItem == null) {
       lineItem = new LineItem(item);
     } else {
       lineItem.increaseQuantity();
     }
-    lineItems.put(item.bookId, lineItem);
+    lineItems.put(item.productId, lineItem);
   }
 
   public Collection<LineItem> getItems() {
@@ -41,18 +41,18 @@ public class Cart {
     return totalAmount;
   }
 
-  public void remove(BookId bookId) {
-    LineItem lineItem = lineItems.get(bookId);
+  public void remove(ProductId productId) {
+    LineItem lineItem = lineItems.get(productId);
     if (lineItem != null) {
       lineItem.decreaseQuantity();
       if (lineItem.getQuantity() == 0) {
-        lineItems.remove(bookId);
+        lineItems.remove(productId);
       }
     }
   }
 
-  public void removeAll(BookId bookId) {
-    lineItems.remove(bookId);
+  public void removeAll(ProductId productId) {
+    lineItems.remove(productId);
   }
 
 }

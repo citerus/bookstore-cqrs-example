@@ -14,7 +14,7 @@ public class CartTest {
   @Test
   public void testAddSingleItemToCart() {
     Cart cart = new Cart(cartId);
-    cart.add(new Item(BookId.<BookId>randomId(), "Item1", 1000));
+    cart.add(new Item(ProductId.<ProductId>randomId(), "Item1", 1000));
 
     assertThat(cart.getItems().size(), is(1));
     assertThat(cart.getTotalAmount(), is(1000L));
@@ -23,7 +23,7 @@ public class CartTest {
   @Test
   public void testAddMultipleItemsOfSameKindToCart() {
     Cart cart = new Cart(cartId);
-    Item item = new Item(BookId.<BookId>randomId(), "Item1", 1000);
+    Item item = new Item(ProductId.<ProductId>randomId(), "Item1", 1000);
     cart.add(item);
     cart.add(item);
 
@@ -34,8 +34,8 @@ public class CartTest {
   @Test
   public void testAddMultipleItemsOfDifferentKindToCart() {
     Cart cart = new Cart(cartId);
-    cart.add(new Item(BookId.<BookId>randomId(), "Item1", 1000));
-    cart.add(new Item(BookId.<BookId>randomId(), "Item2", 1000));
+    cart.add(new Item(ProductId.<ProductId>randomId(), "Item1", 1000));
+    cart.add(new Item(ProductId.<ProductId>randomId(), "Item2", 1000));
 
     assertThat(cart.getItems().size(), is(2));
     assertThat(cart.getTotalAmount(), is(2000L));
@@ -45,10 +45,10 @@ public class CartTest {
   public void testRemoveSingleItemFromCart() {
     Cart cart = new Cart(cartId);
 
-    BookId bookId = BookId.randomId();
-    cart.add(new Item(bookId, "Item", 1000));
+    ProductId productId = ProductId.randomId();
+    cart.add(new Item(productId, "Item", 1000));
 
-    cart.remove(bookId);
+    cart.remove(productId);
 
     assertThat(cart.getItems().isEmpty(), is(true));
     assertThat(cart.getTotalAmount(), is(0L));
@@ -58,12 +58,12 @@ public class CartTest {
   public void testRemoveAllItemsFromCart() {
     Cart cart = new Cart(cartId);
 
-    BookId bookId = BookId.randomId();
-    Item item = new Item(bookId, "Item", 1000);
+    ProductId productId = ProductId.randomId();
+    Item item = new Item(productId, "Item", 1000);
     cart.add(item);
     cart.add(item);
 
-    cart.removeAll(bookId);
+    cart.removeAll(productId);
 
     assertThat(cart.getItems().isEmpty(), is(true));
     assertThat(cart.getTotalAmount(), is(0L));

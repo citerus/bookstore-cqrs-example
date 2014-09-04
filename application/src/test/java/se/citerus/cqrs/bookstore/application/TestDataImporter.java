@@ -3,8 +3,8 @@ package se.citerus.cqrs.bookstore.application;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.io.Resources;
 import org.junit.Ignore;
-import se.citerus.cqrs.bookstore.bookcatalog.api.BookDto;
 import se.citerus.cqrs.bookstore.ordercontext.api.RegisterPublisherContractRequest;
+import se.citerus.cqrs.bookstore.productcatalog.api.ProductDto;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class TestDataImporter {
 
   public static void main(String[] args) {
     importContracts("se/citerus/cqrs/bookstore/testdata/publishercontracts.json");
-    importBooks("se/citerus/cqrs/bookstore/testdata/books.json");
+    importProducts("se/citerus/cqrs/bookstore/testdata/products.json");
   }
 
   private static void importContracts(String path) {
@@ -44,21 +44,21 @@ public class TestDataImporter {
     }
   }
 
-  private static void importBooks(String path) {
+  private static void importProducts(String path) {
     try {
-      TestHttpClient bookClient = new TestHttpClient(SERVER_ADDRESS + "/books").init();
+      TestHttpClient productClient = new TestHttpClient(SERVER_ADDRESS + "/products").init();
 
-      // Add books
-      String booksJson = Resources.toString(getResource(path), UTF_8);
-      TypeReference<List<BookDto>> listOfCreateBookRequests = new TypeReference<List<BookDto>>() {
+      // Add products
+      String productJson = Resources.toString(getResource(path), UTF_8);
+      TypeReference<List<ProductDto>> listOfProductRequests = new TypeReference<List<ProductDto>>() {
       };
 
-      List<BookDto> requests = deserialize(booksJson, listOfCreateBookRequests);
+      List<ProductDto> products = deserialize(productJson, listOfProductRequests);
 
-      for (BookDto book : requests) {
-        bookClient.post(serialize(book));
+      for (ProductDto product : products) {
+        productClient.post(serialize(product));
       }
-      System.out.println("Imported [" + requests.size() + "] books...");
+      System.out.println("Imported [" + products.size() + "] products...");
 
     } catch (Exception e) {
       e.printStackTrace();

@@ -58,7 +58,7 @@ public class OrderResourceTest {
   private List<LineItemDto> randomLineItems() {
     ArrayList<LineItemDto> lineItems = new ArrayList<>();
     LineItemDto item = new LineItemDto();
-    item.bookId = UUID.randomUUID().toString();
+    item.productId = UUID.randomUUID().toString();
     item.price = 120;
     item.quantity = 10;
     item.title = "Some book";

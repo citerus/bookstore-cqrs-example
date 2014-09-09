@@ -8,6 +8,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.citerus.cqrs.bookstore.application.task.ReplayEventsTask;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
@@ -91,6 +92,8 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
     environment.jersey().register(new CartResource(productCatalogClient, cartRepository));
     environment.jersey().register(new PublisherContractResource(commandBus));
     environment.jersey().register(new QueryResource(queryService, domainEventStore));
+
+    environment.admin().addTask(new ReplayEventsTask(domainEventStore, domainEventBus));
     logger.info("Server started!");
   }
 

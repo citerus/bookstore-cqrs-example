@@ -7,4 +7,5 @@ public class OrderApplicationConfiguration extends Configuration {
   public Class eventStore;
 
   public String productCatalogServiceUrl;
+
 }

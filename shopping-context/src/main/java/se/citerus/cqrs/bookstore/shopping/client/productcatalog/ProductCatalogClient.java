@@ -19,4 +19,5 @@ public class ProductCatalogClient {
   public ProductDto getProduct(String productId) {
     return client.resource(serviceUrl + productId).get(ProductDto.class);
   }
+
 }

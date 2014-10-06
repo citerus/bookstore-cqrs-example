@@ -79,6 +79,7 @@ public class OrderApplication extends Application<OrderApplicationConfiguration>
 
     environment.admin().addTask(new ReplayEventsTask(domainEventStore, domainEventBus));
     configureCors(environment);
+    logger.info("OrderApplication started!");
   }
 
   private void configureCors(Environment environment) {

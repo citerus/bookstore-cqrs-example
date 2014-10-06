@@ -1,7 +1,7 @@
 server:
   applicationConnectors:
     - type: http
-      port: 8080
+      port: 8070
 
 logging:
   level: INFO

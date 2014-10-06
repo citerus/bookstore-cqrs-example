@@ -15,6 +15,6 @@ public class ProductCatalogClient {
   }
 
   public ProductDto getProduct(String productId) {
-    return client.resource("http://localhost:8080/service/products/" + productId).get(ProductDto.class);
+    return client.resource("http://localhost:8090/products/" + productId).get(ProductDto.class);
   }
 }

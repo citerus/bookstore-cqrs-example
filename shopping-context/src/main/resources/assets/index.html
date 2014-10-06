@@ -112,7 +112,9 @@
 <!-- Load all books -->
 <script language="javascript">
 
-var rootURL = "http://localhost:8080/service";
+var shoppingService = "/service/carts/";
+var productCatalogService = "http://localhost:8090/products";
+var orderService = "http://localhost:8070/service/order-requests";
 
 jQuery(document).ready(function () {
   initCartSession();
@@ -123,7 +125,7 @@ jQuery(document).ready(function () {
 $(document).on("click", "#book-list button", function () {
   var buttonId = this.id;
   var productId = buttonId.replace("#add-item-", "");
-  postJSON(rootURL + "/carts/" + cartId() + "/items", JSON.stringify({"productId": productId }))
+  postJSON(shoppingService + cartId() + "/items", JSON.stringify({"productId": productId }))
       .error(function (data) {
         alert("Error: " + data);
       })
@@ -139,7 +141,7 @@ $('#btn-place-order').click(function () {
 
 $('#btn-clear-cart').click(function () {
   $.ajax({
-    url: rootURL + '/carts/' + cartId(),
+    url: shoppingService + cartId(),
     type: 'DELETE',
     success: function (result) {
       clearCartItems();
@@ -158,7 +160,7 @@ function initCartSession() {
   var currentSession = cartId();
   if (currentSession === undefined) {
     var newCartId = guid();
-    postJSON(rootURL + "/carts", JSON.stringify({"cartId": newCartId }))
+    postJSON(shoppingService, JSON.stringify({"cartId": newCartId }))
         .error(function (data) {
           alert("Error: " + data);
         })
@@ -170,7 +172,7 @@ function initCartSession() {
   else {
     $.ajax({
       'type': 'GET',
-      'url': rootURL + "/carts/" + currentSession,
+      'url': shoppingService + currentSession,
       'accept': 'application/json',
       'success': renderCart,
       'error': handleInvalidSession
@@ -192,7 +194,7 @@ function handleInvalidSession(jqXHR, textStatus, errorThrown) {
 
 function reloadCart() {
   var sessionId = cartId();
-  $.getJSON(rootURL + "/carts/" + sessionId, function (cart) {
+  $.getJSON(shoppingService + sessionId, function (cart) {
     console.log("Reloaded cart for session: " + sessionId);
     renderCart(cart);
   });
@@ -244,7 +246,7 @@ function toDollarString(moneyInCents) {
 }
 
 function reloadAllProducts() {
-  $.getJSON(rootURL + "/products", function (products) {
+  $.getJSON(productCatalogService, function (products) {
     renderProducts(products);
   });
 }
@@ -287,9 +289,9 @@ function getCoverImageUrl(isbn, callback) {
 function placeOrder() {
   console.log("Placing order...");
   var sessionId = cartId();
-  $.getJSON(rootURL + "/carts/" + sessionId, function (cart) {
+  $.getJSON(shoppingService + sessionId, function (cart) {
     console.log("Reading contents in session: " + cart);
-    postJSON(rootURL + "/order-requests", createOrderRequestJson(cart))
+    postJSON(orderService, createOrderRequestJson(cart))
         .error(function (data) {
           var message = '<div class="alert alert-error">' +
               '<span>There was an error processing your order</span>' +

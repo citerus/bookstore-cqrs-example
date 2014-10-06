@@ -2,6 +2,9 @@ server:
   applicationConnectors:
     - type: http
       port: 8070
+  adminConnectors:
+    - type: http
+      port: 9070
 
 logging:
   level: INFO

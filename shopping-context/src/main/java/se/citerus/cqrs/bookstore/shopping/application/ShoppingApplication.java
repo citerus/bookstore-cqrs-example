@@ -24,7 +24,8 @@ public class ShoppingApplication extends Application<ShoppingConfiguration> {
   @Override
   public void run(ShoppingConfiguration configuration, Environment environment) throws Exception {
     CartRepository cartRepository = new InMemoryCartRepository();
-    ProductCatalogClient productCatalogClient = ProductCatalogClient.create(Client.create());
+    ProductCatalogClient productCatalogClient = ProductCatalogClient.create(Client.create(),
+        configuration.productCatalogServiceUrl);
     environment.jersey().register(new CartResource(productCatalogClient, cartRepository));
     environment.jersey().setUrlPattern("/service/*");
     logger.info("ShoppingApplication started!");

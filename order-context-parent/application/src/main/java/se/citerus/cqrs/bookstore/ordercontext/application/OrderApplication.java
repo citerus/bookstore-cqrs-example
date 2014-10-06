@@ -56,7 +56,7 @@ public class OrderApplication extends Application<OrderApplicationConfiguration>
     OrderListDenormalizer orderListDenormalizer = domainEventBus.register(new OrderListDenormalizer(orderRepository));
     OrdersPerDayAggregator ordersPerDayAggregator = domainEventBus.register(new OrdersPerDayAggregator());
 
-    ProductCatalogClient catalogClient = ProductCatalogClient.create(Client.create());
+    ProductCatalogClient catalogClient = ProductCatalogClient.create(Client.create(), configuration.productCatalogServiceUrl);
 
     DomainEventStore domainEventStore = (DomainEventStore) configuration.eventStore.newInstance();
     QueryService queryService = new QueryService(orderListDenormalizer, ordersPerDayAggregator, catalogClient);

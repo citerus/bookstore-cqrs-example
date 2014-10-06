@@ -13,3 +13,5 @@ logging:
 
   appenders:
     - type: console
+
+productCatalogServiceUrl : http://localhost:8090/products/

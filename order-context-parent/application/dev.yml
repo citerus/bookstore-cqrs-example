@@ -16,3 +16,5 @@ logging:
 
 #eventStore : se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.SimpleFileBasedEventStore
 eventStore : se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.InMemoryDomainEventStore
+
+productCatalogServiceUrl : http://localhost:8090/products/

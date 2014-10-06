@@ -1,0 +1,80 @@
+[
+  {
+    "productId": "3edd5901-bdfd-494c-9354-6fd62df28edb",
+    "book": {
+      "bookId": "08913865-24e7-4c7c-8b93-eb6caac487d3",
+      "isbn": "0321125215",
+      "title": "Domain-Driven Design",
+      "description": "Tackling complexity in the heart of software"
+    },
+    "price": 2917,
+    "publisherContractId": "11113865-24e7-4c7c-8b93-eb6caac48111"
+  },
+  {
+    "productId": "da54c88d-9f29-4f14-acb8-4b9fbd40af0a",
+    "book": {
+      "bookId": "e66e1e17-382b-42d6-bd84-1a6abb66f0e1",
+      "isbn": "0321616936",
+      "title": "Agile Testing",
+      "description": "A Practical Guide for Testers and Agile Teams"
+    },
+    "price": 2545,
+    "publisherContractId": "11113865-24e7-4c7c-8b93-eb6caac48111"
+  },
+  {
+    "productId": "0f3f4c93-2ea0-4ded-8c02-1cdb2e07526a",
+    "book": {
+
+      "bookId": "3e96229f-16f3-4332-92ad-5acef224d478",
+      "isbn": "1934356085",
+      "title": "Programming Ruby",
+      "description": "The Pragmatic Programmer's Guide, Second Edition"
+    },
+    "price": 2499,
+    "publisherContractId": "7dbaab70-71e6-44c1-bb30-b7f7df37624f"
+  },
+  {
+    "productId": "9e8f3a82-8256-4cb7-af6d-a2a0d1b6dac1",
+    "book": {
+      "bookId": "29655701-19cc-4a73-93dc-1c0a0a0430a1",
+      "isbn": "1934356670",
+      "title": "Pragmatic guide to Javascript",
+      "description": ""
+    },
+    "price": 1583,
+    "publisherContractId": "7dbaab70-71e6-44c1-bb30-b7f7df37624f"
+  },
+  {
+    "productId": "f5a9aeac-776e-465e-81c0-cf2a87a98ef2",
+    "book": {
+      "bookId": "33f23268-25bf-41dd-b150-dc597970aea8",
+      "isbn": "1449389554",
+      "title": "Hackers and painters",
+      "description": ""
+    },
+    "price": 965,
+    "publisherContractId": "61b0817c-55ff-4cf4-ac15-580df0499740"
+  },
+  {
+    "productId": "6d495e6a-8786-4f16-a5b2-4a1d0ff73e65",
+    "book": {
+      "bookId": "33f23268-25bf-41dd-b150-dc597970ae99",
+      "isbn": "1617291528",
+      "title": "Clojure in action",
+      "description": ""
+    },
+    "price": 2480,
+    "publisherContractId": "28717092-e7f3-4dfe-ae50-51cf9a7c13f2"
+  },
+  {
+    "productId": "398f62cf-0d4c-40b2-8e16-5bdc74352bad",
+    "book": {
+      "bookId": "e286aaed-6f9b-4638-bee9-92b9466f3fd5",
+      "isbn": "0136083250",
+      "title": "Clean code",
+      "description": "A Handbook of Agile Software Craftsmanship"
+    },
+    "price": 2239,
+    "publisherContractId": "e8648253-b715-4c30-837b-8b179d5d3f09"
+  }
+]

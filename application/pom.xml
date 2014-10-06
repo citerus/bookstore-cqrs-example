@@ -25,10 +25,6 @@
       <groupId>se.citerus.cqrs.bookstore</groupId>
       <artifactId>shopping-context</artifactId>
     </dependency>
-    <dependency>
-      <groupId>se.citerus.cqrs.bookstore</groupId>
-      <artifactId>productcatalog-context</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>io.dropwizard</groupId>

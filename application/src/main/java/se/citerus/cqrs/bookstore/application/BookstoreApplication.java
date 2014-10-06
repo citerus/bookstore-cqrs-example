@@ -8,8 +8,6 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.citerus.cqrs.bookstore.productcatalog.infrastructure.InMemoryProductRepository;
-import se.citerus.cqrs.bookstore.productcatalog.resource.ProductResource;
 import se.citerus.cqrs.bookstore.shopping.client.productcatalog.ProductCatalogClient;
 import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
@@ -48,7 +46,6 @@ public class BookstoreApplication extends Application<BookstoreConfiguration> {
 
     ProductCatalogClient productCatalogClient = ProductCatalogClient.create(Client.create());
 
-    environment.jersey().register(new ProductResource(new InMemoryProductRepository()));
     environment.jersey().register(new CartResource(productCatalogClient, cartRepository));
 
     logger.info("Server started!");

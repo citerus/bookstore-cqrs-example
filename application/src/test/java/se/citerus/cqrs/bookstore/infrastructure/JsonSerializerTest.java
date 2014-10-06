@@ -1,5 +1,6 @@
 package se.citerus.cqrs.bookstore.infrastructure;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.junit.Test;
 import se.citerus.cqrs.bookstore.TransportObject;
@@ -15,16 +16,18 @@ import static se.citerus.cqrs.bookstore.GenericId.ID_PATTERN;
 
 public class JsonSerializerTest {
 
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
   @Test
   public void testSerialize() throws IOException {
-    String json = "    {\n" +
-        "        \"someId\":\"11113865-24e7-4c7c-8b93-eb6caac48111\",\n" +
-        "        \"name\":\"John\",\n" +
-        "        \"doubleValue\":5.5,\n" +
-        "        \"longValue\":1000\n" +
-        "    }\n";
+    String json = "{\n" +
+        "\"someId\":\"11113865-24e7-4c7c-8b93-eb6caac48111\",\n" +
+        "\"name\":\"John\",\n" +
+        "\"doubleValue\":5.5,\n" +
+        "\"longValue\":1000\n" +
+        "}\n";
 
-    JsonClass request = JsonSerializer.deserialize(json, JsonClass.class);
+    JsonClass request = OBJECT_MAPPER.readValue(json, JsonClass.class);
     assertThat(request.toString(), is("JsonSerializerTest.JsonClass[someId=11113865-24e7-4c7c-8b93-eb6caac48111,name=John,doubleValue=5.5,longValue=1000]"));
   }
 

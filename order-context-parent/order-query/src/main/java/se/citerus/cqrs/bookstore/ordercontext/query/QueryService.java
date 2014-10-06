@@ -35,7 +35,7 @@ public class QueryService {
     return orderListDenormalizer.getOrders();
   }
 
-  public PublisherContractId findPublisher(ProductId productId) {
+  public PublisherContractId findPublisherContract(ProductId productId) {
     ProductDto product = productCatalogClient.getProduct(productId.id);
     return new PublisherContractId(product.publisherContractId);
   }

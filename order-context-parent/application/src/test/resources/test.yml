@@ -15,4 +15,4 @@ logging:
   appenders:
     - type: console
 
-eventStore : se.citerus.cqrs.bookstore.infrastructure.InMemoryDomainEventStore
+eventStore : se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.InMemoryDomainEventStore

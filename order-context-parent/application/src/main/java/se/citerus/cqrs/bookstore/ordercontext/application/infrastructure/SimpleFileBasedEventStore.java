@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.infrastructure;
+package se.citerus.cqrs.bookstore.ordercontext.application.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Files;

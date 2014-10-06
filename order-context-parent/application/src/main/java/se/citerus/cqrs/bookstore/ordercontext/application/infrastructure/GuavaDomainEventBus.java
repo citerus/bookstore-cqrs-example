@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.infrastructure;
+package se.citerus.cqrs.bookstore.ordercontext.application.infrastructure;
 
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;

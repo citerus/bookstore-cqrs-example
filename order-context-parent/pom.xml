@@ -19,6 +19,7 @@
     <module>order-query</module>
     <module>sagas</module>
     <module>publishercontract-command</module>
+    <module>application</module>
   </modules>
 
   <dependencies>

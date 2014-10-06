@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.application.task;
+package se.citerus.cqrs.bookstore.ordercontext.application.task;
 
 import com.google.common.collect.ImmutableMultimap;
 import io.dropwizard.servlets.tasks.Task;

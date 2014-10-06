@@ -1,0 +1,15 @@
+server:
+  applicationConnectors:
+    - type: http
+      port: 8080
+
+logging:
+  level: INFO
+  loggers:
+    se.citerus: DEBUG
+
+  appenders:
+    - type: console
+
+#eventStore : se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.SimpleFileBasedEventStore
+eventStore : se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.InMemoryDomainEventStore

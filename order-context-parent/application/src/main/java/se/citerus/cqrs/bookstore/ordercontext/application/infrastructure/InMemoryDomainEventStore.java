@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.infrastructure;
+package se.citerus.cqrs.bookstore.ordercontext.application.infrastructure;
 
 import com.google.common.collect.Lists;
 import se.citerus.cqrs.bookstore.GenericId;

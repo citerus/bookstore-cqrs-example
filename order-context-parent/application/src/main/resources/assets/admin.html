@@ -119,7 +119,7 @@
           .append('<tr><td>' + orderId + '</td>' +
               '<td>' + customerName + '</td>' +
               '<td>' + orderAmount + '</td>' +
-              '<td>' + status + '</td>' +
+              '<td id=status-' + orderId + '>' + status + '</td>' +
               '<td>' + activationButton + ' </td></tr>');
     });
   }
@@ -150,6 +150,7 @@
         })
         .done(function (data) {
           $("#" + buttonId).remove();
+          $("#status-" + orderId).text("ACTIVATED");
         });
   });
 

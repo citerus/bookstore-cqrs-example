@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.ordercontext.infrastructure.se.citerus.cqrs.bookstore.ordercontext.application;
+package se.citerus.cqrs.bookstore.ordercontext.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
@@ -7,8 +7,6 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.OrderApplication;
-import se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.OrderApplicationConfiguration;
 
 import java.io.File;
 

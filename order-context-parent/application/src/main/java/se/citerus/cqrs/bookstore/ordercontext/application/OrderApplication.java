@@ -1,8 +1,9 @@
-package se.citerus.cqrs.bookstore.ordercontext.application.infrastructure;
+package se.citerus.cqrs.bookstore.ordercontext.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
@@ -11,6 +12,9 @@ import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.domain.Repository;
 import se.citerus.cqrs.bookstore.event.DomainEventBus;
 import se.citerus.cqrs.bookstore.event.DomainEventStore;
+import se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.DefaultRepository;
+import se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.GuavaCommandBus;
+import se.citerus.cqrs.bookstore.ordercontext.application.infrastructure.GuavaDomainEventBus;
 import se.citerus.cqrs.bookstore.ordercontext.application.task.ReplayEventsTask;
 import se.citerus.cqrs.bookstore.ordercontext.client.productcatalog.ProductCatalogClient;
 import se.citerus.cqrs.bookstore.ordercontext.infrastructure.InMemOrderProjectionRepository;
@@ -33,12 +37,11 @@ public class OrderApplication extends Application<OrderApplicationConfiguration>
 
   @Override
   public void initialize(Bootstrap<OrderApplicationConfiguration> bootstrap) {
-
+    bootstrap.addBundle(new AssetsBundle("/assets/", "/", "admin.html"));
   }
 
   @Override
   public void run(OrderApplicationConfiguration configuration, Environment environment) throws Exception {
-
     ObjectMapper objectMapper = environment.getObjectMapper();
     objectMapper.enable(INDENT_OUTPUT);
     objectMapper.enable(WRITE_DATES_AS_TIMESTAMPS);
@@ -67,6 +70,7 @@ public class OrderApplication extends Application<OrderApplicationConfiguration>
     environment.jersey().register(new QueryResource(queryService, domainEventStore));
     environment.jersey().register(new OrderResource(commandBus));
     environment.jersey().register(new PublisherContractResource(commandBus));
+    environment.jersey().setUrlPattern("/service/*");
 
     environment.admin().addTask(new ReplayEventsTask(domainEventStore, domainEventBus));
   }

@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.application;
+package se.citerus.cqrs.bookstore.ordercontext.application;
 
 import com.google.common.io.CharStreams;
 import com.sun.jersey.api.client.Client;

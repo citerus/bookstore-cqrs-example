@@ -1,4 +1,4 @@
-package se.citerus.cqrs.bookstore.ordercontext.application.infrastructure;
+package se.citerus.cqrs.bookstore.ordercontext.application;
 
 import io.dropwizard.Configuration;
 

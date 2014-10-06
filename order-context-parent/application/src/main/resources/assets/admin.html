@@ -76,7 +76,7 @@
 <!-- Load all books -->
 <script language="javascript">
 
-  var serviceRootUrl = "http://localhost:8080/service";
+  var orderServiceRootUrl = "http://localhost:8070/service";
 
   jQuery(document).ready(function () {
     $("#list-events").hide();
@@ -126,7 +126,7 @@
 
 
   function getAllEvents() {
-    $.getJSON(serviceRootUrl + "/query/events", function (data) {
+    $.getJSON(orderServiceRootUrl + "/query/events", function (data) {
       renderEvents(data);
     });
   }
@@ -144,7 +144,7 @@
   $(document).on("click", "#list-orders button", function () {
     var buttonId = this.id;
     var orderId = buttonId.replace("activate-order-", "");
-    postJSON(serviceRootUrl + "/order-requests/activations", JSON.stringify({"orderId": orderId }))
+    postJSON(orderServiceRootUrl + "/order-requests/activations", JSON.stringify({"orderId": orderId }))
         .error(function (data) {
           alert("Error: " + data);
         })
@@ -154,7 +154,7 @@
   });
 
   function getAllOrders() {
-    $.getJSON(serviceRootUrl + "/query/orders", function (data) {
+    $.getJSON(orderServiceRootUrl + "/query/orders", function (data) {
       renderOrders(data);
     });
   }

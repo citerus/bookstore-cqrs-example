@@ -16,7 +16,7 @@ import javax.ws.rs.Produces;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Path("publishercontract-requests")
+@Path("publisher-contract-requests")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
 public class PublisherContractResource {
@@ -30,9 +30,9 @@ public class PublisherContractResource {
   }
 
   @POST
-  public void registerPublisher(@Valid RegisterPublisherContractRequest request) {
+  public void registerContract(@Valid RegisterPublisherContractRequest request) {
     PublisherContractId publisherContractId = new PublisherContractId(request.publisherContractId);
-    logger.info("Registering publisher: " + publisherContractId);
+    logger.info("Registering contract: " + publisherContractId);
     RegisterPublisherContractCommand command = commandFactory.toCommand(publisherContractId, request);
     commandBus.dispatch(command);
   }

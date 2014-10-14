@@ -19,7 +19,7 @@
     </dependency>
     <dependency>
       <groupId>se.citerus.cqrs.bookstore.ordercontext</groupId>
-      <artifactId>publishercontract-command</artifactId>
+      <artifactId>publisher-contract-command</artifactId>
     </dependency>
   </dependencies>
 

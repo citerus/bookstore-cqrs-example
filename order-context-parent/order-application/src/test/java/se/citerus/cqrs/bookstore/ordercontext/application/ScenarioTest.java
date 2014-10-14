@@ -75,7 +75,7 @@ public class ScenarioTest {
   @Test
   public void testActivateOrder() throws Exception {
 //    String publisherContractId = UUID.randomUUID().toString();
-//    registerPublisher(publisherContractId, "Addison-Wesley", 10.0, 1000);
+//    registerContract(publisherContractId, "Addison-Wesley", 10.0, 1000);
 //
 //    CustomerInformation customer = new CustomerInformation("John Doe", "john@acme.com", "Highway street 1");
 //    OrderId orderId = addPlaceOrder(customer);

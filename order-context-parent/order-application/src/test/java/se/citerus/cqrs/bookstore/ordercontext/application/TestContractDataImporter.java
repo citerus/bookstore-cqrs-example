@@ -15,8 +15,8 @@ import static com.google.common.io.Resources.getResource;
 public class TestContractDataImporter {
 
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-  private static final String SERVER_RESOURCE = "http://localhost:8070/service/publishercontract-requests";
-  public static final String DEFAULT_PATH = "test-publishercontracts.json";
+  private static final String SERVER_RESOURCE = "http://localhost:8070/service/publisher-contract-requests";
+  public static final String DEFAULT_PATH = "test-publisher-contracts.json";
 
   public static void main(String[] args) {
     try {

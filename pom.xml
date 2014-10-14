@@ -11,7 +11,7 @@
     <module>cqrs-lib</module>
     <module>order-context-parent</module>
     <module>shopping-context</module>
-    <module>productcatalog-context</module>
+    <module>product-catalog-context</module>
   </modules>
 
   <name>CQRS Bookstore</name>
@@ -81,7 +81,7 @@
       </dependency>
       <dependency>
         <groupId>se.citerus.cqrs.bookstore</groupId>
-        <artifactId>productcatalog-context</artifactId>
+        <artifactId>product-catalog-context</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

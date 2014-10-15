@@ -116,22 +116,25 @@ var shoppingService = "/service/carts/";
 var productCatalogService = "http://localhost:8090/products";
 var orderService = "http://localhost:8070/service/order-requests";
 
-jQuery(document).ready(function () {
-  initCartSession();
-  reloadAllProducts();
-  reloadCart();
+$(document).ready(function () {
+  loadAndRenderProducts();
+  if (!hasCartIdCookie()) {
+    initCart(loadCart);
+  } else {
+    loadCart();
+  }
 });
 
 $(document).on("click", "#book-list button", function () {
   var buttonId = this.id;
   var productId = buttonId.replace("#add-item-", "");
-  postJSON(shoppingService + cartId() + "/items", JSON.stringify({"productId": productId }))
+  var url = shoppingService + getCartIdFromCookie() + "/items";
+  var payload = JSON.stringify({"productId": productId });
+  postJSON(url, payload)
       .error(function (data) {
         alert("Error: " + data);
       })
-      .done(function (data) {
-        reloadCart();
-      });
+      .done(loadCart);
 });
 
 $('#btn-place-order').click(function () {
@@ -140,101 +143,91 @@ $('#btn-place-order').click(function () {
 });
 
 $('#btn-clear-cart').click(function () {
-  $.ajax({
-    url: shoppingService + cartId(),
-    type: 'DELETE',
-    success: function (result) {
-      clearCartItems();
-      deleteSession();
-      initCartSession();
-    }
+  deleteCart(function (result) {
+    initCart(loadCart);
   });
   return false;
 });
 
-function cartId() {
+function hasCartIdCookie() {
+  return !(getCartIdFromCookie() === undefined);
+}
+
+function getCartIdFromCookie() {
   return $.cookie('cart');
 }
 
-function initCartSession() {
-  var currentSession = cartId();
-  if (currentSession === undefined) {
-    var newCartId = guid();
-    postJSON(shoppingService, JSON.stringify({"cartId": newCartId }))
-        .error(function (data) {
-          alert("Error: " + data);
-        })
-        .done(function (data) {
-          console.log("Successfully initialized new session: " + JSON.stringify(newCartId));
-          $.cookie('cart', newCartId);
-        });
-  }
-  else {
-    $.ajax({
-      'type': 'GET',
-      'url': shoppingService + currentSession,
-      'accept': 'application/json',
-      'success': renderCart,
-      'error': handleInvalidSession
-    });
-  }
-}
-
-function deleteSession() {
-  $.removeCookie("cart");
-}
-
-function handleInvalidSession(jqXHR, textStatus, errorThrown) {
-  if (jqXHR.status == 404) {
-    console.log("Could not find cart for current session. Will try to init new session...");
-    deleteSession();
-    initCartSession();
-  }
-}
-
-function reloadCart() {
-  var sessionId = cartId();
-  $.getJSON(shoppingService + sessionId, function (cart) {
-    console.log("Reloaded cart for session: " + sessionId);
-    renderCart(cart);
+function deleteCart(onSuccess) {
+  var cartId = getCartIdFromCookie();
+  console.log("Deleting session: " + cartId);
+  $.ajax({
+    url: shoppingService + cartId,
+    type: 'DELETE',
+    success: onSuccess
   });
 }
 
-function clearCartItems() {
-  $('#cart').find("tbody tr").remove();
+function initCart(onDone) {
+  $.removeCookie("cart");
+  var newCartId = guid();
+  postJSON(shoppingService, JSON.stringify({"cartId": newCartId }))
+      .error(function (data) {
+        alert("Error: " + data);
+      })
+      .done(function () {
+        console.log("Successfully initialized new session: " + newCartId);
+        $.cookie('cart', newCartId);
+        onDone();
+      });
 }
 
-function hideCart() {
-  clearCartItems();
-  $('#cart').hide();
-  $('#empty-cart').show();
+function loadCart() {
+  var sessionId = getCartIdFromCookie();
+  $.ajax({
+    'type': 'GET',
+    'url': shoppingService + sessionId,
+    'accept': 'application/json',
+    'success': function (cart) {
+      console.log("Loaded cart for session: " + sessionId);
+      renderCart(cart);
+    },
+    'error': function (data) {
+      if (data.status == 404) {
+        console.log("Could not find cart for session [" + sessionId + "]");
+        $.removeCookie("cart");
+      }
+    }
+  });
 }
 
 function renderCart(cart) {
+  var cartSelector = $('#cart');
+  cartSelector.find("tbody tr").remove();
+
   if (cart.length === null) {
-    hideCart();
-  }
-  else {
+    cartSelector.hide();
+    $('#empty-cart').show();
+  } else {
+    $('#empty-cart').hide();
     renderCartItems(cart);
   }
 }
 
 function renderCartItems(cart) {
-  clearCartItems();
-  $('#empty-cart').hide();
+  var cartSelector = $('#cart');
   $.each(cart.lineItems, function (index, lineItem) {
     var productId = lineItem.productId;
     var title = lineItem.title;
     var price = lineItem.price;
     var qty = lineItem.quantity;
     var totalPrice = lineItem.totalPrice;
-    $('#cart').find("tbody")
+    cartSelector.find("tbody")
         .append('<tr><td>' + title + '</td>' +
             '<td><p class="text-right">' + qty + '</p></td>' +
             '<td><p class="text-right">' + toDollarString(totalPrice) + '</p></td></tr>');
-    $('#cart').show();
+    cartSelector.show();
   });
-  $('#cart').find("tbody tr:last").after(
+  cartSelector.find("tbody tr:last").after(
       '<tr><td><b>Totals:</b></td>' +
           '<td><p class="text-right"><b>' + cart.totalQuantity + '</b></p></td>' +
           '<td><p class="text-right"><b>' + toDollarString(cart.totalPrice) + '</p></b></td></tr>');
@@ -245,7 +238,7 @@ function toDollarString(moneyInCents) {
   return "$ " + (moneyInCents / 100).toFixed(2);
 }
 
-function reloadAllProducts() {
+function loadAndRenderProducts() {
   $.getJSON(productCatalogService, function (products) {
     renderProducts(products);
   });
@@ -253,11 +246,12 @@ function reloadAllProducts() {
 
 function renderProducts(products) {
   var list = products == null ? [] : (products instanceof Array ? products : [products]);
-  $('#book-list').find('tbody').remove();
+  var bookListSelector = $('#book-list');
+  bookListSelector.find('tbody').remove();
   $.each(list, function (index, product) {
     var book = product.book;
     var itemId = 'add-item-' + product.productId;
-    $('#book-list').append(
+    bookListSelector.append(
         '<tr><td><img id=' + book.isbn + ' height="80px" width="65px"/></td>' +
             '<td>' + book.title + '</td>' +
             '<td><p class="text-right">' + toDollarString(product.price) + '</p></td>' +
@@ -288,9 +282,9 @@ function getCoverImageUrl(isbn, callback) {
 
 function placeOrder() {
   console.log("Placing order...");
-  var sessionId = cartId();
+  var sessionId = getCartIdFromCookie();
   $.getJSON(shoppingService + sessionId, function (cart) {
-    console.log("Reading contents in session: " + cart);
+    console.log("Reading contents in session: " + JSON.stringify(cart));
     postJSON(orderService, createOrderRequestJson(cart))
         .error(function (data) {
           var message = '<div class="alert alert-error">' +
@@ -303,16 +297,16 @@ function placeOrder() {
               '<span>Order was successfully placed!</span>' +
               '</div>';
           $("#order-result-message").html(message).show().delay(3000).fadeOut();
-          clearCartItems();
-          deleteSession();
-          initCartSession();
+          deleteCart(function () {
+            initCart(loadCart);
+          });
           $("#order-info input").val("");
         });
   });
 }
 
 function createOrderRequestJson(cart) {
-  console.log("Sending cart: " + cart);
+  console.log("Sending cart: " + JSON.stringify(cart));
   return JSON.stringify({
     "cart": cart,
     "orderId": guid(),

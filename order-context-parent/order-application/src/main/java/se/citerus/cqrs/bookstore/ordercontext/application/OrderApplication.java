@@ -65,7 +65,7 @@ public class OrderApplication extends Application<OrderApplicationConfiguration>
     Repository aggregateRepository = new DefaultRepository(domainEventBus, domainEventStore);
 
     CommandBus commandBus = GuavaCommandBus.asyncGuavaCommandBus();
-    commandBus.register(new OrderCommandHandler(aggregateRepository, queryService));
+    commandBus.register(new OrderCommandHandler(aggregateRepository));
     commandBus.register(new PublisherContractCommandHandler(aggregateRepository));
 
     // Create and register Sagas

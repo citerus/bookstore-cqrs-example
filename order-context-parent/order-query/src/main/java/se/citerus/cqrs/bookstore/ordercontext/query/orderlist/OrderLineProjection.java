@@ -1,7 +1,6 @@
 package se.citerus.cqrs.bookstore.ordercontext.query.orderlist;
 
 import se.citerus.cqrs.bookstore.ordercontext.order.ProductId;
-import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContractId;
 
 public class OrderLineProjection {
 
@@ -12,7 +11,5 @@ public class OrderLineProjection {
   public int quantity;
 
   public long unitPrice;
-
-  public PublisherContractId publisherContractId;
 
 }

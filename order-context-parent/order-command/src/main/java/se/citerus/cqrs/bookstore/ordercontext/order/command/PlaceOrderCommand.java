@@ -1,9 +1,9 @@
 package se.citerus.cqrs.bookstore.ordercontext.order.command;
 
 import se.citerus.cqrs.bookstore.command.Command;
-import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
-import se.citerus.cqrs.bookstore.ordercontext.order.OrderLine;
+import se.citerus.cqrs.bookstore.ordercontext.order.domain.CustomerInformation;
+import se.citerus.cqrs.bookstore.ordercontext.order.domain.OrderLine;
 
 import java.util.Collections;
 import java.util.List;

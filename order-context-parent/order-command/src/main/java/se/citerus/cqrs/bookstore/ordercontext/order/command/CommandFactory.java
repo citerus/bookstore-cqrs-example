@@ -4,10 +4,10 @@ import se.citerus.cqrs.bookstore.ordercontext.api.CartDto;
 import se.citerus.cqrs.bookstore.ordercontext.api.LineItemDto;
 import se.citerus.cqrs.bookstore.ordercontext.api.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
-import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
-import se.citerus.cqrs.bookstore.ordercontext.order.OrderLine;
 import se.citerus.cqrs.bookstore.ordercontext.order.ProductId;
+import se.citerus.cqrs.bookstore.ordercontext.order.domain.CustomerInformation;
+import se.citerus.cqrs.bookstore.ordercontext.order.domain.OrderLine;
 
 import java.util.ArrayList;
 import java.util.List;

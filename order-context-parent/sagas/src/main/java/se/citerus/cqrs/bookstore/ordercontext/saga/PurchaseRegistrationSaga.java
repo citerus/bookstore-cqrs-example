@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.command.CommandBus;
 import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderActivatedEvent;
+import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContractId;
 import se.citerus.cqrs.bookstore.ordercontext.publishercontract.command.RegisterPurchaseCommand;
 import se.citerus.cqrs.bookstore.ordercontext.query.QueryService;
 import se.citerus.cqrs.bookstore.ordercontext.query.orderlist.OrderLineProjection;
@@ -31,7 +32,8 @@ public class PurchaseRegistrationSaga extends Saga {
     logger.info("Received: " + event.toString());
     OrderProjection order = queryService.getOrder(event.aggregateId);
     for (final OrderLineProjection orderLine : order.getOrderLines()) {
-      publish(new RegisterPurchaseCommand(orderLine.publisherContractId, orderLine.productId, orderLine.unitPrice, orderLine.quantity));
+      PublisherContractId contractId = queryService.findPublisherContract(orderLine.productId);
+      publish(new RegisterPurchaseCommand(contractId, orderLine.productId, orderLine.unitPrice, orderLine.quantity));
     }
   }
 

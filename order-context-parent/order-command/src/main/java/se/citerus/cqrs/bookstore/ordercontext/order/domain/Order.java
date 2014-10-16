@@ -45,7 +45,7 @@ public class Order extends AggregateRoot<OrderId> {
   private long calculateTotalAmount(List<OrderLine> orderLines) {
     long totalAmount = 0;
     for (OrderLine orderLine : orderLines) {
-      totalAmount += orderLine.totalPrice();
+      totalAmount += orderLine.unitPrice * orderLine.quantity;
     }
     return totalAmount;
   }

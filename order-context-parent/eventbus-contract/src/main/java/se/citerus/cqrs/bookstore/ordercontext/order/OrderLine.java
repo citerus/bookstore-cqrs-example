@@ -32,8 +32,4 @@ public class OrderLine extends TransportObject {
     return new OrderLine(this.productId, this.title, this.quantity, this.unitPrice, publisherContractId);
   }
 
-  public long totalPrice() {
-    return unitPrice * quantity;
-  }
-
 }

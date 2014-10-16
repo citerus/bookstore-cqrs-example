@@ -47,9 +47,9 @@ public class PublisherContractTest {
     PublisherContractId publisherContractId = PublisherContractId.randomId();
     contract.register(publisherContractId, "Addison Wesley", 10.0, 10000);
 
-    contract.registerPurchase(ProductId.randomId(), 60000);
-    contract.registerPurchase(ProductId.randomId(), 60000);
-    contract.registerPurchase(ProductId.randomId(), 60000);
+    contract.registerPurchase(ProductId.randomId(), 60000L, 1);
+    contract.registerPurchase(ProductId.randomId(), 60000L, 1);
+    contract.registerPurchase(ProductId.randomId(), 60000L, 1);
 
     Iterator<PurchaseRegisteredEvent> purchases = filter(contract.getUncommittedEvents(),
         PurchaseRegisteredEvent.class).iterator();

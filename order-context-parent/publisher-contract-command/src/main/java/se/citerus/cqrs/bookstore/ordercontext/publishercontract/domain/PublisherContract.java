@@ -19,7 +19,8 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
     applyChange(new PublisherContractRegisteredEvent(publisherContractId, nextVersion(), now(), name, feePercentage, limit));
   }
 
-  public void registerPurchase(ProductId productId, long purchaseAmount) {
+  public void registerPurchase(ProductId productId, long unitPrice, int quantity) {
+    long purchaseAmount = unitPrice * quantity;
     AccumulatedFee newFee = new AccumulatedFee(accumulatedFee, limit, feePercentage).addPurchase(purchaseAmount);
     applyChange(new PurchaseRegisteredEvent(id(), nextVersion(), now(), productId, purchaseAmount, newFee.lastPurchaseFee(), newFee.accumulatedFee()));
   }

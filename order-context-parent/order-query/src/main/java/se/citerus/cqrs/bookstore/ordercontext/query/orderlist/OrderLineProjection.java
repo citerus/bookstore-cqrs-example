@@ -15,9 +15,4 @@ public class OrderLineProjection {
 
   public PublisherContractId publisherContractId;
 
-  // TODO: Calculate this on event?
-  public long amount() {
-    return unitPrice * quantity;
-  }
-
 }

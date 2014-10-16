@@ -17,7 +17,7 @@ public class CartTest {
     cart.add(new Item(ProductId.<ProductId>randomId(), "Item1", 1000));
 
     assertThat(cart.getItems().size(), is(1));
-    assertThat(cart.getTotalAmount(), is(1000L));
+    assertThat(cart.getTotalPrice(), is(1000L));
   }
 
   @Test
@@ -28,7 +28,7 @@ public class CartTest {
     cart.add(item);
 
     assertThat(cart.getItems().size(), is(1));
-    assertThat(cart.getTotalAmount(), is(2000L));
+    assertThat(cart.getTotalPrice(), is(2000L));
   }
 
   @Test
@@ -38,7 +38,7 @@ public class CartTest {
     cart.add(new Item(ProductId.<ProductId>randomId(), "Item2", 1000));
 
     assertThat(cart.getItems().size(), is(2));
-    assertThat(cart.getTotalAmount(), is(2000L));
+    assertThat(cart.getTotalPrice(), is(2000L));
   }
 
   @Test
@@ -51,7 +51,7 @@ public class CartTest {
     cart.remove(productId);
 
     assertThat(cart.getItems().isEmpty(), is(true));
-    assertThat(cart.getTotalAmount(), is(0L));
+    assertThat(cart.getTotalPrice(), is(0L));
   }
 
   @Test
@@ -66,7 +66,7 @@ public class CartTest {
     cart.removeAll(productId);
 
     assertThat(cart.getItems().isEmpty(), is(true));
-    assertThat(cart.getTotalAmount(), is(0L));
+    assertThat(cart.getTotalPrice(), is(0L));
   }
 
 }

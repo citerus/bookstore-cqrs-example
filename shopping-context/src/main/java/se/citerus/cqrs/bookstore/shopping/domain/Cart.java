@@ -33,12 +33,20 @@ public class Cart {
     return lineItems.size();
   }
 
-  public long getTotalAmount() {
-    long totalAmount = 0;
+  public long getTotalPrice() {
+    long totalPrice = 0;
     for (LineItem lineItem : lineItems.values()) {
-      totalAmount += lineItem.getTotalPrice();
+      totalPrice += lineItem.getTotalPrice();
     }
-    return totalAmount;
+    return totalPrice;
+  }
+
+  public int getTotalQuantity() {
+    int totalQuantity = 0;
+    for (LineItem lineItem : lineItems.values()) {
+      totalQuantity += lineItem.getQuantity();
+    }
+    return totalQuantity;
   }
 
   public void remove(ProductId productId) {

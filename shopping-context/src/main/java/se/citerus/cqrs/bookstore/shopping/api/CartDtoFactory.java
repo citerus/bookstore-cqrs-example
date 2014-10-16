@@ -10,33 +10,32 @@ import java.util.List;
 public class CartDtoFactory {
 
   public static CartDto fromCart(Cart cart) {
-    long totalCartPrice = 0;
-    int totalCartQuantity = 0;
     List<LineItemDto> lineItems = new ArrayList<>();
 
     for (LineItem lineItem : cart.getItems()) {
-      long price = lineItem.getTotalPrice();
-      int quantity = lineItem.getQuantity();
-
-      totalCartPrice += price;
-      totalCartQuantity += quantity;
-
-      Item item = lineItem.getItem();
-      LineItemDto itemDto = new LineItemDto();
-      itemDto.productId = item.productId.id;
-      itemDto.title = item.title;
-      itemDto.price = item.price;
-      itemDto.quantity = quantity;
-      itemDto.totalPrice = price;
+      LineItemDto itemDto = toLineItemDto(lineItem);
       lineItems.add(itemDto);
     }
 
     CartDto cartDto = new CartDto();
     cartDto.cartId = cart.cartId;
-    cartDto.totalPrice = totalCartPrice;
-    cartDto.totalQuantity = totalCartQuantity;
+    cartDto.totalPrice = cart.getTotalPrice();
+    cartDto.totalQuantity = cart.getTotalQuantity();
     cartDto.lineItems = lineItems;
     return cartDto;
+  }
+
+  private static LineItemDto toLineItemDto(LineItem lineItem) {
+    long price = lineItem.getTotalPrice();
+    int quantity = lineItem.getQuantity();
+    Item item = lineItem.getItem();
+    LineItemDto itemDto = new LineItemDto();
+    itemDto.productId = item.productId.id;
+    itemDto.title = item.title;
+    itemDto.price = item.price;
+    itemDto.quantity = quantity;
+    itemDto.totalPrice = price;
+    return itemDto;
   }
 
 }

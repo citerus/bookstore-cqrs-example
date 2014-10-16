@@ -1,13 +1,12 @@
 package se.citerus.cqrs.bookstore.ordercontext.order.domain;
 
 import se.citerus.cqrs.bookstore.domain.AggregateRoot;
-import se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
-import se.citerus.cqrs.bookstore.ordercontext.order.OrderLine;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderStatus;
 import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderActivatedEvent;
 import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderPlacedEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -20,7 +19,8 @@ public class Order extends AggregateRoot<OrderId> {
   public void place(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines, long totalAmount) {
     assertHasNotBeenPlaced();
     assertMoreThanZeroOrderLines(orderLines);
-    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines, totalAmount));
+    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), toCustomerInformation(customerInformation),
+        toOrderLines(orderLines), totalAmount));
   }
 
   public void activate() {
@@ -39,6 +39,21 @@ public class Order extends AggregateRoot<OrderId> {
 
   private void assertHasNotBeenPlaced() {
     checkState(id == null, "Order has already been placed");
+  }
+
+  private se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation toCustomerInformation(
+      CustomerInformation customerInformation) {
+    return new se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation(
+        customerInformation.customerName, customerInformation.email, customerInformation.address);
+  }
+
+  private List<se.citerus.cqrs.bookstore.ordercontext.order.OrderLine> toOrderLines(List<OrderLine> orderLines) {
+    List<se.citerus.cqrs.bookstore.ordercontext.order.OrderLine> list = new ArrayList<>();
+    for (OrderLine orderLine : orderLines) {
+      list.add(new se.citerus.cqrs.bookstore.ordercontext.order.OrderLine(orderLine.productId, orderLine.title,
+          orderLine.quantity, orderLine.unitPrice));
+    }
+    return list;
   }
 
   @SuppressWarnings("UnusedDeclaration")

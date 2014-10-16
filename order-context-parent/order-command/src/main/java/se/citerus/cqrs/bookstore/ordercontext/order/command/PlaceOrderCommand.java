@@ -22,6 +22,7 @@ public class PlaceOrderCommand extends Command {
     checkArgument(customerInformation != null, "CustomerInformation cannot be null");
     checkArgument(orderLines != null, "Items cannot be null");
     checkArgument(!orderLines.isEmpty(), "Item list cannot be empty");
+    checkArgument(totalAmount > 0, "Total amount must be > 0");
     this.orderId = orderId;
     this.customerInformation = customerInformation;
     this.orderLines = Collections.unmodifiableList(orderLines);

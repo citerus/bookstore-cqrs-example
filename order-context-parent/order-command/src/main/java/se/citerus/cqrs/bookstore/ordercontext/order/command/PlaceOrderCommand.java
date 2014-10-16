@@ -15,8 +15,9 @@ public class PlaceOrderCommand extends Command {
   public final OrderId orderId;
   public final CustomerInformation customerInformation;
   public final List<OrderLine> orderLines;
+  public final long totalAmount;
 
-  public PlaceOrderCommand(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines) {
+  public PlaceOrderCommand(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines, long totalAmount) {
     checkArgument(orderId != null, "OrderId cannot be null");
     checkArgument(customerInformation != null, "CustomerInformation cannot be null");
     checkArgument(orderLines != null, "Items cannot be null");
@@ -24,6 +25,7 @@ public class PlaceOrderCommand extends Command {
     this.orderId = orderId;
     this.customerInformation = customerInformation;
     this.orderLines = Collections.unmodifiableList(orderLines);
+    this.totalAmount = totalAmount;
   }
 
 }

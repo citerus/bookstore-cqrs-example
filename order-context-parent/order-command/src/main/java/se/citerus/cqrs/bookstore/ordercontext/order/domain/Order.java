@@ -17,11 +17,10 @@ public class Order extends AggregateRoot<OrderId> {
 
   private OrderStatus status;
 
-  public void place(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines) {
+  public void place(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines, long totalPrice) {
     assertHasNotBeenPlaced();
     assertMoreThanZeroOrderLines(orderLines);
-    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines,
-        calculateTotalAmount(orderLines)));
+    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines, totalPrice));
   }
 
   public void activate() {
@@ -40,14 +39,6 @@ public class Order extends AggregateRoot<OrderId> {
 
   private void assertHasNotBeenPlaced() {
     checkState(id == null, "Order has already been placed");
-  }
-
-  private long calculateTotalAmount(List<OrderLine> orderLines) {
-    long totalAmount = 0;
-    for (OrderLine orderLine : orderLines) {
-      totalAmount += orderLine.unitPrice * orderLine.quantity;
-    }
-    return totalAmount;
   }
 
   @SuppressWarnings("UnusedDeclaration")

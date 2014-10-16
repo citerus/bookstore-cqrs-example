@@ -17,7 +17,8 @@ public class CommandFactory {
   public PlaceOrderCommand toCommand(CartDto cart, PlaceOrderRequest request) {
     List<OrderLine> itemsToOrder = getOrderLines(cart);
     CustomerInformation customerInformation = getCustomerInformation(request);
-    return new PlaceOrderCommand(new OrderId(request.orderId), customerInformation, itemsToOrder);
+    long totalPrice = request.cart.totalPrice;
+    return new PlaceOrderCommand(new OrderId(request.orderId), customerInformation, itemsToOrder, totalPrice);
   }
 
   public ActivateOrderCommand toCommand(OrderActivationRequest request) {

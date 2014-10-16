@@ -25,7 +25,7 @@ public class OrderTest {
   public void placingAnOrder() {
     Order order = new Order();
     OrderLine orderLine = new OrderLine(ProductId.<BookId>randomId(), "title", 10, 200L);
-    order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
+    order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine), 2000L);
     List<DomainEvent> uncommittedEvents = order.getUncommittedEvents();
     assertThat(uncommittedEvents.size(), is(1));
     assertThat(order.version(), is(1));
@@ -36,7 +36,7 @@ public class OrderTest {
   public void activatingAnOrder() {
     OrderLine orderLine = new OrderLine(ProductId.<BookId>randomId(), "title", 10, 200L);
     Order order = new Order();
-    order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
+    order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine), 2000L);
     order.markChangesAsCommitted();
     order.activate();
 
@@ -49,15 +49,15 @@ public class OrderTest {
   @Test(expected = IllegalArgumentException.class)
   public void requireOrderLinesWhenPlacingAnOrder() {
     Order order = new Order();
-    order.place(OrderId.<OrderId>randomId(), JOHN_DOE, Collections.<OrderLine>emptyList());
+    order.place(OrderId.<OrderId>randomId(), JOHN_DOE, Collections.<OrderLine>emptyList(), 2000L);
   }
 
   @Test(expected = IllegalStateException.class)
   public void cannotPlaceAnOrderTwice() {
     OrderLine orderLine = new OrderLine(ProductId.<BookId>randomId(), "title", 10, 200L, null);
     Order order = new Order();
-    order.place(randomId(), JOHN_DOE, asList(orderLine));
-    order.place(randomId(), JOHN_DOE, asList(orderLine));
+    order.place(randomId(), JOHN_DOE, asList(orderLine), 2000L);
+    order.place(randomId(), JOHN_DOE, asList(orderLine), 2000L);
   }
 
   @Test
@@ -66,7 +66,7 @@ public class OrderTest {
     ProductId productId = ProductId.randomId();
     long unitPrice = 200L;
     OrderLine orderLine = new OrderLine(productId, "title", 10, unitPrice, null);
-    order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine));
+    order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine), 2000L);
 
     assertThat(order.version(), is(1));
     order.markChangesAsCommitted();

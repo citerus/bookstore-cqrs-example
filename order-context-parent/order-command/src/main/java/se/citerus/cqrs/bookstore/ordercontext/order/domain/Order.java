@@ -17,10 +17,10 @@ public class Order extends AggregateRoot<OrderId> {
 
   private OrderStatus status;
 
-  public void place(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines, long totalPrice) {
+  public void place(OrderId orderId, CustomerInformation customerInformation, List<OrderLine> orderLines, long totalAmount) {
     assertHasNotBeenPlaced();
     assertMoreThanZeroOrderLines(orderLines);
-    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines, totalPrice));
+    applyChange(new OrderPlacedEvent(orderId, nextVersion(), now(), customerInformation, orderLines, totalAmount));
   }
 
   public void activate() {

@@ -6,8 +6,7 @@ import se.citerus.cqrs.bookstore.ordercontext.publishercontract.PublisherContrac
 public class CommandFactory {
 
   public RegisterPublisherContractCommand toCommand(PublisherContractId contractId, RegisterPublisherContractRequest request) {
-    return new RegisterPublisherContractCommand(contractId, request.publisherName, request.feePercentage,
-        request.limit);
+    return new RegisterPublisherContractCommand(contractId, request.publisherName, request.feePercentage, request.limit);
   }
 
 }

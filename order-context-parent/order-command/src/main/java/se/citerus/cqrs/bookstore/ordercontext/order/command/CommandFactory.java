@@ -14,8 +14,8 @@ import java.util.List;
 
 public class CommandFactory {
 
-  public PlaceOrderCommand toCommand(CartDto cart, PlaceOrderRequest request) {
-    List<OrderLine> itemsToOrder = getOrderLines(cart);
+  public PlaceOrderCommand toCommand(PlaceOrderRequest request) {
+    List<OrderLine> itemsToOrder = getOrderLines(request.cart);
     CustomerInformation customerInformation = getCustomerInformation(request);
     long totalPrice = request.cart.totalPrice;
     return new PlaceOrderCommand(new OrderId(request.orderId), customerInformation, itemsToOrder, totalPrice);

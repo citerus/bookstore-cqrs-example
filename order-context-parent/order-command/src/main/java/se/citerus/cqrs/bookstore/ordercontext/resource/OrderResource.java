@@ -3,7 +3,6 @@ package se.citerus.cqrs.bookstore.ordercontext.resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.command.CommandBus;
-import se.citerus.cqrs.bookstore.ordercontext.api.CartDto;
 import se.citerus.cqrs.bookstore.ordercontext.api.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.ordercontext.order.command.ActivateOrderCommand;
@@ -34,8 +33,7 @@ public class OrderResource {
   @POST
   public void placeOrder(@Valid PlaceOrderRequest placeOrderRequest) {
     logger.info("Placing customer order: " + placeOrderRequest);
-    CartDto cart = placeOrderRequest.cart;
-    PlaceOrderCommand placeOrderCommand = commandFactory.toCommand(cart, placeOrderRequest);
+    PlaceOrderCommand placeOrderCommand = commandFactory.toCommand(placeOrderRequest);
     commandBus.dispatch(placeOrderCommand);
   }
 

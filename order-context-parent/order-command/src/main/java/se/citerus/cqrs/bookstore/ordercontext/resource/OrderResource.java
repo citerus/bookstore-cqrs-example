@@ -3,7 +3,7 @@ package se.citerus.cqrs.bookstore.ordercontext.resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.cqrs.bookstore.command.CommandBus;
-import se.citerus.cqrs.bookstore.ordercontext.api.OrderActivationRequest;
+import se.citerus.cqrs.bookstore.ordercontext.api.ActivateOrderRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.ordercontext.order.command.ActivateOrderCommand;
 import se.citerus.cqrs.bookstore.ordercontext.order.command.CommandFactory;
@@ -39,7 +39,7 @@ public class OrderResource {
 
   @POST
   @Path("activations")
-  public void orderActivationRequest(@Valid OrderActivationRequest activationRequest) {
+  public void activateOrder(@Valid ActivateOrderRequest activationRequest) {
     logger.info("Activating orderId: " + activationRequest.orderId);
     ActivateOrderCommand command = commandFactory.toCommand(activationRequest);
     commandBus.dispatch(command);

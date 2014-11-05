@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 
 import static se.citerus.cqrs.bookstore.GenericId.ID_PATTERN;
 
-public class OrderActivationRequest extends TransportObject {
+public class ActivateOrderRequest extends TransportObject {
 
   @NotEmpty
   @Pattern(regexp = ID_PATTERN)

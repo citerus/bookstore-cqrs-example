@@ -1,8 +1,8 @@
 package se.citerus.cqrs.bookstore.ordercontext.order.command;
 
+import se.citerus.cqrs.bookstore.ordercontext.api.ActivateOrderRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.CartDto;
 import se.citerus.cqrs.bookstore.ordercontext.api.LineItemDto;
-import se.citerus.cqrs.bookstore.ordercontext.api.OrderActivationRequest;
 import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.ordercontext.order.OrderId;
 import se.citerus.cqrs.bookstore.ordercontext.order.ProductId;
@@ -21,7 +21,7 @@ public class CommandFactory {
     return new PlaceOrderCommand(new OrderId(request.orderId), customerInformation, itemsToOrder, totalPrice);
   }
 
-  public ActivateOrderCommand toCommand(OrderActivationRequest request) {
+  public ActivateOrderCommand toCommand(ActivateOrderRequest request) {
     return new ActivateOrderCommand(new OrderId(request.orderId));
   }
 

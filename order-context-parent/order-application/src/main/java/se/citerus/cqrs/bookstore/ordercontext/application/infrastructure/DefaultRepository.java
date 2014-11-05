@@ -27,7 +27,6 @@ public class DefaultRepository implements Repository {
       List<DomainEvent> newEvents = aggregateRoot.getUncommittedEvents();
       domainEventStore.save(aggregateRoot.id(), aggregateRoot.getClass(), newEvents);
       domainEventBus.publish(newEvents);
-      aggregateRoot.markChangesAsCommitted();
     }
   }
 

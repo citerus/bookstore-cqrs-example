@@ -22,10 +22,6 @@ public class AggregateRoot<T extends GenericId> {
     return uncommittedEvents;
   }
 
-  public void markChangesAsCommitted() {
-    uncommittedEvents.clear();
-  }
-
   public void loadFromHistory(List<DomainEvent> history) {
     for (DomainEvent event : history) {
       applyChange(event, false);

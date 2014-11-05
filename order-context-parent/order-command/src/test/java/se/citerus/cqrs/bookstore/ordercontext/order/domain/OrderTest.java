@@ -11,11 +11,11 @@ import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderPlacedEvent;
 import java.util.Collections;
 import java.util.List;
 
+import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.Assert.assertThat;
 import static se.citerus.cqrs.bookstore.ordercontext.order.OrderId.randomId;
 
@@ -39,13 +39,14 @@ public class OrderTest {
     OrderLine orderLine = new OrderLine(ProductId.<BookId>randomId(), "title", 10, 200L);
     Order order = new Order();
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine), 2000L);
-    order.markChangesAsCommitted();
+
+    int nEvents = order.getUncommittedEvents().size();
     order.activate();
 
     List<DomainEvent> uncommittedEvents = order.getUncommittedEvents();
-    assertThat(uncommittedEvents.size(), is(1));
+    assertThat(uncommittedEvents.size(), is(nEvents +1));
     assertThat(order.version(), is(2));
-    assertThat(getOnlyElement(uncommittedEvents), instanceOf(OrderActivatedEvent.class));
+    assertThat(getLast(uncommittedEvents), instanceOf(OrderActivatedEvent.class));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -71,13 +72,10 @@ public class OrderTest {
     order.place(OrderId.<OrderId>randomId(), JOHN_DOE, asList(orderLine), 2000L);
 
     assertThat(order.version(), is(1));
-    order.markChangesAsCommitted();
     order.activate();
-    assertThat(order.version(), is(2));
-    order.markChangesAsCommitted();
+    int nEvents = order.getUncommittedEvents().size();
     order.activate();
-    assertThat(order.version(), is(2));
-    assertThat(order.getUncommittedEvents(), emptyIterable());
+    assertThat(order.getUncommittedEvents().size(), is(nEvents));
   }
 
 }

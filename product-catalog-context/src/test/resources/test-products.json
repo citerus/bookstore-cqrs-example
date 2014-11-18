@@ -11,6 +11,28 @@
     "publisherContractId": "11113865-24e7-4c7c-8b93-eb6caac48111"
   },
   {
+    "productId": "78c65af0-6f11-11e4-9803-0800200c9a66",
+    "book": {
+      "bookId": "845dbb60-6f11-11e4-9803-0800200c9a66",
+      "isbn": "0321834577",
+      "title": "Implementing Domain-Driven Design",
+      "description": ""
+    },
+    "price": 3919,
+    "publisherContractId": "11113865-24e7-4c7c-8b93-eb6caac48111"
+  },
+  {
+    "productId": "bd8741d0-6f12-11e4-9803-0800200c9a66",
+    "book": {
+      "bookId": "c32d2e10-6f12-11e4-9803-0800200c9a66",
+      "isbn": "0321776410",
+      "title": "Programming in C",
+      "description": ""
+    },
+    "price": 3919,
+    "publisherContractId": "11113865-24e7-4c7c-8b93-eb6caac48111"
+  },    
+  {
     "productId": "da54c88d-9f29-4f14-acb8-4b9fbd40af0a",
     "book": {
       "bookId": "e66e1e17-382b-42d6-bd84-1a6abb66f0e1",

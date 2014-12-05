@@ -14,9 +14,9 @@ public class AggregateRoot<T extends GenericId> {
 
   private final List<DomainEvent> uncommittedEvents = new ArrayList<>();
 
-  protected T id;
-  protected int version = 0;
-  protected long timestamp = 0;
+  private T id;
+  private int version = 0;
+  private long timestamp = 0;
 
   public List<DomainEvent> getUncommittedEvents() {
     return uncommittedEvents;
@@ -53,8 +53,15 @@ public class AggregateRoot<T extends GenericId> {
   }
 
   private void applyChange(DomainEvent event, boolean isNew) {
+    updateMetadata(event);
     invokeHandlerMethod(event);
     if (isNew) uncommittedEvents.add(event);
+  }
+
+  private void updateMetadata(DomainEvent event) {
+    this.id = (T) event.aggregateId;
+    this.version = event.version;
+    this.timestamp = event.timestamp;
   }
 
   private void invokeHandlerMethod(DomainEvent event) {

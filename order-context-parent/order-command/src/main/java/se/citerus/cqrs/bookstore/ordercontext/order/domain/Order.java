@@ -25,7 +25,7 @@ public class Order extends AggregateRoot<OrderId> {
 
   public void activate() {
     if (orderIsPlaced()) {
-      applyChange(new OrderActivatedEvent(id, nextVersion(), now()));
+      applyChange(new OrderActivatedEvent(id(), nextVersion(), now()));
     }
   }
 
@@ -38,7 +38,7 @@ public class Order extends AggregateRoot<OrderId> {
   }
 
   private void assertHasNotBeenPlaced() {
-    checkState(id == null, "Order has already been placed");
+    checkState(id() == null, "Order has already been placed");
   }
 
   private se.citerus.cqrs.bookstore.ordercontext.order.CustomerInformation toCustomerInformation(
@@ -58,16 +58,11 @@ public class Order extends AggregateRoot<OrderId> {
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(OrderPlacedEvent event) {
-    this.id = event.aggregateId;
-    this.version = event.version;
-    this.timestamp = event.timestamp;
     this.status = OrderStatus.PLACED;
   }
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(OrderActivatedEvent event) {
-    this.version = event.version;
-    this.timestamp = event.timestamp;
     this.status = OrderStatus.ACTIVATED;
   }
 

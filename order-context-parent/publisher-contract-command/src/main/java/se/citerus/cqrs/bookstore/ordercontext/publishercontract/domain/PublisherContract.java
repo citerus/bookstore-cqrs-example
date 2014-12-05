@@ -26,14 +26,11 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
   }
 
   private void assertHasNotBeenRegistered() {
-    checkState(id == null, "Contract has already been registered");
+    checkState(id() == null, "Contract has already been registered");
   }
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(PublisherContractRegisteredEvent event) {
-    this.id = event.aggregateId;
-    this.version = event.version;
-    this.timestamp = event.timestamp;
     this.feePercentage = event.feePercentage;
     this.limit = event.limit;
     this.accumulatedFee = 0;
@@ -41,8 +38,6 @@ public class PublisherContract extends AggregateRoot<PublisherContractId> {
 
   @SuppressWarnings("UnusedDeclaration")
   void handleEvent(PurchaseRegisteredEvent event) {
-    this.version = event.version;
-    this.timestamp = event.timestamp;
     this.accumulatedFee = event.accumulatedFee;
   }
 

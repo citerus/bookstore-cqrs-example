@@ -65,12 +65,22 @@ public class AggregateRoot<T extends GenericId> {
   }
 
   private void invokeHandlerMethod(DomainEvent event) {
+    Method handlerMethod = getHandlerMethod(event);
+    if (handlerMethod != null) {
+      handlerMethod.setAccessible(true);
+      try {
+        handlerMethod.invoke(this, event);
+      } catch (Exception e) {
+        throw new RuntimeException("Unable to call event handler method for " + event.getClass().getName(), e);
+      }
+    }
+  }
+
+  private Method getHandlerMethod(DomainEvent event) {
     try {
-      Method method = getClass().getDeclaredMethod("handleEvent", event.getClass());
-      method.setAccessible(true);
-      method.invoke(this, event);
-    } catch (Exception e) {
-      throw new RuntimeException("Unable to call event handler method for " + event.getClass().getName(), e);
+      return getClass().getDeclaredMethod("handleEvent", event.getClass());
+    } catch (NoSuchMethodException e) {
+      return null;
     }
   }
 

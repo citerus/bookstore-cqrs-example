@@ -8,6 +8,9 @@ import se.citerus.cqrs.bookstore.ordercontext.order.event.OrderPlacedEvent;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Simple in memory aggregator counting placed orders per day based on order timestamp.
+ */
 public class OrdersPerDayAggregator implements DomainEventListener {
 
   private final TreeMap<LocalDate, Integer> orders = new TreeMap<>();

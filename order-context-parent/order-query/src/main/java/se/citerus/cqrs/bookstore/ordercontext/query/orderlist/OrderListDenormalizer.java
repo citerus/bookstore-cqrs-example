@@ -15,6 +15,10 @@ import java.util.List;
 import static se.citerus.cqrs.bookstore.ordercontext.order.OrderStatus.ACTIVATED;
 import static se.citerus.cqrs.bookstore.ordercontext.order.OrderStatus.PLACED;
 
+/**
+ * Listens to order events and stores projections of orders and their status as read models in the
+ * {@link OrderProjectionRepository}. Supports retrieving lists of orders as well as individual orders by id.
+ */
 public class OrderListDenormalizer implements DomainEventListener {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());

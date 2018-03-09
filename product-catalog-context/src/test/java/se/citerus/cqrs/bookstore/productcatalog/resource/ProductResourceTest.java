@@ -1,6 +1,5 @@
 package se.citerus.cqrs.bookstore.productcatalog.resource;
 
-import com.sun.jersey.api.client.GenericType;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
@@ -11,6 +10,7 @@ import se.citerus.cqrs.bookstore.productcatalog.domain.Book;
 import se.citerus.cqrs.bookstore.productcatalog.domain.Product;
 import se.citerus.cqrs.bookstore.productcatalog.domain.ProductRepository;
 
+import javax.ws.rs.core.GenericType;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -47,8 +47,8 @@ public class ProductResourceTest {
     when(productRepository.getProducts()).thenReturn(asList(product));
 
     Collection<ProductDto> products = resources.client()
-        .resource(PRODUCT_RESOURCE)
-        .accept(APPLICATION_JSON_TYPE)
+        .target(PRODUCT_RESOURCE)
+        .request(APPLICATION_JSON_TYPE)
         .get(PRODUCTS_COLLECTION_TYPE);
 
     assertThat(products, hasItem(ProductDtoFactory.fromProduct(product)));
@@ -64,8 +64,8 @@ public class ProductResourceTest {
     when(productRepository.getProduct(productId)).thenReturn(product);
 
     ProductDto retrievedProduct = resources.client()
-        .resource(PRODUCT_RESOURCE + "/" + productId)
-        .accept(APPLICATION_JSON_TYPE)
+        .target(PRODUCT_RESOURCE + "/" + productId)
+        .request(APPLICATION_JSON_TYPE)
         .get(ProductDto.class);
 
     assertThat(retrievedProduct, is(ProductDtoFactory.fromProduct(product)));

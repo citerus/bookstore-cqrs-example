@@ -22,7 +22,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <encoding>UTF-8</encoding>
-    <guava.version>15.0</guava.version>
+    <guava.version>23.5-jre</guava.version>
     <commons.lang.version>3.1</commons.lang.version>
     <junit.version>4.11</junit.version>
     <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
@@ -31,8 +31,8 @@
     <httpcomponents-client.version>4.3.1</httpcomponents-client.version>
     <hamcrest-all.version>1.3</hamcrest-all.version>
     <joda-time.version>2.3</joda-time.version>
-    <jackson-annotations.version>2.3.0</jackson-annotations.version>
-    <dropwizard.version>0.7.1</dropwizard.version>
+    <jackson-annotations.version>2.9.1</jackson-annotations.version>
+    <dropwizard.version>1.2.2</dropwizard.version>
   </properties>
 
   <build>

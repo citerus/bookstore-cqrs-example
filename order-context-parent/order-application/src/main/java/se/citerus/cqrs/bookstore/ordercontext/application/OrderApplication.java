@@ -1,7 +1,6 @@
 package se.citerus.cqrs.bookstore.ordercontext.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.Client;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -32,6 +31,7 @@ import se.citerus.cqrs.bookstore.ordercontext.saga.PurchaseRegistrationSaga;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
+import javax.ws.rs.client.ClientBuilder;
 import java.util.EnumSet;
 
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
@@ -56,7 +56,7 @@ public class OrderApplication extends Application<OrderApplicationConfiguration>
     OrderListDenormalizer orderListDenormalizer = domainEventBus.register(new OrderListDenormalizer(orderRepository));
     OrdersPerDayAggregator ordersPerDayAggregator = domainEventBus.register(new OrdersPerDayAggregator());
 
-    ProductCatalogClient catalogClient = ProductCatalogClient.create(Client.create(), configuration.productCatalogServiceUrl);
+    ProductCatalogClient catalogClient = ProductCatalogClient.create(ClientBuilder.newClient(), configuration.productCatalogServiceUrl);
 
     DomainEventStore domainEventStore = (DomainEventStore) configuration.eventStore.newInstance();
     QueryService queryService = new QueryService(orderListDenormalizer, ordersPerDayAggregator, catalogClient);

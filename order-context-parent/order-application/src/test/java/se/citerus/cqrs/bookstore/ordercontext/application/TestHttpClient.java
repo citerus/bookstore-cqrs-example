@@ -1,10 +1,12 @@
 package se.citerus.cqrs.bookstore.ordercontext.application;
 
 import com.google.common.io.CharStreams;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
 import org.junit.Ignore;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,23 +31,22 @@ public class TestHttpClient {
 
   public int post(String contents) throws IOException {
     return client
-        .resource(url)
-        .entity(contents, APPLICATION_JSON_TYPE)
-        .post(ClientResponse.class)
+        .target(url)
+        .request()
+        .post(Entity.json(contents), Response.class)
         .getStatus();
   }
 
   public String get() throws IOException {
     InputStream entityInputStream = client
-        .resource(url)
-        .accept(APPLICATION_JSON_TYPE)
-        .get(ClientResponse.class)
-        .getEntityInputStream();
+        .target(url)
+        .request(APPLICATION_JSON_TYPE)
+        .get(InputStream.class);
     return CharStreams.toString(new InputStreamReader(entityInputStream, UTF_8));
   }
 
   private Client createHttpClient() {
-    return new Client();
+    return ClientBuilder.newClient();
   }
 
 }

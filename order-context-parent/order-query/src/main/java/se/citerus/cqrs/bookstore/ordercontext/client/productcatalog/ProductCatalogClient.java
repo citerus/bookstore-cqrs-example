@@ -1,6 +1,7 @@
 package se.citerus.cqrs.bookstore.ordercontext.client.productcatalog;
 
-import com.sun.jersey.api.client.Client;
+
+import javax.ws.rs.client.Client;
 
 public class ProductCatalogClient {
 
@@ -17,7 +18,7 @@ public class ProductCatalogClient {
   }
 
   public ProductDto getProduct(String productId) {
-    return client.resource(serviceUrl + productId).get(ProductDto.class);
+    return client.target(serviceUrl + productId).request().get(ProductDto.class);
   }
 
 }

@@ -1,6 +1,5 @@
 package se.citerus.cqrs.bookstore.shopping.resource;
 
-import com.sun.jersey.api.client.ClientResponse;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.ClassRule;
@@ -14,11 +13,13 @@ import se.citerus.cqrs.bookstore.shopping.client.productcatalog.ProductCatalogCl
 import se.citerus.cqrs.bookstore.shopping.client.productcatalog.ProductDto;
 import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
 import java.util.UUID;
 
-import static com.sun.jersey.api.client.ClientResponse.Status.BAD_REQUEST;
-import static com.sun.jersey.api.client.ClientResponse.Status.NOT_FOUND;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
@@ -55,7 +56,7 @@ public class CartResourceTest {
     productDto.book = new BookDto();
     productDto.book.title = title;
     when(productCatalogClient.getProduct(productId)).thenReturn(productDto);
-    CartDto cart = addItemToCart(cartId, addProductItemRequest(productId)).getEntity(CartDto.class);
+    CartDto cart = addItemToCart(cartId, addProductItemRequest(productId)).readEntity(CartDto.class);
 
     LineItemDto expectedLineItem = new LineItemDto();
     expectedLineItem.productId = productId;
@@ -74,7 +75,7 @@ public class CartResourceTest {
     createCartWithId(cartId);
 
     AddItemRequest addItemRequest = addProductItemRequest(UUID.randomUUID().toString());
-    ClientResponse response = addItemToCart(cartId, addItemRequest);
+    Response response = addItemToCart(cartId, addItemRequest);
 
     assertThat(response.getStatusInfo().getStatusCode(), is(BAD_REQUEST.getStatusCode()));
   }
@@ -88,10 +89,10 @@ public class CartResourceTest {
   @Test
   public void cannotGetNonExistingCart() {
     String cartId = UUID.randomUUID().toString();
-    ClientResponse response = resources.client()
-        .resource(CART_RESOURCE + "/" + cartId)
-        .accept(APPLICATION_JSON_TYPE)
-        .get(ClientResponse.class);
+    Response response = resources.client()
+        .target(CART_RESOURCE + "/" + cartId)
+        .request(APPLICATION_JSON_TYPE)
+        .get(Response.class);
 
     assertThat(response.getStatusInfo().getStatusCode(), is(NOT_FOUND.getStatusCode()));
   }
@@ -102,8 +103,8 @@ public class CartResourceTest {
     createCartWithId(cartId);
 
     CartDto cart = resources.client()
-        .resource(CART_RESOURCE + "/" + cartId)
-        .accept(APPLICATION_JSON_TYPE)
+        .target(CART_RESOURCE + "/" + cartId)
+        .request(APPLICATION_JSON_TYPE)
         .get(CartDto.class);
 
     assertThat(cart.cartId, is(cartId));
@@ -115,25 +116,25 @@ public class CartResourceTest {
     String cartId = UUID.randomUUID().toString();
     createCartWithId(cartId);
 
-    resources.client().resource(CART_RESOURCE + "/" + cartId).delete();
+    resources.client().target(CART_RESOURCE + "/" + cartId).request().delete();
 
     createCartWithId(cartId);
   }
 
-  private ClientResponse addItemToCart(String cartId, AddItemRequest addItemRequest) {
+  private Response addItemToCart(String cartId, AddItemRequest addItemRequest) {
     return resources.client()
-        .resource(CART_RESOURCE + "/" + cartId + "/items")
-        .entity(addItemRequest, APPLICATION_JSON_TYPE)
-        .post(ClientResponse.class);
+        .target(CART_RESOURCE + "/" + cartId + "/items")
+        .request()
+        .post(Entity.json(addItemRequest), Response.class);
   }
 
   private void createCartWithId(String cartId) {
     CreateCartRequest createCart = new CreateCartRequest();
     createCart.cartId = cartId;
     resources.client()
-        .resource(CART_RESOURCE)
-        .entity(createCart, APPLICATION_JSON_TYPE)
-        .post();
+        .target(CART_RESOURCE)
+        .request()
+        .post(Entity.json(createCart));
   }
 
 }

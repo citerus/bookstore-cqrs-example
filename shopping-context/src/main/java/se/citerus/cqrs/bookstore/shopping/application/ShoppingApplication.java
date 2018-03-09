@@ -1,8 +1,8 @@
 package se.citerus.cqrs.bookstore.shopping.application;
 
-import com.sun.jersey.api.client.Client;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
@@ -11,6 +11,8 @@ import se.citerus.cqrs.bookstore.shopping.client.productcatalog.ProductCatalogCl
 import se.citerus.cqrs.bookstore.shopping.domain.CartRepository;
 import se.citerus.cqrs.bookstore.shopping.infrastructure.InMemoryCartRepository;
 import se.citerus.cqrs.bookstore.shopping.resource.CartResource;
+
+import javax.ws.rs.client.Client;
 
 public class ShoppingApplication extends Application<ShoppingConfiguration> {
 
@@ -24,7 +26,8 @@ public class ShoppingApplication extends Application<ShoppingConfiguration> {
   @Override
   public void run(ShoppingConfiguration configuration, Environment environment) throws Exception {
     CartRepository cartRepository = new InMemoryCartRepository();
-    ProductCatalogClient productCatalogClient = ProductCatalogClient.create(Client.create(),
+    final Client client = new JerseyClientBuilder(environment).using(configuration.httpClient).build(getName());
+    ProductCatalogClient productCatalogClient = ProductCatalogClient.create(client,
         configuration.productCatalogServiceUrl);
     environment.jersey().register(new CartResource(productCatalogClient, cartRepository));
     environment.jersey().setUrlPattern("/service/*");

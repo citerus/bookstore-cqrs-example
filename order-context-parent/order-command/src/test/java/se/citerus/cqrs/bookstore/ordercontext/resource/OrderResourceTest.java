@@ -10,11 +10,11 @@ import se.citerus.cqrs.bookstore.ordercontext.api.LineItemDto;
 import se.citerus.cqrs.bookstore.ordercontext.api.PlaceOrderRequest;
 import se.citerus.cqrs.bookstore.ordercontext.query.QueryService;
 
+import javax.ws.rs.client.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 
@@ -68,6 +68,6 @@ public class OrderResourceTest {
   }
 
   private void createOrder(PlaceOrderRequest newOrderRequest) {
-    resources.client().resource(ORDER_RESOURCE).entity(newOrderRequest, APPLICATION_JSON_TYPE).post();
+    resources.client().target(ORDER_RESOURCE).request().post(Entity.json(newOrderRequest));
   }
 }
